@@ -2,6 +2,7 @@ package dev.despg.core;
 import java.util.ArrayList;
 import java.util.Random;
 
+
 public class Randomizer
 {	
 	private static final double MIN_PROBABILITY = 0.0;
@@ -10,6 +11,11 @@ public class Randomizer
 	private static Random random = new Random();
 	private ArrayList<Probability2Value<Integer>> prob2Int = new ArrayList<Probability2Value<Integer>>();
 
+	/**
+	 * This method is used to assign Integer values to a certain probability.
+	 * @param to Upper limit for that probability to occur
+	 * @param value Assigned value of that probability
+	 */
 	public void addProbInt(double to, int value)
 	{
 		if (to >= MIN_PROBABILITY && to <= MAX_PROBABILITY)
@@ -18,6 +24,10 @@ public class Randomizer
 		}
 	}
 	
+	/**
+	 * This method iterates through an ArrayList of Probability2Value objects and compares its probabilityUpperLimit against a random Double.
+	 * @return This returns the Integer value that had been assigned to the occurred probability
+	 */
 	public int nextInt()
 	{
 		double r = random.nextDouble();		
