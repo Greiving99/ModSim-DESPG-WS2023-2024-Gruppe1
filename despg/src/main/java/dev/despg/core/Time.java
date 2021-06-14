@@ -6,6 +6,12 @@ public class Time
 	private static final int HOURS_PER_DAY = 24;
 	private static final int MINUTES_PER_DAY = HOURS_PER_DAY * MINUTES_PER_HOUR;
 
+	
+	/**
+	 * This method takes an int number of minutes and converts it into a String of days:hours:minutes.
+	 * @param minutes The value of minutes that will be converted
+	 * @return minutes converted to days:hours:minutes
+	 */
 	public static String stepsToString(int minutes)
 	{
 		StringBuilder result = new StringBuilder();

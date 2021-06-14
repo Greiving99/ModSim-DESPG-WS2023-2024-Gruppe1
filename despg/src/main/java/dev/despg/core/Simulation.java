@@ -2,8 +2,16 @@ package dev.despg.core;
 
 public abstract class Simulation
 {
+	/**
+	 * Called at every timeStep where one or more events occurred.
+	 */
 	protected abstract void printEveryStep();
 
+	/**
+	 * After the Simulation loop is done, this method prints the utilization statistic of every Server as well as the average utilization of
+	 * every Server class that initialized two or more Objects.
+	 * @param timeStep TimeStep at the end of the simulation
+	 */
 	private void printPostSimStats(int timeStep)
 	{
 		System.out.println("----------------------------------");
@@ -42,6 +50,13 @@ public abstract class Simulation
 		System.out.println("----------------------------------");
 	}
 
+	/** 
+	 * The simulate() method contains the main loop of the simulation. For every timeStep it iterates
+	 * over every SimulationObject and triggers its simulate() method. If no Event occurred during
+	 * that timeStep, it switches to the timeStep of the next Event in the EventQueue.
+	 * 
+	 * @return timeStep after the simulation is over
+	 */
 	public int simulate()
 	{		
 		EventQueue eventqueue = EventQueue.getInstance();
