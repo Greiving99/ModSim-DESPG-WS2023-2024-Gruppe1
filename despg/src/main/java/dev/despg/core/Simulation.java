@@ -1,5 +1,7 @@
 package dev.despg.core;
 
+import dev.despg.core.exception.SimulationException;
+
 public abstract class Simulation
 {
 	/**
@@ -96,9 +98,13 @@ public abstract class Simulation
 				timeStep = e.getTimeStep();
 
 		} while (e != null);
-
-		timeStep--; // correction after last step
-		printPostSimStats(timeStep);
-		return timeStep;
+		
+		if (EventQueue.getInstance().isEmpty()) {
+			timeStep--; // correction after last step
+			printPostSimStats(timeStep);
+			return timeStep;
+		}
+		else
+			throw new SimulationException("Event didn't get consumed");
 	}
 }

@@ -1,5 +1,7 @@
 package dev.despg.core;
 
+import dev.despg.core.exception.SimulationException;
+
 public class Time
 {
 	private static final int MINUTES_PER_HOUR = 60;
@@ -12,8 +14,9 @@ public class Time
 	 * @param minutes The value of minutes that will be converted
 	 * @return minutes converted to days:hours:minutes
 	 */
-	public static String stepsToString(int minutes)
+	public static String stepsToString(int minutes) throws SimulationException
 	{
+		if (minutes < 0) throw new SimulationException("Parameter can't be negative");
 		StringBuilder result = new StringBuilder();
 		int days = minutes / MINUTES_PER_DAY;
 		if (days > 0)
