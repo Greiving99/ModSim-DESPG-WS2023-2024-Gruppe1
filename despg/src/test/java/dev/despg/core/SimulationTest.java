@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -72,6 +74,8 @@ class SimulationTest {
 	}
 	
 	@Test
+	@Disabled
+	@DisplayName("TBD")
 	void eventInQueueUnassignable() {
 		toAdd.add(new Event(0, null, null, null, null));
 		e.addAll(toAdd);

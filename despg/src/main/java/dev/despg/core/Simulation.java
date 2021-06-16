@@ -99,12 +99,9 @@ public abstract class Simulation
 
 		} while (e != null);
 		
-		if (EventQueue.getInstance().isEmpty()) {
-			timeStep--; // correction after last step
-			printPostSimStats(timeStep);
-			return timeStep;
-		}
-		else
-			throw new SimulationException("Event didn't get consumed");
+	
+		timeStep--; // correction after last step
+		printPostSimStats(timeStep);
+		return timeStep;
 	}
 }
