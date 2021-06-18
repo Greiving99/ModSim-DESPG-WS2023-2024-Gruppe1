@@ -1,0 +1,31 @@
+image: maven:3.6.3-openjdk-15
+include:
+  - template: Code-Quality.gitlab-ci.yml
+stages:
+  - compile
+  - test
+  - checkstyle
+
+compile:
+  stage: compile
+  script:
+    - cd despg
+    - $MAVEN_HOME/bin/mvn clean compile
+
+test:
+  stage: test
+  script:
+    - cd despg
+    - $MAVEN_HOME/bin/mvn test
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - core/target/surefire-reports/TEST-*.xml
+        - core/target/failsafe-reports/TEST-*.xml
+  
+checkstyle:
+  stage: checkstyle
+  script:
+    - cd despg
+    - $MAVEN_HOME/bin/mvn checkstyle:check
