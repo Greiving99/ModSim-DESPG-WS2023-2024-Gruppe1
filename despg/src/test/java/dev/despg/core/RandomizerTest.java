@@ -22,6 +22,10 @@ class RandomizerTest {
 		
 	}
 	
+	/**
+	 * Checks if addProb2Int adds new Probability2Value objects correctly. Creates an expected
+	 * Randomizer that sets its private class member "prob2Int" through reflection. 
+	 */
 	@Test
 	void addProb2Int_shouldAddProbability() {
 		Randomizer rExpected = new Randomizer();
@@ -36,6 +40,9 @@ class RandomizerTest {
 		assertThat(actual.probabilityUpperLimit).isEqualTo(expected.probabilityUpperLimit);
 	}
 	
+	/**
+	 * Checks if addProbInt throws the correct SimulationException when the probability is out of the defined bounds.
+	 */
 	@Test
 	void addProbInt_shouldThrowBecauseOutOfBounds() {
 		   assertThatThrownBy(() -> { r.addProbInt(Randomizer.getMinProbability()-0.1,5); }).isInstanceOf(SimulationException.class)
@@ -45,17 +52,22 @@ class RandomizerTest {
 		   
 	}
 	
+	/**
+	 * Checks if addProbInt throws the correct SimulationException if the parameterized probability already exists
+	 */
 	@Test
 	void addProbInt_shouldThrowBecauseDuplicate() {
 		assertThatThrownBy(() -> { r.addProbInt(1,5); r.addProbInt(1, 7); }).isInstanceOf(SimulationException.class)
         .hasMessageContaining("already exists");
 	}
 	
+	/**
+	 * Checks if nextInt picks the correct value
+	 */
 	@Test
 	void nextIntPickedCorrect() {
 		int expected = 2;
 		ArrayList<Probability2Value<Integer>> p = new ArrayList<Probability2Value<Integer>>();
-		//p.add(new Probability2Value<Integer>(0.5,1));
 		p.add(new Probability2Value<Integer>(1.0,2));
 		
 		ReflectionTestUtils.setField(r, "prob2Int", p );
@@ -64,6 +76,9 @@ class RandomizerTest {
 		
 	}
 	
+	/**
+	 * Checks if nextInt throws the correct SimulationException when the probability is out of bounds
+	 */
 	@Test
 	void nextInt_shouldThrowBecauseOutOfBounds() {
 		ArrayList<Probability2Value<Integer>> p = new ArrayList<Probability2Value<Integer>>();
@@ -76,8 +91,11 @@ class RandomizerTest {
 		
 	}
 	
+	/**
+	 * Checks if nextInt throws the correct SimulationException when the randomized probability couldn't find a matching
+	 * upper limit in the Randomizer. Every Randomizer should have a value assigned to the probability of MAX_PROBABILITY
+	 */
 	@Test
-	//can Random.nextDouble roll 0.0?
 	void nextInt_shouldThrowBecauseProbabilityNotCovered() {
 		ArrayList<Probability2Value<Integer>> p = new ArrayList<Probability2Value<Integer>>();
 		p.add(new Probability2Value<Integer>(0.0,2));
@@ -89,6 +107,9 @@ class RandomizerTest {
 		
 	}
 	
+	/**
+	 * Checks if nextInt throws the correct SimulationException when the probability list is empty
+	 */
 	@Test
 	void nextInt_shouldThrowBecauseEmptyArrayList() {
 		ArrayList<Probability2Value<Integer>> p = new ArrayList<Probability2Value<Integer>>();

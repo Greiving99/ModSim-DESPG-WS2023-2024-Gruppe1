@@ -6,6 +6,14 @@ public abstract class SimulationObject
 	private Integer utilStart = null;
 	
 
+	public void setTimeUtilized(Integer timeUtilized) {
+		this.timeUtilized = timeUtilized;
+	}
+
+	public void setUtilStart(Integer utilStart) {
+		this.utilStart = utilStart;
+	}
+
 	public Integer getUtilStart() 
 	{
 		return utilStart;
@@ -28,7 +36,6 @@ public abstract class SimulationObject
 	{
 		timeUtilized += timeStep - utilStart;
 		utilStart = null;
-		System.out.println(timeUtilized);
 	}
 	
 	

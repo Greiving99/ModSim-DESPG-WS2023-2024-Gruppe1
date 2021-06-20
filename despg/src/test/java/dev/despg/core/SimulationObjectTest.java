@@ -18,6 +18,9 @@ class SimulationObjectTest {
 	}
 	
 	
+	/**
+	 * Checks if utilStart start the utilization correctly
+	 */
 	@Test
 	void doesStartUtilization() {
 		int expected = 4;
@@ -28,7 +31,10 @@ class SimulationObjectTest {
 		assertThat(simObject.getUtilStart()).isEqualTo(expected);
 	}
 	
-	@Test
+	/**
+	 * Checks if utilStop stops the utilization correctly and if it sets utilStart to null
+	 */
+	@Test //would it be overkill to make 2 unit tests out of this? doesStopUtilization and doesResetUtilStart
 	void doesStopUtilizationAndReset() {
 		int expected = 4;
 		doCallRealMethod().when(simObject).utilStop(6);
@@ -43,6 +49,9 @@ class SimulationObjectTest {
 		assertThat(simObject.getUtilStart()).isNull();
 	}
 	
+	/**
+	 * Checks if addUtilization adds time to the total time utilized
+	 */
 	@Test
 	void addsToTimeUtilized() {
 		int expected = 4;

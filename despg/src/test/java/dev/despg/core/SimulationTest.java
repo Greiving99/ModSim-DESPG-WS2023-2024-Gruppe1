@@ -20,25 +20,35 @@ class SimulationTest {
 	SimulationObjects simObjects;
 	ArrayList<Event> toAdd;
 	Simulation sim;
-	SimulationObject simObject = Mockito.mock(SimulationObject.class);
+	SimulationObject simObject;
 	boolean answered;
 
+	/**
+	 * 
+	 */
 	@BeforeEach
 	void init() {
 		e = EventQueue.getInstance();
 		toAdd = new ArrayList<Event>();
 		simObjects = SimulationObjects.getInstance();
+		simObject = Mockito.mock(SimulationObject.class);
 		simObjects.add(simObject);
 		
 		sim = Mockito.mock(Simulation.class);
 	}
 	
+	/**
+	 * Clears EventQueue and SimulationObjects after each test
+	 */
 	@AfterEach
 	void clear() {
 		e.clear();
 		simObjects.clear();
 	}
 	
+	/**
+	 * Checks if simulate returns 0 when the EventQueue is empty
+	 */
 	@Test
 	void noEventInQueue() {
 		when(sim.simulate()).thenCallRealMethod();
@@ -48,6 +58,9 @@ class SimulationTest {
 		assertThat(actual).isEqualTo(expected);
 	}
 	
+	/**
+	 * Checks if the simulate method returns the correct timeStep when Events got simulated
+	 */
 	@Test
 	void eventGotSimulated() {
 		toAdd.add(new Event(1, null, null, null, null));
@@ -64,7 +77,7 @@ class SimulationTest {
 				
 			
 		});
-		when(sim.simulate()).thenCallRealMethod(); //possible to ignore sysouts?
+		when(sim.simulate()).thenCallRealMethod();
 		
 		
 		int expected = 1;

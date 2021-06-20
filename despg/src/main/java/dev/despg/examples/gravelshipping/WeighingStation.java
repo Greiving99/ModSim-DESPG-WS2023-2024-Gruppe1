@@ -17,6 +17,10 @@ public class WeighingStation extends SimulationObject
 	private static Randomizer drivingToLoadingDock = null;
 	private static EventQueue eventQueue = null;
 
+	/**
+	 * Constructor for new WeightingStations, injects its dependency to SimulationObjects and creates the required randomizer instances.
+	 * @param name Name of the WeightingStation instance
+	 */
 	public WeighingStation(String name)
 	{
 		this.name = name;
@@ -41,6 +45,20 @@ public class WeighingStation extends SimulationObject
 		return "Weighing Station:" + name + ", Truck:" + (truckInWeighingStation != null ? truckInWeighingStation : "---");
 	}
 
+	/**
+	 *Gets called every timeStep
+	 *
+	 * Checks events from the event queue that either are assigned to this class or to an object of this class. If it is assigned to this class, the object
+	 * of which the simulate function got called, checks if it is currently occupied and if the attached object is indeed a truck. In that case,
+	 * the event gets removed from the queue, gets executed and a new event gets added to the queue which gets triggered when the weighting is done.
+	 * 
+	 * A "weighting is done" event gets pulled from the queue if the receiving object is the object on which the simulate function got called on. 
+	 * In that case the event gets removed from the queue and handled by checking if trucks load is above the maximum allowed load or not. If it is above, 
+	 * it will count as an unsuccessful loading, else it will count ass successful and be shipped. In either case there will be a new event added to the
+	 * event queue with no difference in parameters.
+	 * 
+	 * @return true if an assignable event got found and handled, false if no event could get assigned
+	 */
 	@Override
 	public boolean simulate(int timeStep)
 	{
@@ -66,18 +84,17 @@ public class WeighingStation extends SimulationObject
 			if (truckToWeighLoad != null && truckToWeighLoad > MAXLOAD)
 			{
 				GravelShipping.gravelToShip += truckToWeighLoad;					
-				GravelShipping.unsuccessfullLoadingSizes += truckToWeighLoad;
-				GravelShipping.unsuccessfullLoadings++;
+				GravelShipping.unsuccessfulLoadingSizes += truckToWeighLoad;
+				GravelShipping.unsuccessfulLoadings++;
 				driveToLoadingStation = truckInWeighingStation.addUtilization(drivingToLoadingDock.nextInt());				
 			}
 			else
 			{
 				GravelShipping.gravelShipped += truckToWeighLoad;
-				GravelShipping.successfullLoadingSizes += truckToWeighLoad;
-				GravelShipping.successfullLoadings++;
+				GravelShipping.successfulLoadingSizes += truckToWeighLoad;
+				GravelShipping.successfulLoadings++;
 				driveToLoadingStation = truckInWeighingStation.addUtilization(drivingToLoadingDock.nextInt());
 			}
-
 			eventQueue.add(new Event(timeStep + driveToLoadingStation, GravelLoadingEventTypes.Loading, 
 					truckInWeighingStation, LoadingDock.class, null));
 			

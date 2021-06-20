@@ -18,6 +18,10 @@ class EventQueueTest {
 	UniqueEventDescription description;
 	Event event;
 	
+	/**
+	 * Initializes some Events and adds them to the EventQueue instance, each being different in at least one parameter to set up
+	 * for tests on the EventQueue
+	 */
 	@BeforeEach
 	void init() {
 	e = EventQueue.getInstance();
@@ -32,10 +36,16 @@ class EventQueueTest {
 	e.addAll(toAdd);
 	}
 	
+	/**
+	 * Clearing up the EventQueue
+	 */
 	@AfterEach
 	void clear() {
 		e.clear();
 	}
+	/**
+	 * Checks if getNextEvent filters correctly by timeStep 
+	 */
 	@Test
 	void shouldFilterCorrectByTimeStep() {
 		event = e.getNextEvent(0, false, null, null, null);
@@ -43,6 +53,9 @@ class EventQueueTest {
 		assertThat(event).isEqualTo(toAdd.get(1));
 	}
 	
+	/**
+	 * Checks if getNextEvent filters correctly by timeStep including the past
+	 */
 	@Test
 	void shouldFilterCorrectByTimeStepIncludingPast() {
 		event = e.getNextEvent(2, true, null, null, null);
@@ -50,6 +63,9 @@ class EventQueueTest {
 		assertThat(event).isEqualTo(toAdd.get(1));
 	}
 	
+	/**
+	 * Checks if getNextEvent filters correctly by receiving class
+	 */
 	@Test
 	void shouldFilterCorrectByReceivingClass() {
 		event = e.getNextEvent(0, false, null, SimulationObject.class, null);
@@ -57,12 +73,18 @@ class EventQueueTest {
 		assertThat(event).isEqualTo(toAdd.get(2));
 	}
 	
+	/**
+	 * Checks if getNextEvent filters correctly by receiving object
+	 */
 	@Test
 	void shouldFilterCorrectByReceivingObject() {
 		event = e.getNextEvent(0, false, null, null, receiving);
 		
 		assertThat(event).isEqualTo(toAdd.get(3));
 	}
+	/**
+	 * Checks if getNextEvent filters correctly by unique event description
+	 */
 	@Test
 	void shouldFilterCorrectByEventType() {
 		event = e.getNextEvent(0, false, description, null, null);
@@ -70,6 +92,9 @@ class EventQueueTest {
 		assertThat(event).isEqualTo(toAdd.get(4));
 	}
 	
+	/**
+	 * Checks if getNextEvent does return null when the EventQueue is empty
+	 */
 	@Test
 	void shouldReturnNull() {
 		e.clear();
