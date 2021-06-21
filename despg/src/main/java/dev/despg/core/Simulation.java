@@ -1,11 +1,13 @@
 package dev.despg.core;
 
+import dev.despg.core.exception.SimulationException;
+
 public abstract class Simulation
 {
 	/**
 	 * Called at every timeStep where one or more events occurred.
 	 */
-	protected abstract void printEveryStep();
+	protected abstract int printEveryStep(int numberOfSteps, int timeStep);
 
 	/**
 	 * After the Simulation loop is done, this method prints the utilization statistic of every Server as well as the average utilization of
@@ -67,8 +69,8 @@ public abstract class Simulation
 
 		do
 		{
-			System.out.print(numberOfSteps++ + ". " + Time.stepsToString(timeStep) + " " + eventqueue);
-			printEveryStep();
+			
+			numberOfSteps = printEveryStep(numberOfSteps, timeStep);
 
 			boolean oneSwitched;
 			do 
@@ -96,7 +98,8 @@ public abstract class Simulation
 				timeStep = e.getTimeStep();
 
 		} while (e != null);
-
+		
+	
 		timeStep--; // correction after last step
 		printPostSimStats(timeStep);
 		return timeStep;

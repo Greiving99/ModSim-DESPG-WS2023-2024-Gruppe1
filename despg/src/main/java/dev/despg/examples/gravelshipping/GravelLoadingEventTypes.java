@@ -2,6 +2,10 @@ package dev.despg.examples.gravelshipping;
 
 import dev.despg.core.UniqueEventDescription;
 
+
+/**
+ * Implementation of {@link dev.despg.core.UniqueEventDescription}. Defines the event types that can happen during the GravelShipping simulation
+ */
 public enum GravelLoadingEventTypes implements UniqueEventDescription
 {
 	Loading("Loading Truck"), 

@@ -17,6 +17,10 @@ public class LoadingDock extends SimulationObject
 	private static Randomizer drivingToWeighingStation = null;
 	
 
+	/**
+	 * Constructor for new LoadingDocks, injects its dependency to SimulationObjects and creates the required randomizer instances.
+	 * @param name Name of the LoadingDock instance
+	 */
 	public LoadingDock(String name)
 	{
 		this.name = name;
@@ -46,6 +50,19 @@ public class LoadingDock extends SimulationObject
 		return "Loading Dock:" + name + " Truck:" + (truckCurrentlyLoaded != null ? truckCurrentlyLoaded : "---");
 	}
 
+	/**
+	 * Gets called every timeStep. 
+	 * 
+	 * If it is not currently occupied ({@link #truckCurrentlyLoaded} == null) and the simulation goal still is not archived,
+	 * it checks if there is an event in the queue that got assigned to this class with the correct event description. Then proceeds in checking if the attached
+	 * object is indeed a Truck. In that case the event gets removed from the queue and the event will get handled: {@link #truckCurrentlyLoaded} is set to the
+	 * events attached object, and the truck gets loaded. Adds a new event to the event queue for when the loading is done and returns true.
+	 * 
+	 * When the loading is done, it grabs the corresponding event from the event queue and handles it by removing it from the queue, setting {@link truckCurrentlyLoaded} 
+	 * to null and adding a new event to the event queue assigned to the {@link WeighingStation} class.
+	 * 
+	 * @return true if an assignable event got found and handled, false if no event could get assigned
+	 */
 	@Override
 	public boolean simulate(int timeStep)
 	{	
