@@ -3,8 +3,7 @@ include:
   - template: Code-Quality.gitlab-ci.yml
 stages:
   - compile
-  - test-jdk15
-  - coverage-jdk15
+  - test
   - checkstyle
 
 compile:
@@ -13,7 +12,7 @@ compile:
     - cd despg
     - $MAVEN_HOME/bin/mvn clean compile
 
-test-jdk15:
+test:
   stage: test
   script:
     - cd despg
@@ -21,22 +20,15 @@ test-jdk15:
   artifacts:
     paths:
       - target/site/jacoco/jacoco.xml
-
-coverage-jdk15:
-  stage: visualize
-  image: registry.gitlab.com/haynes/jacoco2cobertura:1.0.7
-  script:
-    # convert report from jacoco to cobertura, using relative project path
-    - python /opt/cover2cover.py target/site/jacoco/jacoco.xml $CI_PROJECT_DIR/src/main/java/ > target/site/cobertura.xml
-  needs: ["test-jdk15"]
-  dependencies:
-    - test-jdk15
-  artifacts:
+    when: always
     reports:
-      cobertura: target/site/cobertura.xml
+      junit:
+        - core/target/surefire-reports/TEST-*.xml
+        - core/target/failsafe-reports/TEST-*.xml
   
 checkstyle:
   stage: checkstyle
   script:
     - cd despg
     - $MAVEN_HOME/bin/mvn checkstyle:check
+
