@@ -4,7 +4,7 @@ include:
 stages:
   - compile
   - test
-  - coverage-jdk11:
+  - coverage-jdk15
   - checkstyle
 
 compile:
