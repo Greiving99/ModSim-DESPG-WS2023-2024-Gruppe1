@@ -9,8 +9,6 @@ import org.mockito.Mock;
 import org.springframework.test.util.ReflectionTestUtils;
 import static org.assertj.core.api.Assertions.*;
 
-import dev.despg.core.exception.SimulationException;
-
 
 class RandomizerTest {
 	

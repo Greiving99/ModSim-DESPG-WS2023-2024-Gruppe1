@@ -3,13 +3,11 @@ package dev.despg.core;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import loggerTest.Test;
-
 public abstract class Simulation
 {
 	static
 	{
-		String path = Test.class.getClassLoader().getResource("logging.properties").getFile();
+		String path = Simulation.class.getClassLoader().getResource("logging.properties").getFile();
 		System.setProperty("java.util.logging.config.file", path);
 	}
 
