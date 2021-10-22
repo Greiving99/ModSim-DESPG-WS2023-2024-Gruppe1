@@ -65,7 +65,7 @@ public class LoadingDock extends SimulationObject
 		{
 			// unload
 			Map<String, Object> filter = new HashMap<>();
-			filter.put("load", (Filter) value -> ((Number) value).intValue() > 0);
+			filter.put("load", (Filter) value -> value != null ? ((Number) value).intValue() > 0 : false);
 			truckCurrentlyUnloaded = roadToLoadingDocks.getNext(filter);
 
 			if (truckCurrentlyUnloaded != null)
@@ -80,8 +80,7 @@ public class LoadingDock extends SimulationObject
 			if (GravelShipping.gravelToShip > 0)
 			{
 				filter = new HashMap<>();
-				filter.put("load", 0); // alternative: filter.put("load", (Filter) (value -> ((Number)
-										// value).intValue() == 0));
+				filter.put("load", 0); // filter.put("load", (Filter) value -> (value != null ? ((Number) value).intValue() == 0 : true));
 				truckCurrentlyLoaded = roadToLoadingDocks.getNext(filter);
 
 				if (truckCurrentlyLoaded != null)
