@@ -1,22 +1,22 @@
 /**
  * Copyright (C) 2021 despg.dev, Ralf Buschermöhle
- * 	
+ *
  * DESPG is made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * see LICENSE
- * 
+ *
  */
 package dev.despg.core;
 
 /**
  * toString should be implemented if something meaningful should be printed
- * (after simulation (step))
+ * (after simulation (step)).
  */
 public abstract class SimulationObject
 {
 	private Integer timeUtilized = 0;
-	private Integer utilStart = null;
+	private Integer utilStart;
 
 	public void setTimeUtilized(Integer timeUtilized)
 	{

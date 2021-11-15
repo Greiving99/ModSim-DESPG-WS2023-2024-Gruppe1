@@ -1,11 +1,11 @@
 /**
  * Copyright (C) 2021 despg.dev, Ralf Buschermöhle
- * 	
+ *
  * DESPG is made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * see LICENSE
- * 
+ *
  */
 package dev.despg.core;
 
@@ -24,16 +24,13 @@ import org.mockito.Mockito;
 
 class SimulationTest
 {
-	EventQueue e;
-	SimulationObjects simObjects;
-	ArrayList<Event> toAdd;
-	Simulation sim;
-	SimulationObject simObject;
-	boolean answered;
+	private EventQueue e;
+	private SimulationObjects simObjects;
+	private ArrayList<Event> toAdd;
+	private Simulation sim;
+	private SimulationObject simObject;
+	private boolean answered;
 
-	/**
-	 * 
-	 */
 	@BeforeEach
 	void init()
 	{
@@ -53,7 +50,7 @@ class SimulationTest
 	}
 
 	/**
-	 * Clears EventQueue and SimulationObjects after each test
+	 * Clears EventQueue and SimulationObjects after each test.
 	 */
 	@AfterEach
 	void clear()
@@ -63,7 +60,7 @@ class SimulationTest
 	}
 
 	/**
-	 * Checks if simulate returns 0 when the EventQueue is empty
+	 * Checks if simulate returns 0 when the EventQueue is empty.
 	 */
 	@Test
 	void noEventInQueue()
@@ -76,14 +73,15 @@ class SimulationTest
 
 	/**
 	 * Checks if the simulate method returns the correct timeStep when Events got
-	 * simulated
+	 * simulated.
 	 */
 	@Test
 	void eventGotSimulated()
 	{
 		toAdd.add(new Event(1, null, null, null, null));
 		e.addAll(toAdd);
-		when(simObject.simulate(1)).thenAnswer(invocation -> {
+		when(simObject.simulate(1)).thenAnswer(invocation ->
+		{
 			if (!answered)
 			{
 				e.clear();
@@ -113,7 +111,8 @@ class SimulationTest
 		toAdd.add(new Event(0, null, null, null, null));
 		e.addAll(toAdd);
 
-		assertThatThrownBy(() -> {
+		assertThatThrownBy(() ->
+		{
 			sim.simulate();
 		}).isInstanceOf(SimulationException.class).hasMessageContaining("didn't get consumed");
 	}

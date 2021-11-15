@@ -1,11 +1,11 @@
 /**
  * Copyright (C) 2021 despg.dev, Ralf Buschermöhle
- * 	
+ *
  * DESPG is made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * see LICENSE
- * 
+ *
  */
 package dev.despg.core;
 
@@ -20,17 +20,17 @@ public class Event implements Comparable<Event>
 {
 	private static Logger logger = Logger.getLogger("dev.despg.core.Event");
 
-	private Integer timeStep = null;
-	private SimulationObject objectAttached = null;
+	private Integer timeStep;
+	private SimulationObject objectAttached;
 
-	private Class<? extends SimulationObject> receivingClass = null;
-	private SimulationObject receivingObject = null;
+	private Class<? extends SimulationObject> receivingClass;
+	private SimulationObject receivingObject;
 
-	private UniqueEventDescription description = null;
+	private UniqueEventDescription description;
 
 	/**
-	 * Event constructor
-	 * 
+	 * Event constructor.
+	 *
 	 * @param timeStep       timeStep the event will occur
 	 * @param description    Description of the event
 	 * @param objectAttached Object that is attached to the event
