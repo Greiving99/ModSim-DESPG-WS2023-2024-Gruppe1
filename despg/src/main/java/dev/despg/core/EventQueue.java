@@ -96,11 +96,11 @@ public final class EventQueue extends ArrayList<Event>
 				subevents.add(e);
 		}
 
-		if (subevents.size() > 1)
+		if (subevents.size() > 0)
+		{
 			Collections.sort(subevents);
-
-		if (subevents.size() >= 1)
 			return subevents.get(0);
+		}
 
 		return null;
 	}
