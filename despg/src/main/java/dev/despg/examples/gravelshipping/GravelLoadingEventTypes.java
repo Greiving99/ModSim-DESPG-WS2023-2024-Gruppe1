@@ -38,5 +38,4 @@ public enum GravelLoadingEventTypes implements UniqueEventDescription
 	{
 		return eventTypeUniqueDescription;
 	}
-
 }
