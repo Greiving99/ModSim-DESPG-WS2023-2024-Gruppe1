@@ -22,7 +22,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 
-class SimulationTest {
+class SimulationTest
+{
 	EventQueue e;
 	SimulationObjects simObjects;
 	ArrayList<Event> toAdd;
@@ -34,74 +35,86 @@ class SimulationTest {
 	 * 
 	 */
 	@BeforeEach
-	void init() {
+	void init()
+	{
+		sim = new Simulation()
+		{
+			@Override
+			protected void printEveryStep(int numberOfSteps, int timeStep)
+			{
+			}
+		};
 		e = EventQueue.getInstance();
 		toAdd = new ArrayList<Event>();
 		simObjects = SimulationObjects.getInstance();
 		simObject = Mockito.mock(SimulationObject.class);
 		simObjects.add(simObject);
-		
-		sim = Mockito.mock(Simulation.class);
+
 	}
-	
+
 	/**
 	 * Clears EventQueue and SimulationObjects after each test
 	 */
 	@AfterEach
-	void clear() {
+	void clear()
+	{
 		e.clear();
 		simObjects.clear();
 	}
-	
+
 	/**
 	 * Checks if simulate returns 0 when the EventQueue is empty
 	 */
 	@Test
-	void noEventInQueue() {
-		when(sim.simulate()).thenCallRealMethod();
-		int actual =sim.simulate();
+	void noEventInQueue()
+	{
+		int actual = sim.simulate();
 		int expected = 0;
-		
+
 		assertThat(actual).isEqualTo(expected);
 	}
-	
+
 	/**
-	 * Checks if the simulate method returns the correct timeStep when Events got simulated
+	 * Checks if the simulate method returns the correct timeStep when Events got
+	 * simulated
 	 */
 	@Test
-	void eventGotSimulated() {
+	void eventGotSimulated()
+	{
 		toAdd.add(new Event(1, null, null, null, null));
 		e.addAll(toAdd);
-		when(simObject.simulate(1)).thenAnswer(invocation->{
-			if(!answered) {
+		when(simObject.simulate(1)).thenAnswer(invocation -> {
+			if (!answered)
+			{
 				e.clear();
-				answered= true;
+				answered = true;
 				return true;
 			}
-			else {
+			else
+			{
 				return false;
 			}
-				
-			
+
+
 		});
-		when(sim.simulate()).thenCallRealMethod();
-		
-		
+
+
 		int expected = 1;
 		int actual = sim.simulate();
 
 		assertThat(actual).isEqualTo(expected);
 	}
-	
+
 	@Test
 	@Disabled
 	@DisplayName("TBD")
-	void eventInQueueUnassignable() {
+	void eventInQueueUnassignable()
+	{
 		toAdd.add(new Event(0, null, null, null, null));
 		e.addAll(toAdd);
-		when(sim.simulate()).thenCallRealMethod();
-		
-		assertThatThrownBy(() -> { sim.simulate(); }).isInstanceOf(SimulationException.class)
-        .hasMessageContaining("didn't get consumed");
+
+		assertThatThrownBy(() -> {
+			sim.simulate();
+		}).isInstanceOf(SimulationException.class).hasMessageContaining("didn't get consumed");
 	}
 }
