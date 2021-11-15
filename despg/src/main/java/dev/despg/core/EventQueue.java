@@ -1,11 +1,11 @@
 /**
  * Copyright (C) 2021 despg.dev, Ralf Buschermöhle
- * 	
+ *
  * DESPG is made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * see LICENSE
- * 
+ *
  */
 package dev.despg.core;
 
@@ -15,9 +15,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The EventQueue class manages an ArrayList of all scheduled Events
+ * The EventQueue class manages an ArrayList of all scheduled Events.
  */
-public class EventQueue extends ArrayList<Event>
+public final class EventQueue extends ArrayList<Event>
 {
 	private static Logger logger = Logger.getLogger("dev.despg.core.EventQueue");
 
@@ -30,7 +30,7 @@ public class EventQueue extends ArrayList<Event>
 	}
 
 	/**
-	 * Nested class that holds the EventQueue instance
+	 * Nested class that holds the EventQueue instance.
 	 */
 	private static class Inner
 	{
@@ -38,8 +38,8 @@ public class EventQueue extends ArrayList<Event>
 	}
 
 	/**
-	 * Gets the Instance of the EventQueue
-	 * 
+	 * Gets the Instance of the EventQueue.
+	 *
 	 * @return The EventQueue Instance
 	 */
 	public static EventQueue getInstance()
@@ -48,7 +48,9 @@ public class EventQueue extends ArrayList<Event>
 	}
 
 	/**
-	 * Adds an Event to the EventQueue
+	 * Adds an Event to the EventQueue.
+	 *
+	 * @param e the event to add
 	 */
 	public boolean add(Event e)
 	{
@@ -58,8 +60,8 @@ public class EventQueue extends ArrayList<Event>
 	}
 
 	/**
-	 * Removes an Event from the EventQueue
-	 * 
+	 * Removes an Event from the EventQueue.
+	 *
 	 * @param e Event to be removed
 	 */
 	public void remove(Event e)
@@ -70,8 +72,8 @@ public class EventQueue extends ArrayList<Event>
 
 	/**
 	 * The getNextEvent method creates an ArrayList of all sub events that match the
-	 * defined filters and returns the Event with the lowest timeStep from that List
-	 * 
+	 * defined filters and returns the Event with the lowest timeStep from that List.
+	 *
 	 * @param timeStep        Gets events from this timeStep forwards
 	 * @param past            Include events from the past
 	 * @param eventTypeNumber Filter for specific event type

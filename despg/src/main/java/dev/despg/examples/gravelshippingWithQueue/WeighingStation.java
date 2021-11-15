@@ -1,11 +1,11 @@
 /**
  * Copyright (C) 2021 despg.dev, Ralf Buschermöhle
- * 	
+ *
  * DESPG is made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * see LICENSE
- * 
+ *
  */
 package dev.despg.examples.gravelshippingWithQueue;
 
@@ -15,6 +15,7 @@ import dev.despg.core.Queue;
 import dev.despg.core.Randomizer;
 import dev.despg.core.SimulationObject;
 import dev.despg.core.SimulationObjects;
+import dev.despg.examples.gravelshipping.GravelShipping;
 
 public class WeighingStation extends SimulationObject
 {
@@ -75,15 +76,15 @@ public class WeighingStation extends SimulationObject
 
 				if (truckToWeighLoad != null && truckToWeighLoad > MAXLOAD)
 				{
-					GravelShipping.gravelToShip += truckToWeighLoad;
-					GravelShipping.unsuccessfulLoadingSizes += truckToWeighLoad;
-					GravelShipping.unsuccessfulLoadings++;
+					GravelShipping.setGravelToShip(GravelShipping.getGravelToShip() + truckToWeighLoad);
+					GravelShipping.setUnsuccessfulLoadingSizes(GravelShipping.getUnsuccessfulLoadingSizes() + truckToWeighLoad);
+					GravelShipping.setUnsuccessfulLoadings(GravelShipping.getUnsuccessfulLoadings() + 1);
 				}
 				else
 				{
-					GravelShipping.gravelShipped += truckToWeighLoad;
-					GravelShipping.successfulLoadingSizes += truckToWeighLoad;
-					GravelShipping.successfulLoadings++;
+					GravelShipping.setGravelShipped(GravelShipping.getGravelShipped() + truckToWeighLoad);
+					GravelShipping.setSuccessfulLoadingSizes(GravelShipping.getSuccessfulLoadingSizes() + truckToWeighLoad);
+					GravelShipping.setSuccessfulLoadings(GravelShipping.getSuccessfulLoadings() + 1);
 				}
 
 				roadToLoadingDocks.addWithDelay(truckInWeighingStation, drivingToLoadingDock.nextInt(), timeStep);

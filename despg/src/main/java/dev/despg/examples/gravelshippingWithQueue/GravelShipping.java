@@ -1,11 +1,11 @@
 /**
  * Copyright (C) 2021 despg.dev, Ralf Buschermöhle
- * 	
+ *
  * DESPG is made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * see LICENSE
- * 
+ *
  */
 package dev.despg.examples.gravelshippingWithQueue;
 
@@ -21,15 +21,15 @@ public class GravelShipping extends Simulation
 {
 	private static Logger logger = Logger.getLogger("GravelShipping");
 
-	public static Integer gravelToShip = 2000;
-	public static Integer gravelShipped = 0;
+	private static Integer gravelToShip = 2000;
+	private static Integer gravelShipped = 0;
 	private final int gravelToShippedFinal = gravelToShip;
 
-	public static Integer successfulLoadings = 0;
-	public static Integer successfulLoadingSizes = 0;
+	private static Integer successfulLoadings = 0;
+	private static Integer successfulLoadingSizes = 0;
 
-	public static Integer unsuccessfulLoadings = 0;
-	public static Integer unsuccessfulLoadingSizes = 0;
+	private static Integer unsuccessfulLoadings = 0;
+	private static Integer unsuccessfulLoadingSizes = 0;
 
 	private static final int NUM_TRUCKS = 5;
 	private static final int NUM_LOADING_DOCKS = 3;
@@ -41,6 +41,8 @@ public class GravelShipping extends Simulation
 	/**
 	 * Defines the setup of simulation objects and starting events before executing
 	 * the simulation. Prints utilization statistics afterwards
+	 *
+	 * @param args not used
 	 */
 	public static void main(String[] args)
 	{
@@ -87,5 +89,65 @@ public class GravelShipping extends Simulation
 				(double) gravelShipped / gravelToShippedFinal * 100, gravelToShip);
 
 		logger.log(Level.INFO, time + " " + shipped + "\n " + eventQueue + "\n " + roadA + "\n " + roadB + "\n");
+	}
+
+	public static Integer getGravelToShip()
+	{
+		return gravelToShip;
+	}
+
+	public static void setGravelToShip(Integer gravelToShip)
+	{
+		GravelShipping.gravelToShip = gravelToShip;
+	}
+
+	public static Integer getGravelShipped()
+	{
+		return gravelShipped;
+	}
+
+	public static void setGravelShipped(Integer gravelShipped)
+	{
+		GravelShipping.gravelShipped = gravelShipped;
+	}
+
+	public static Integer getSuccessfulLoadings()
+	{
+		return successfulLoadings;
+	}
+
+	public static void setSuccessfulLoadings(Integer successfulLoadings)
+	{
+		GravelShipping.successfulLoadings = successfulLoadings;
+	}
+
+	public static Integer getSuccessfulLoadingSizes()
+	{
+		return successfulLoadingSizes;
+	}
+
+	public static void setSuccessfulLoadingSizes(Integer successfulLoadingSizes)
+	{
+		GravelShipping.successfulLoadingSizes = successfulLoadingSizes;
+	}
+
+	public static Integer getUnsuccessfulLoadings()
+	{
+		return unsuccessfulLoadings;
+	}
+
+	public static void setUnsuccessfulLoadings(Integer unsuccessfulLoadings)
+	{
+		GravelShipping.unsuccessfulLoadings = unsuccessfulLoadings;
+	}
+
+	public static Integer getUnsuccessfulLoadingSizes()
+	{
+		return unsuccessfulLoadingSizes;
+	}
+
+	public static void setUnsuccessfulLoadingSizes(Integer unsuccessfulLoadingSizes)
+	{
+		GravelShipping.unsuccessfulLoadingSizes = unsuccessfulLoadingSizes;
 	}
 }
