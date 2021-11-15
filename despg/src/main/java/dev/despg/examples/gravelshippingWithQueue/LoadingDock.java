@@ -1,11 +1,11 @@
 /**
  * Copyright (C) 2021 despg.dev, Ralf Buschermöhle
- * 	
+ *
  * DESPG is made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * see LICENSE
- * 
+ *
  */
 package dev.despg.examples.gravelshippingWithQueue;
 
@@ -86,7 +86,7 @@ public class LoadingDock extends SimulationObject
 			}
 
 			// or load
-			if (GravelShipping.gravelToShip > 0)
+			if (GravelShipping.getGravelToShip() > 0)
 			{
 				filter = new HashMap<>();
 				filter.put("load", 0); // filter.put("load", (Filter) value -> (value != null ? ((Number) value).intValue() == 0 : true));
@@ -114,7 +114,7 @@ public class LoadingDock extends SimulationObject
 				{
 					eventQueue.remove(event);
 
-					GravelShipping.gravelToShip += truckCurrentlyUnloaded.getLoad();
+					GravelShipping.setGravelToShip(GravelShipping.getGravelToShip() + truckCurrentlyUnloaded.getLoad());
 					truckCurrentlyUnloaded.load(0);
 
 					truckCurrentlyLoaded = truckCurrentlyUnloaded;
@@ -149,8 +149,8 @@ public class LoadingDock extends SimulationObject
 
 	private void loadStart(int timeStep)
 	{
-		truckCurrentlyLoaded.load(Math.min(loadingWeight.nextInt(), GravelShipping.gravelToShip));
-		GravelShipping.gravelToShip -= truckCurrentlyLoaded.getLoad();
+		truckCurrentlyLoaded.load(Math.min(loadingWeight.nextInt(), GravelShipping.getGravelToShip()));
+		GravelShipping.setGravelToShip(GravelShipping.getGravelToShip() - truckCurrentlyUnloaded.getLoad());
 		eventQueue.add(new Event(timeStep + truckCurrentlyLoaded.addUtilization(loadingTime.nextInt()),
 				GravelLoadingEventTypes.LoadingDone, truckCurrentlyLoaded, null, this));
 	}

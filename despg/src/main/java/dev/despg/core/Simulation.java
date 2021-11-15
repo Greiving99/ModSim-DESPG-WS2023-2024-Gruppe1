@@ -1,11 +1,11 @@
 /**
  * Copyright (C) 2021 despg.dev, Ralf Buschermöhle
- * 	
+ *
  * DESPG is made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * see LICENSE
- * 
+ *
  */
 package dev.despg.core;
 
@@ -14,16 +14,27 @@ import java.util.logging.Logger;
 
 public abstract class Simulation
 {
+	private static Logger logger = Logger.getLogger("dev.despg.core.Simulation");
+
 	static
 	{
-		String path = Simulation.class.getClassLoader().getResource("logging.properties").getFile();
-		System.setProperty("java.util.logging.config.file", path);
+		try
+		{
+			String path = Simulation.class.getClassLoader().getResource("logging.properties").getFile();
+			System.setProperty("java.util.logging.config.file", path);
+		}
+		catch (Exception e)
+		{
+			logger.setLevel(Level.INFO);
+			System.setProperty("java.util.logging.SimpleFormatter.format", "%4$s: %5$s %n");
+		}
 	}
-
-	private static Logger logger = Logger.getLogger("dev.despg.core.Simulation");
 
 	/**
 	 * Called at every timeStep where one or more events occurred.
+	 *
+	 * @param numberOfSteps number of simulation steps (main-loop)
+	 * @param timeStep current timeStep
 	 */
 	protected abstract void printEveryStep(int numberOfSteps, int timeStep);
 
@@ -32,7 +43,7 @@ public abstract class Simulation
 	 * timeStep it iterates over every SimulationObject and triggers its simulate()
 	 * method. If no Event occurred during that timeStep, it switches to the
 	 * timeStep of the next Event in the EventQueue.
-	 * 
+	 *
 	 * @return timeStep after the simulation is over
 	 */
 	public int simulate()
@@ -83,14 +94,14 @@ public abstract class Simulation
 	 * After the Simulation loop is done, this method prints the utilization
 	 * statistic of every Server as well as the average utilization of every Server
 	 * class that initialized two or more Objects.
-	 * 
+	 *
 	 * @param timeStep TimeStep at the end of the simulation
 	 */
 	private void printPostSimStats(int timeStep)
 	{
 		logger.log(Level.INFO, "----------------------------------");
 		double utilSumPerSimClass = 0.0;
-		int SumObjectsSimClass = 0;
+		int sumObjectsSimClass = 0;
 		Class<? extends SimulationObject> simulationObjectClass = null;
 		final SimulationObjects simulationObjects = SimulationObjects.getInstance();
 
@@ -103,25 +114,25 @@ public abstract class Simulation
 			if (simulationObjectClass == simulationObject.getClass())
 			{
 				utilSumPerSimClass += utilSimObject;
-				SumObjectsSimClass++;
+				sumObjectsSimClass++;
 			}
 			else
 			{
-				if (simulationObjectClass != null && SumObjectsSimClass > 1)
+				if (simulationObjectClass != null && sumObjectsSimClass > 1)
 					logger.log(Level.INFO, String.format("Utilization Class %s = %.2f %%",
-							simulationObjectClass.getName(), utilSumPerSimClass / SumObjectsSimClass));
+							simulationObjectClass.getName(), utilSumPerSimClass / sumObjectsSimClass));
 
 				simulationObjectClass = simulationObject.getClass();
 				utilSumPerSimClass = utilSimObject;
-				SumObjectsSimClass = 1;
+				sumObjectsSimClass = 1;
 			}
 
 			logger.log(Level.INFO, String.format("Utilization %s = %.2f %%", simulationObject, utilSimObject));
 		}
 
-		if (SumObjectsSimClass > 1)
+		if (sumObjectsSimClass > 1)
 			logger.log(Level.INFO, String.format("Utilization Class %s = %.2f %%", simulationObjectClass.getName(),
-					utilSumPerSimClass / SumObjectsSimClass));
+					utilSumPerSimClass / sumObjectsSimClass));
 		logger.log(Level.INFO, "----------------------------------");
 	}
 }

@@ -1,11 +1,11 @@
 /**
  * Copyright (C) 2021 despg.dev, Ralf Buschermöhle
- * 	
+ *
  * DESPG is made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * see LICENSE
- * 
+ *
  */
 package dev.despg.examples.gravelshippingWithQueue;
 
@@ -17,9 +17,16 @@ import dev.despg.core.UniqueEventDescription;
  */
 public enum GravelLoadingEventTypes implements UniqueEventDescription
 {
-	LoadingDone("Loading Truck done"), WeighingDone("Weighing Truck done"), UnloadingDone("Unloading Truck done");
+	/** */
+	LoadingDone("Loading Truck done"),
 
-	String eventTypeUniqueDescription = null;
+	/** */
+	WeighingDone("Weighing Truck done"),
+
+	/** */
+	UnloadingDone("Unloading Truck done");
+
+	private String eventTypeUniqueDescription;
 
 	GravelLoadingEventTypes(String value)
 	{

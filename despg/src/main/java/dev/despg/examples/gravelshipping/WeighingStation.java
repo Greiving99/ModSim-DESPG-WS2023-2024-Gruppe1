@@ -1,11 +1,11 @@
 /**
  * Copyright (C) 2021 despg.dev, Ralf Buschermöhle
- * 	
+ *
  * DESPG is made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * see LICENSE
- * 
+ *
  */
 package dev.despg.examples.gravelshipping;
 
@@ -20,17 +20,17 @@ public class WeighingStation extends SimulationObject
 	private static final int TIME_TO_WEIGH_TRUCK = 10;
 	private static final int MAXLOAD = 40;
 
-	private String name = null;
-	private Truck truckInWeighingStation = null;
+	private String name;
+	private Truck truckInWeighingStation;
 
-	private static Randomizer drivingToUnloadDock = null;
-	private static Randomizer drivingToLoadingDock = null;
-	private static EventQueue eventQueue = null;
+	private static Randomizer drivingToUnloadDock;
+	private static Randomizer drivingToLoadingDock;
+	private static EventQueue eventQueue;
 
 	/**
 	 * Constructor for new WeightingStations, injects its dependency to
 	 * SimulationObjects and creates the required randomizer instances.
-	 * 
+	 *
 	 * @param name Name of the WeightingStation instance
 	 */
 	public WeighingStation(String name)
@@ -65,7 +65,7 @@ public class WeighingStation extends SimulationObject
 	 * and if the attached object is indeed a truck. In that case, the event gets
 	 * removed from the queue, gets executed and a new event gets added to the queue
 	 * which gets triggered when the weighting is done.
-	 * 
+	 *
 	 * A "weighting is done" event gets pulled from the queue if the receiving
 	 * object is the object on which the simulate function got called on. In that
 	 * case the event gets removed from the queue and handled by checking if trucks
@@ -73,7 +73,7 @@ public class WeighingStation extends SimulationObject
 	 * as an unsuccessful loading, else it will count ass successful and be shipped.
 	 * In either case there will be a new event added to the event queue with no
 	 * difference in parameters.
-	 * 
+	 *
 	 * @return true if an assignable event got found and handled, false if no event
 	 *         could get assigned
 	 */
@@ -101,16 +101,16 @@ public class WeighingStation extends SimulationObject
 
 			if (truckToWeighLoad != null && truckToWeighLoad > MAXLOAD)
 			{
-				GravelShipping.gravelToShip += truckToWeighLoad;
-				GravelShipping.unsuccessfulLoadingSizes += truckToWeighLoad;
-				GravelShipping.unsuccessfulLoadings++;
+				GravelShipping.setGravelToShip(GravelShipping.getGravelToShip() + truckToWeighLoad);
+				GravelShipping.setUnsuccessfulLoadingSizes(GravelShipping.getUnsuccessfulLoadingSizes() + truckToWeighLoad);
+				GravelShipping.setUnsuccessfulLoadings(GravelShipping.getUnsuccessfulLoadings() + 1);
 				driveToLoadingStation = truckInWeighingStation.addUtilization(drivingToLoadingDock.nextInt());
 			}
 			else
 			{
-				GravelShipping.gravelShipped += truckToWeighLoad;
-				GravelShipping.successfulLoadingSizes += truckToWeighLoad;
-				GravelShipping.successfulLoadings++;
+				GravelShipping.setGravelShipped(GravelShipping.getGravelShipped() + truckToWeighLoad);
+				GravelShipping.setSuccessfulLoadingSizes(GravelShipping.getSuccessfulLoadingSizes() + truckToWeighLoad);
+				GravelShipping.setSuccessfulLoadings(GravelShipping.getSuccessfulLoadings() + 1);
 				driveToLoadingStation = truckInWeighingStation.addUtilization(drivingToLoadingDock.nextInt());
 			}
 			eventQueue.add(new Event(timeStep + driveToLoadingStation, GravelLoadingEventTypes.Loading,

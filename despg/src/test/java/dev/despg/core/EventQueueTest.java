@@ -1,11 +1,11 @@
 /**
  * Copyright (C) 2021 despg.dev, Ralf Buschermöhle
- * 	
+ *
  * DESPG is made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * see LICENSE
- * 
+ *
  */
 package dev.despg.core;
 
@@ -19,98 +19,108 @@ import org.mockito.Mockito;
 import static org.assertj.core.api.Assertions.*;
 
 
+class EventQueueTest
+{
+	private ArrayList<Event> toAdd;
+	private EventQueue e;
+	private SimulationObject receiving;
+	private UniqueEventDescription description;
+	private Event event;
 
-class EventQueueTest {
-	ArrayList<Event> toAdd;
-	EventQueue e;
-	SimulationObject receiving;
-	UniqueEventDescription description;
-	Event event;
-	
 	/**
-	 * Initializes some Events and adds them to the EventQueue instance, each being different in at least one parameter to set up
-	 * for tests on the EventQueue
+	 * Initializes some Events and adds them to the EventQueue instance, each being
+	 * different in at least one parameter to set up for tests on the EventQueue.
 	 */
 	@BeforeEach
-	void init() {
-	e = EventQueue.getInstance();
-	receiving = Mockito.mock(SimulationObject.class);
-	description = Mockito.mock(UniqueEventDescription.class);
-	toAdd = new ArrayList<Event>();
-	toAdd.add(new Event(2, null, null, null, null));
-	toAdd.add(new Event(0, null, null, null, null));
-	toAdd.add(new Event(3, null, null, SimulationObject.class, null));
-	toAdd.add(new Event(3, null, null, null, receiving));
-	toAdd.add(new Event(3, description, null, null, null));
-	e.addAll(toAdd);
+	void init()
+	{
+		e = EventQueue.getInstance();
+		receiving = Mockito.mock(SimulationObject.class);
+		description = Mockito.mock(UniqueEventDescription.class);
+		toAdd = new ArrayList<Event>();
+		toAdd.add(new Event(2, null, null, null, null));
+		toAdd.add(new Event(0, null, null, null, null));
+		toAdd.add(new Event(3, null, null, SimulationObject.class, null));
+		toAdd.add(new Event(3, null, null, null, receiving));
+		toAdd.add(new Event(3, description, null, null, null));
+		e.addAll(toAdd);
 	}
-	
+
 	/**
-	 * Clearing up the EventQueue
+	 * Clearing up the EventQueue.
 	 */
 	@AfterEach
-	void clear() {
+	void clear()
+	{
 		e.clear();
 	}
+
 	/**
-	 * Checks if getNextEvent filters correctly by timeStep 
+	 * Checks if getNextEvent filters correctly by timeStep.
 	 */
 	@Test
-	void shouldFilterCorrectByTimeStep() {
+	void shouldFilterCorrectByTimeStep()
+	{
 		event = e.getNextEvent(0, false, null, null, null);
-		
+
 		assertThat(event).isEqualTo(toAdd.get(1));
 	}
-	
+
 	/**
-	 * Checks if getNextEvent filters correctly by timeStep including the past
+	 * Checks if getNextEvent filters correctly by timeStep including the past.
 	 */
 	@Test
-	void shouldFilterCorrectByTimeStepIncludingPast() {
+	void shouldFilterCorrectByTimeStepIncludingPast()
+	{
 		event = e.getNextEvent(2, true, null, null, null);
-		
+
 		assertThat(event).isEqualTo(toAdd.get(1));
 	}
-	
+
 	/**
-	 * Checks if getNextEvent filters correctly by receiving class
+	 * Checks if getNextEvent filters correctly by receiving class.
 	 */
 	@Test
-	void shouldFilterCorrectByReceivingClass() {
+	void shouldFilterCorrectByReceivingClass()
+	{
 		event = e.getNextEvent(0, false, null, SimulationObject.class, null);
-		
+
 		assertThat(event).isEqualTo(toAdd.get(2));
 	}
-	
+
 	/**
-	 * Checks if getNextEvent filters correctly by receiving object
+	 * Checks if getNextEvent filters correctly by receiving object.
 	 */
 	@Test
-	void shouldFilterCorrectByReceivingObject() {
+	void shouldFilterCorrectByReceivingObject()
+	{
 		event = e.getNextEvent(0, false, null, null, receiving);
-		
+
 		assertThat(event).isEqualTo(toAdd.get(3));
 	}
+
 	/**
-	 * Checks if getNextEvent filters correctly by unique event description
+	 * Checks if getNextEvent filters correctly by unique event description.
 	 */
 	@Test
-	void shouldFilterCorrectByEventType() {
+	void shouldFilterCorrectByEventType()
+	{
 		event = e.getNextEvent(0, false, description, null, null);
-		
+
 		assertThat(event).isEqualTo(toAdd.get(4));
 	}
-	
+
 	/**
-	 * Checks if getNextEvent does return null when the EventQueue is empty
+	 * Checks if getNextEvent does return null when the EventQueue is empty.
 	 */
 	@Test
-	void shouldReturnNull() {
+	void shouldReturnNull()
+	{
 		e.clear();
 		event = e.getNextEvent(0, false, null, null, null);
-		
+
 		assertThat(event).isNull();
 	}
 
-	
+
 }

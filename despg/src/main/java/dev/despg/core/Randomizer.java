@@ -1,11 +1,11 @@
 /**
  * Copyright (C) 2021 despg.dev, Ralf Buschermöhle
- * 	
+ *
  * DESPG is made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * see LICENSE
- * 
+ *
  */
 package dev.despg.core;
 
@@ -37,7 +37,7 @@ public class Randomizer
 
 	/**
 	 * This method is used to assign Integer values to a certain probability.
-	 * 
+	 *
 	 * @param to    Upper limit for that probability to occur
 	 * @param value Assigned value of that probability
 	 */
@@ -45,7 +45,7 @@ public class Randomizer
 	{
 		for (Probability2Value<Integer> prob2value : prob2Int)
 		{
-			if (prob2value.probabilityUpperLimit == to)
+			if (prob2value.getProbabilityUpperLimit() == to)
 				throw new SimulationException("Probability " + to + " already exists");
 		}
 
@@ -59,7 +59,7 @@ public class Randomizer
 	/**
 	 * This method iterates through an ArrayList of Probability2Value objects and
 	 * compares its probabilityUpperLimit against a random Double.
-	 * 
+	 *
 	 * @return This returns the Integer value that had been assigned to the occurred
 	 *         probability
 	 */
@@ -72,11 +72,11 @@ public class Randomizer
 
 		for (Probability2Value<Integer> pI : prob2Int)
 		{
-			if (pI.probabilityUpperLimit < MIN_PROBABILITY || pI.probabilityUpperLimit > MAX_PROBABILITY)
-				throw new SimulationException("Probability " + pI.probabilityUpperLimit + " is out of bounds ("
+			if (pI.getProbabilityUpperLimit() < MIN_PROBABILITY || pI.getProbabilityUpperLimit() > MAX_PROBABILITY)
+				throw new SimulationException("Probability " + pI.getProbabilityUpperLimit() + " is out of bounds ("
 						+ MIN_PROBABILITY + "-" + MAX_PROBABILITY + ")");
-			else if (r <= pI.probabilityUpperLimit)
-				return pI.value;
+			else if (r <= pI.getProbabilityUpperLimit())
+				return pI.getValue();
 		}
 
 		throw new SimulationException("Probability not covered");
@@ -84,7 +84,7 @@ public class Randomizer
 
 	public static int getPoisson(double lambda)
 	{
-		double L = Math.exp(-lambda);
+		double l = Math.exp(-lambda);
 		double p = 1.0;
 		int k = 0;
 
@@ -92,7 +92,7 @@ public class Randomizer
 		{
 			k++;
 			p *= Math.random();
-		} while (p > L);
+		} while (p > l);
 
 		return k - 1;
 	}
