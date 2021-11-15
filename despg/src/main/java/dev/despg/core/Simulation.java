@@ -14,13 +14,21 @@ import java.util.logging.Logger;
 
 public abstract class Simulation
 {
+	private static Logger logger = Logger.getLogger("dev.despg.core.Simulation");
+
 	static
 	{
-		String path = Simulation.class.getClassLoader().getResource("logging.properties").getFile();
-		System.setProperty("java.util.logging.config.file", path);
+		try
+		{
+			String path = Simulation.class.getClassLoader().getResource("logging.properties").getFile();
+			System.setProperty("java.util.logging.config.file", path);
+		}
+		catch (Exception e)
+		{
+			logger.setLevel(Level.INFO);
+			System.setProperty("java.util.logging.SimpleFormatter.format", "%4$s: %5$s %n");
+		}
 	}
-
-	private static Logger logger = Logger.getLogger("dev.despg.core.Simulation");
 
 	/**
 	 * Called at every timeStep where one or more events occurred.
