@@ -154,6 +154,4 @@ class RandomizerTest
 			r.nextInt();
 		}).isInstanceOf(SimulationException.class).hasMessageContaining("No probabilities");
 	}
-
-
 }

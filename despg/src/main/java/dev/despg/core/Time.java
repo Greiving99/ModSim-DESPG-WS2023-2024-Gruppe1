@@ -59,4 +59,9 @@ public final class Time
 
 		return result.toString();
 	}
+	
+	public static int convertStandardTimeUnitToSteps(double value, int number)
+	{
+		return (int) (value * number); 
+	}
 }
