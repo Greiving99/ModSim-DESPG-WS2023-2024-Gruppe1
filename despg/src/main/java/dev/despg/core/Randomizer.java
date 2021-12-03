@@ -91,9 +91,22 @@ public class Randomizer
 		do
 		{
 			k++;
-			p *= Math.random();
+			p *= random.nextDouble();
 		} while (p > l);
 
 		return k - 1;
+	}
+
+	public Double getExponential(double lambda)
+	{
+	    double u;
+	    do
+	    {
+	        // Get a uniformly-distributed random double between
+	        // zero (inclusive) and 1 (exclusive)
+	        u = random.nextDouble();
+	    } while (u == 0d); // Reject zero, u must be positive for this to work.
+
+	    return -(Math.log(u) / (lambda));
 	}
 }
