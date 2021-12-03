@@ -96,7 +96,7 @@ public class Randomizer
 
 		return k - 1;
 	}
-	
+
 	public Double getExponential(double lambda)
 	{
 	    double u;
@@ -106,7 +106,7 @@ public class Randomizer
 	        // zero (inclusive) and 1 (exclusive)
 	        u = random.nextDouble();
 	    } while (u == 0d); // Reject zero, u must be positive for this to work.
-	    
+
 	    return -(Math.log(u) / (lambda));
-	}  
+	}
 }

@@ -9,13 +9,9 @@
  */
 package dev.despg.core;
 
-
-import java.util.ArrayList;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.springframework.test.util.ReflectionTestUtils;
 import static org.assertj.core.api.Assertions.*;
 
 
@@ -29,7 +25,6 @@ class RandomizerTestExponentialDistribution
 	void init()
 	{
 		r = new Randomizer();
-
 	}
 
 	@Test
@@ -37,20 +32,15 @@ class RandomizerTestExponentialDistribution
 	{
 		int numberOfSamples = 100;
 		double sumSamples = 0.0;
-		double lambda = 5;								// events per time unit e.g., in one day
-		double meanTimeBetweenEvents = 1/lambda;
-		
+		double lambda = 5;									// events per standard time unit e.g., one day
+		double meanTimeBetweenEvents = 1 / lambda;
+
 		for (int i = 0; i < numberOfSamples; i++)
-		{
-			sumSamples += r.getExponential(lambda);
-			// fraction of time unit
-		}
-		
-		System.out.println("Mean: " + Time.stepsToString(Time.convertStandardTimeUnitToSteps(meanTimeBetweenEvents, 24 * 60)));
-		System.out.println("Computed Mean: " + Time.stepsToString(Time.convertStandardTimeUnitToSteps(sumSamples / numberOfSamples, 24 * 60)));
-		
+			sumSamples += r.getExponential(lambda); 	// fraction of time unit
+
+		// System.out.println("Mean: " + Time.stepsToString(Time.convertStandardTimeUnitToSteps(meanTimeBetweenEvents, 24 * 60)));
+		// System.out.println("Computed Mean: " + Time.stepsToString(Time.convertStandardTimeUnitToSteps(sumSamples / numberOfSamples, 24 * 60)));
+
 		assertThat(sumSamples / numberOfSamples).isCloseTo(meanTimeBetweenEvents, within(0.1));
-		 
-		
 	}
 }

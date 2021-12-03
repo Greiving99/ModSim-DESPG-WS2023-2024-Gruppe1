@@ -15,9 +15,11 @@ public final class Time
 	private static final int HOURS_PER_DAY = 24;
 	private static final int MINUTES_PER_DAY = HOURS_PER_DAY * MINUTES_PER_HOUR;
 
-	private Time()
-	{
+	private static TimeUnit eachStepIsMappedToTimeUnit;
 
+	private Time(TimeUnit eachStepIsMappedToTimeUnit)
+	{
+		this.eachStepIsMappedToTimeUnit = eachStepIsMappedToTimeUnit;
 	}
 
 	/**
@@ -59,9 +61,9 @@ public final class Time
 
 		return result.toString();
 	}
-	
+
 	public static int convertStandardTimeUnitToSteps(double value, int number)
 	{
-		return (int) (value * number); 
+			return (int) (value * number);
 	}
 }
