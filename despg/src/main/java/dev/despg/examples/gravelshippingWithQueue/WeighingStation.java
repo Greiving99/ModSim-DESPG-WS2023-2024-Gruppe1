@@ -15,7 +15,6 @@ import dev.despg.core.Queue;
 import dev.despg.core.Randomizer;
 import dev.despg.core.SimulationObject;
 import dev.despg.core.SimulationObjects;
-import dev.despg.examples.gravelshipping.GravelShipping;
 
 public class WeighingStation extends SimulationObject
 {
