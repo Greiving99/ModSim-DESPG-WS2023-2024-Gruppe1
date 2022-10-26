@@ -12,7 +12,7 @@ package dev.despg.examples.gravelshipping;
 import dev.despg.core.SimulationObject;
 import dev.despg.core.SimulationObjects;
 
-public class Truck extends SimulationObject
+public final class Truck extends SimulationObject
 {
 	private String name;
 	private Integer loadedWithTons;

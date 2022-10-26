@@ -12,7 +12,7 @@ package dev.despg.core;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Randomizer
+public final class Randomizer
 {
 	private static final double MIN_PROBABILITY = 0.0;
 	private static final double MAX_PROBABILITY = 1.0;
@@ -30,6 +30,10 @@ public class Randomizer
 	private static Random random = new Random();
 	private ArrayList<Probability2Value<Integer>> prob2Int = new ArrayList<Probability2Value<Integer>>();
 
+	/**
+	 *
+	 * @return defined probability intervals -> integer values
+	 */
 	public ArrayList<Probability2Value<Integer>> getProb2Int()
 	{
 		return prob2Int;
@@ -82,7 +86,7 @@ public class Randomizer
 		throw new SimulationException("Probability not covered");
 	}
 
-	public static int getPoisson(double lambda)
+	public int getPoisson(double lambda)
 	{
 		double l = Math.exp(-lambda);
 		double p = 1.0;

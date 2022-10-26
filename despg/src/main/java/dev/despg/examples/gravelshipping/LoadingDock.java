@@ -56,7 +56,7 @@ public class LoadingDock extends SimulationObject
 	}
 
 	@Override
-	public String toString()
+	public final String toString()
 	{
 		String toString = "Loading Dock:" + name;
 		if (truckCurrentlyLoaded != null)

@@ -14,7 +14,7 @@ package dev.despg.core;
  * EventQueue. When an Event occurs, the attached SimulationObject may produce
  * and/or consume Events.
  */
-public class Event implements Comparable<Event>
+public final class Event implements Comparable<Event>
 {
 	private Integer timeStep;
 	private SimulationObject objectAttached;

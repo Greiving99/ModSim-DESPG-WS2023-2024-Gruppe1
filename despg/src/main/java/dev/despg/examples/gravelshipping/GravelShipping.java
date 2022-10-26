@@ -130,9 +130,4 @@ public class GravelShipping extends Simulation
 	{
 		GravelShipping.unsuccessfulLoadingSizes += unsuccessfulLoadingSizes;
 	}
-
-	public int getGravelToShippedFinal()
-	{
-		return gravelToShippedFinal;
-	}
 }

@@ -18,40 +18,40 @@ public abstract class SimulationObject
 	private Integer timeUtilized = 0;
 	private Integer utilStart;
 
-	public void setTimeUtilized(Integer timeUtilized)
+	public abstract boolean simulate(int timeStep);
+
+	public final void setTimeUtilized(Integer timeUtilized)
 	{
 		this.timeUtilized = timeUtilized;
 	}
 
-	public void setUtilStart(Integer utilStart)
+	public final void setUtilStart(Integer utilStart)
 	{
 		this.utilStart = utilStart;
 	}
 
-	public Integer getUtilStart()
+	public final Integer getUtilStart()
 	{
 		return utilStart;
 	}
 
-	public Integer getTimeUtilized()
+	public final Integer getTimeUtilized()
 	{
 		return timeUtilized;
 	}
 
-	public abstract boolean simulate(int timeStep);
-
-	public void utilStart(int timeStep)
+	public final void utilStart(int timeStep)
 	{
 		utilStart = timeStep;
 	}
 
-	public void utilStop(int timeStep)
+	public final void utilStop(int timeStep)
 	{
 		timeUtilized += timeStep - utilStart;
 		utilStart = null;
 	}
 
-	public int addUtilization(int timeUtilizedDelta)
+	public final int addUtilization(int timeUtilizedDelta)
 	{
 		timeUtilized += timeUtilizedDelta;
 		return timeUtilizedDelta;

@@ -9,7 +9,7 @@
  */
 package dev.despg.core;
 
-public class Probability2Value<T> implements Comparable<Probability2Value<T>>
+public final class Probability2Value<T> implements Comparable<Probability2Value<T>>
 {
 	private Double probabilityUpperLimit;
 	private T value;

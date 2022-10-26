@@ -15,7 +15,7 @@ import dev.despg.core.Randomizer;
 import dev.despg.core.SimulationObject;
 import dev.despg.core.SimulationObjects;
 
-public class WeighingStation extends SimulationObject
+public final class WeighingStation extends SimulationObject
 {
 	private static final int TIME_TO_WEIGH_TRUCK = 10;
 	private static final int MAXLOAD = 40;
