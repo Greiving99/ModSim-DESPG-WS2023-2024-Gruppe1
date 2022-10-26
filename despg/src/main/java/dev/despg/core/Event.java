@@ -9,8 +9,6 @@
  */
 package dev.despg.core;
 
-import java.util.logging.Logger;
-
 /**
  * Events are occurrences between SimulationObjects that are stored in the
  * EventQueue. When an Event occurs, the attached SimulationObject may produce
@@ -18,8 +16,6 @@ import java.util.logging.Logger;
  */
 public class Event implements Comparable<Event>
 {
-	private static Logger logger = Logger.getLogger("dev.despg.core.Event");
-
 	private Integer timeStep;
 	private SimulationObject objectAttached;
 
@@ -48,7 +44,7 @@ public class Event implements Comparable<Event>
 	}
 
 	/**
-	 * @return timeStep the event will occur
+	 * @return timeStep the event will occur in
 	 */
 	public Integer getTimeStep()
 	{
@@ -56,7 +52,7 @@ public class Event implements Comparable<Event>
 	}
 
 	/**
-	 * @return Object that is attached to the event
+	 * @return Object attached to event
 	 */
 	public SimulationObject getObjectAttached()
 	{
@@ -64,7 +60,7 @@ public class Event implements Comparable<Event>
 	}
 
 	/**
-	 * @return Receiving class for the event
+	 * @return Receiving class of the event (i.e. a group of instantiated objects) instead of a certain object
 	 */
 	public Class<? extends SimulationObject> getReceiverClass()
 	{
@@ -87,12 +83,18 @@ public class Event implements Comparable<Event>
 		return description;
 	}
 
+	/**
+	 * Describes event as String.
+	 */
 	@Override
 	public String toString()
 	{
 		return Time.stepsToString(timeStep) + " " + description;
 	}
 
+	/**
+	 * Compares two events based on their time step.
+	 */
 	@Override
 	public int compareTo(Event event)
 	{
