@@ -20,37 +20,66 @@ public abstract class SimulationObject
 
 	public abstract boolean simulate(int timeStep);
 
+	/**
+	 *
+	 * @param timeUtilized
+	 */
 	public void setTimeUtilized(Integer timeUtilized)
 	{
 		this.timeUtilized = timeUtilized;
 	}
 
+	/**
+	 *
+	 * @param utilStart
+	 */
 	public void setUtilStart(Integer utilStart)
 	{
 		this.utilStart = utilStart;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public Integer getUtilStart()
 	{
 		return utilStart;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public Integer getTimeUtilized()
 	{
 		return timeUtilized;
 	}
 
+	/**
+	 *
+	 * @param timeStep
+	 */
 	public void utilStart(int timeStep)
 	{
 		utilStart = timeStep;
 	}
 
+	/**
+	 *
+	 * @param timeStep
+	 */
 	public void utilStop(int timeStep)
 	{
 		timeUtilized += timeStep - utilStart;
 		utilStart = null;
 	}
 
+	/**
+	 *
+	 * @param timeUtilizedDelta
+	 * @return
+	 */
 	public int addUtilization(int timeUtilizedDelta)
 	{
 		timeUtilized += timeUtilizedDelta;
