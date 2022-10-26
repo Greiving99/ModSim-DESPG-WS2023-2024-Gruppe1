@@ -23,7 +23,6 @@ public final class WeighingStation extends SimulationObject
 	private String name;
 	private Truck truckInWeighingStation;
 
-	private static Randomizer drivingToUnloadDock;
 	private static Randomizer drivingToLoadingDock;
 	private static EventQueue eventQueue;
 
