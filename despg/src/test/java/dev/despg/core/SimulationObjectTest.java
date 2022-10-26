@@ -26,6 +26,8 @@ class SimulationObjectTest
 	void init()
 	{
 		simObject = Mockito.mock(SimulationObject.class);
+		ReflectionTestUtils.setField(simObject, "timeUtilized", 0);
+		ReflectionTestUtils.setField(simObject, "utilStart", 0);
 	}
 
 

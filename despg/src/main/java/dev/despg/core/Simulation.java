@@ -109,7 +109,8 @@ public abstract class Simulation
 		// simulationobjects
 		for (SimulationObject simulationObject : simulationObjects)
 		{
-			double utilSimObject = (double) simulationObject.getTimeUtilized() / timeStep * 100;
+			// *** only for testing getTimeUtilized(); -- returns null in some testcases - due to false mockup?***
+			double utilSimObject = simulationObject.getTimeUtilized().doubleValue() / timeStep * 100;
 
 			if (simulationObjectClass == simulationObject.getClass())
 			{
