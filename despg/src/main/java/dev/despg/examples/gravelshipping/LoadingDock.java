@@ -89,8 +89,7 @@ public class LoadingDock extends SimulationObject
 	{
 		if (truckCurrentlyLoaded == null && GravelShipping.getGravelToShip() > 0)
 		{
-			Event event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.Loading, this.getClass(),
-					null);
+			Event event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.Loading, this.getClass(), null);
 			if (event != null && event.getObjectAttached() != null
 					&& event.getObjectAttached().getClass() == Truck.class)
 			{

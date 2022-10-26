@@ -70,6 +70,22 @@ public final class EventQueue extends ArrayList<Event>
 		logger.log(Level.FINEST, "removeEvent '" + e + "' " + this);
 	}
 
+	private ArrayList<Event> filterEvents(int timeStep, boolean past, UniqueEventDescription eventTypeNumber,
+			Class<? extends SimulationObject> receiverClass, SimulationObject receiverObject)
+	{
+		ArrayList<Event> subevents = new ArrayList<Event>(this.size());
+
+		for (Event e : this)
+		{
+			if ((past && timeStep >= e.getTimeStep() || !past && timeStep <= e.getTimeStep())
+					&& (receiverClass == null || receiverClass == e.getReceiverClass())
+					&& (receiverObject == null || receiverObject == e.getReceiver())
+					&& (eventTypeNumber == null || eventTypeNumber == e.getEventDescription()))
+				subevents.add(e);
+		}
+		return subevents;
+	}
+
 	/**
 	 * The getNextEvent method creates an ArrayList of all sub events that match the
 	 * defined filters and returns the Event with the lowest timeStep from that List.
@@ -85,23 +101,20 @@ public final class EventQueue extends ArrayList<Event>
 	public Event getNextEvent(int timeStep, boolean past, UniqueEventDescription eventTypeNumber,
 			Class<? extends SimulationObject> receiverClass, SimulationObject receiverObject)
 	{
-		ArrayList<Event> subevents = new ArrayList<Event>(this.size());
+		ArrayList<Event> events = filterEvents(timeStep, past, eventTypeNumber, receiverClass, receiverObject);
 
-		for (Event e : this)
+		if (events.size() > 0)
 		{
-			if ((past && timeStep >= e.getTimeStep() || !past && timeStep <= e.getTimeStep())
-					&& (receiverClass == null || receiverClass == e.getReceiverClass())
-					&& (receiverObject == null || receiverObject == e.getReceiver())
-					&& (eventTypeNumber == null || eventTypeNumber == e.getEventDescription()))
-				subevents.add(e);
-		}
-
-		if (subevents.size() > 0)
-		{
-			Collections.sort(subevents);
-			return subevents.get(0);
+			Collections.sort(events);
+			return events.get(0);
 		}
 
 		return null;
+	}
+
+	public int countEvents(int timeStep, boolean past, UniqueEventDescription eventTypeNumber,
+			Class<? extends SimulationObject> receiverClass, SimulationObject receiverObject)
+	{
+		return filterEvents(timeStep, past, eventTypeNumber, receiverClass, receiverObject).size();
 	}
 }

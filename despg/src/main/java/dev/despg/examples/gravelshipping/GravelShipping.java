@@ -24,9 +24,10 @@ public class GravelShipping extends Simulation
 	private static Integer gravelToShip = 2000;
 	private static Integer gravelShipped = 0;
 	private final int gravelToShippedFinal = gravelToShip;
-	private static Integer successfulLoadings = 0;
 
+	private static Integer successfulLoadings = 0;
 	private static Integer successfulLoadingSizes = 0;
+
 	private static Integer unsuccessfulLoadings = 0;
 	private static Integer unsuccessfulLoadingSizes = 0;
 
@@ -79,10 +80,15 @@ public class GravelShipping extends Simulation
 	{
 		String time = numberOfSteps + ". " + Time.stepsToString(timeStep);
 		String eventQueue = "EventQueue: " + EventQueue.getInstance().toString();
+
+		int numberOfTrucksLoadingQueue = EventQueue.getInstance().countEvents(timeStep, true, GravelLoadingEventTypes.Loading, null, null);
+		int numberOfTrucksWeighingQueue = EventQueue.getInstance().countEvents(timeStep, true, GravelLoadingEventTypes.Weighing, null, null);
+
 		String shipped = String.format("shipped/toShip : %dt(%.2f%%) / %dt", gravelShipped,
 				(double) gravelShipped / gravelToShippedFinal * 100, gravelToShip);
 
-		logger.log(Level.INFO, time + " " + shipped + "\n " + eventQueue + "\n");
+		logger.log(Level.INFO, time + " " + shipped + "\n " + eventQueue
+				+ " #Trucks Loading Queue: " + numberOfTrucksLoadingQueue + ", # Trucks Weighing Queue: " + numberOfTrucksWeighingQueue);
 	}
 
 	public static Integer getGravelToShip()
@@ -100,49 +106,29 @@ public class GravelShipping extends Simulation
 		return gravelShipped;
 	}
 
-	public static void setGravelShipped(Integer gravelShipped)
+	public static void increaseGravelShipped(Integer gravelShipped)
 	{
-		GravelShipping.gravelShipped = gravelShipped;
+		GravelShipping.gravelShipped += gravelShipped;
 	}
 
-	public static Integer getSuccessfulLoadings()
+	public static void increaseSuccessfulLoadings()
 	{
-		return successfulLoadings;
+		successfulLoadings++;
 	}
 
-	public static void setSuccessfulLoadings(Integer successfulLoadings)
+	public static void increaseSuccessfulLoadingSizes(Integer successfulLoadingSizes)
 	{
-		GravelShipping.successfulLoadings = successfulLoadings;
+		GravelShipping.successfulLoadingSizes += successfulLoadingSizes;
 	}
 
-	public static Integer getSuccessfulLoadingSizes()
+	public static void increaseUnsuccessfulLoadings()
 	{
-		return successfulLoadingSizes;
+		GravelShipping.unsuccessfulLoadings++;
 	}
 
-	public static void setSuccessfulLoadingSizes(Integer successfulLoadingSizes)
+	public static void increaseUnsuccessfulLoadingSizes(Integer unsuccessfulLoadingSizes)
 	{
-		GravelShipping.successfulLoadingSizes = successfulLoadingSizes;
-	}
-
-	public static Integer getUnsuccessfulLoadings()
-	{
-		return unsuccessfulLoadings;
-	}
-
-	public static void setUnsuccessfulLoadings(Integer unsuccessfulLoadings)
-	{
-		GravelShipping.unsuccessfulLoadings = unsuccessfulLoadings;
-	}
-
-	public static Integer getUnsuccessfulLoadingSizes()
-	{
-		return unsuccessfulLoadingSizes;
-	}
-
-	public static void setUnsuccessfulLoadingSizes(Integer unsuccessfulLoadingSizes)
-	{
-		GravelShipping.unsuccessfulLoadingSizes = unsuccessfulLoadingSizes;
+		GravelShipping.unsuccessfulLoadingSizes += unsuccessfulLoadingSizes;
 	}
 
 	public int getGravelToShippedFinal()

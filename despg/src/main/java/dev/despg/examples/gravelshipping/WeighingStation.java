@@ -102,15 +102,15 @@ public class WeighingStation extends SimulationObject
 			if (truckToWeighLoad != null && truckToWeighLoad > MAXLOAD)
 			{
 				GravelShipping.setGravelToShip(GravelShipping.getGravelToShip() + truckToWeighLoad);
-				GravelShipping.setUnsuccessfulLoadingSizes(GravelShipping.getUnsuccessfulLoadingSizes() + truckToWeighLoad);
-				GravelShipping.setUnsuccessfulLoadings(GravelShipping.getUnsuccessfulLoadings() + 1);
+				GravelShipping.increaseUnsuccessfulLoadingSizes(truckToWeighLoad);
+				GravelShipping.increaseUnsuccessfulLoadings();
 				driveToLoadingStation = truckInWeighingStation.addUtilization(drivingToLoadingDock.nextInt());
 			}
 			else
 			{
-				GravelShipping.setGravelShipped(GravelShipping.getGravelShipped() + truckToWeighLoad);
-				GravelShipping.setSuccessfulLoadingSizes(GravelShipping.getSuccessfulLoadingSizes() + truckToWeighLoad);
-				GravelShipping.setSuccessfulLoadings(GravelShipping.getSuccessfulLoadings() + 1);
+				GravelShipping.increaseGravelShipped(truckToWeighLoad);
+				GravelShipping.increaseSuccessfulLoadingSizes(truckToWeighLoad);
+				GravelShipping.increaseSuccessfulLoadings();
 				driveToLoadingStation = truckInWeighingStation.addUtilization(drivingToLoadingDock.nextInt());
 			}
 			eventQueue.add(new Event(timeStep + driveToLoadingStation, GravelLoadingEventTypes.Loading,
