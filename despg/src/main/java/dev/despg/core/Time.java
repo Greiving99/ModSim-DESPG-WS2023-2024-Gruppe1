@@ -14,9 +14,12 @@ public final class Time
 	private static final long SECONDS_PER_MINUTE = 60;
 	private static final long MINUTES_PER_HOUR = 60;
 	private static final long HOURS_PER_DAY = 24;
+	private static final long DAYS_PER_YEAR = 365;
 
 	private static final long SECONDS_PER_HOUR = MINUTES_PER_HOUR * SECONDS_PER_MINUTE;
    private static final long SECONDS_PER_DAY = HOURS_PER_DAY * SECONDS_PER_HOUR;
+   private static final long SECONDS_PER_YEAR = SECONDS_PER_DAY * DAYS_PER_YEAR;
+
 	private static final long STEP_LENGTH_IN_SECONDS = 60;
 
 	private Time()
@@ -62,18 +65,11 @@ public final class Time
 
 		StringBuilder result = new StringBuilder();
 
-		// days
-		stepsInSeconds = stepsToPartialString(result, stepsInSeconds, "d", SECONDS_PER_DAY);
-		// hours
-		stepsInSeconds = stepsToPartialString(result, stepsInSeconds, "h", SECONDS_PER_HOUR);
-		// minutes
-		stepsInSeconds = stepsToPartialString(result, stepsInSeconds, "m", SECONDS_PER_MINUTE);
+		stepsInSeconds = stepsToPartialString(result, stepsInSeconds, "y", SECONDS_PER_YEAR); 		// year
+		stepsInSeconds = stepsToPartialString(result, stepsInSeconds, "d", SECONDS_PER_DAY); 		// days
+		stepsInSeconds = stepsToPartialString(result, stepsInSeconds, "h", SECONDS_PER_HOUR); 		// hours
+		stepsInSeconds = stepsToPartialString(result, stepsInSeconds, "m", SECONDS_PER_MINUTE);	// minutes
 
 		return result.toString();
-	}
-
-	public static int convertStandardTimeUnitToSteps(double value, int number)
-	{
-			return (int) (value * number);
 	}
 }
