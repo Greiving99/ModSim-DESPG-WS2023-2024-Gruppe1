@@ -53,7 +53,7 @@ public final class Time
 	 * @param steps The steps are related to the time unit specified and converted to ...
 	 * @return days:hours:minutes:seconds
 	 */
-	public static String stepsToString(int steps) throws SimulationException
+	public static String stepsToString(long steps) throws SimulationException
 	{
 		if (steps < 0)
 			throw new SimulationException("Parameter can't be negative");

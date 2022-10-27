@@ -16,7 +16,7 @@ package dev.despg.core;
  */
 public final class Event implements Comparable<Event>
 {
-	private Integer timeStep;
+	private Long timeStep;
 	private SimulationObject objectAttached;
 
 	private Class<? extends SimulationObject> receivingClass;
@@ -33,7 +33,7 @@ public final class Event implements Comparable<Event>
 	 * @param receiverClass  Receiving class for the event
 	 * @param receiverObject Receiving object for the event
 	 */
-	public Event(Integer timeStep, UniqueEventDescription description, SimulationObject objectAttached,
+	public Event(Long timeStep, UniqueEventDescription description, SimulationObject objectAttached,
 			Class<? extends SimulationObject> receiverClass, SimulationObject receiverObject)
 	{
 		this.timeStep = timeStep;
@@ -46,7 +46,7 @@ public final class Event implements Comparable<Event>
 	/**
 	 * @return timeStep the event will occur in
 	 */
-	public Integer getTimeStep()
+	public Long getTimeStep()
 	{
 		return timeStep;
 	}

@@ -15,16 +15,16 @@ package dev.despg.core;
  */
 public abstract class SimulationObject
 {
-	private Integer timeUtilized = 0;
-	private Integer utilStart;
+	private Long timeUtilized = 0L;
+	private Long utilStart;
 
-	public abstract boolean simulate(int timeStep);
+	public abstract boolean simulate(long timeStep);
 
 	/**
 	 *
 	 * @param timeUtilized
 	 */
-	public void setTimeUtilized(Integer timeUtilized)
+	public void setTimeUtilized(Long timeUtilized)
 	{
 		this.timeUtilized = timeUtilized;
 	}
@@ -33,7 +33,7 @@ public abstract class SimulationObject
 	 *
 	 * @param utilStart
 	 */
-	public void setUtilStart(Integer utilStart)
+	public void setUtilStart(Long utilStart)
 	{
 		this.utilStart = utilStart;
 	}
@@ -42,7 +42,7 @@ public abstract class SimulationObject
 	 *
 	 * @return
 	 */
-	public Integer getUtilStart()
+	public Long getUtilStart()
 	{
 		return utilStart;
 	}
@@ -51,7 +51,7 @@ public abstract class SimulationObject
 	 *
 	 * @return
 	 */
-	public Integer getTimeUtilized()
+	public Long getTimeUtilized()
 	{
 		return timeUtilized;
 	}
@@ -60,7 +60,7 @@ public abstract class SimulationObject
 	 *
 	 * @param timeStep
 	 */
-	public void utilStart(int timeStep)
+	public void utilStart(long timeStep)
 	{
 		utilStart = timeStep;
 	}
@@ -69,7 +69,7 @@ public abstract class SimulationObject
 	 *
 	 * @param timeStep
 	 */
-	public void utilStop(int timeStep)
+	public void utilStop(long timeStep)
 	{
 		timeUtilized += timeStep - utilStart;
 		utilStart = null;
@@ -80,7 +80,7 @@ public abstract class SimulationObject
 	 * @param timeUtilizedDelta
 	 * @return
 	 */
-	public int addUtilization(int timeUtilizedDelta)
+	public long addUtilization(long timeUtilizedDelta)
 	{
 		timeUtilized += timeUtilizedDelta;
 		return timeUtilizedDelta;

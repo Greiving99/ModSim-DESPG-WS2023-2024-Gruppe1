@@ -85,7 +85,7 @@ public class LoadingDock extends SimulationObject
 	 *         could get assigned
 	 */
 	@Override
-	public boolean simulate(int timeStep)
+	public boolean simulate(long timeStep)
 	{
 		if (truckCurrentlyLoaded == null && GravelShipping.getGravelToShip() > 0)
 		{

@@ -38,7 +38,7 @@ class SimulationTest
 		sim = new Simulation()
 		{
 			@Override
-			protected void printEveryStep(int numberOfSteps, int timeStep)
+			protected void printEveryStep(long numberOfSteps, long timeStep)
 			{
 			}
 		};
@@ -46,8 +46,8 @@ class SimulationTest
 		toAdd = new ArrayList<Event>();
 		simObjects = SimulationObjects.getInstance();
 		simObject = Mockito.mock(SimulationObject.class);
-		ReflectionTestUtils.setField(simObject, "timeUtilized", 0);
-		ReflectionTestUtils.setField(simObject, "utilStart", 0);
+		ReflectionTestUtils.setField(simObject, "timeUtilized", 0L);
+		ReflectionTestUtils.setField(simObject, "utilStart", 0L);
 		simObjects.add(simObject);
 	}
 
@@ -67,8 +67,8 @@ class SimulationTest
 	@Test
 	void noEventInQueue()
 	{
-		int actual = sim.simulate();
-		int expected = 0;
+		long actual = sim.simulate();
+		long expected = 0L;
 
 		assertThat(actual).isEqualTo(expected);
 	}
@@ -80,7 +80,7 @@ class SimulationTest
 	@Test
 	void eventGotSimulated()
 	{
-		toAdd.add(new Event(1, null, null, null, null));
+		toAdd.add(new Event(1L, null, null, null, null));
 		e.addAll(toAdd);
 		when(simObject.simulate(1)).thenAnswer(invocation ->
 		{
@@ -99,8 +99,8 @@ class SimulationTest
 		});
 
 
-		int expected = 1;
-		int actual = sim.simulate();
+		long expected = 1;
+		long actual = sim.simulate();
 
 		assertThat(actual).isEqualTo(expected);
 	}
@@ -110,7 +110,7 @@ class SimulationTest
 	@DisplayName("TBD")
 	void eventInQueueUnassignable()
 	{
-		toAdd.add(new Event(0, null, null, null, null));
+		toAdd.add(new Event(0L, null, null, null, null));
 		e.addAll(toAdd);
 
 		assertThatThrownBy(() ->

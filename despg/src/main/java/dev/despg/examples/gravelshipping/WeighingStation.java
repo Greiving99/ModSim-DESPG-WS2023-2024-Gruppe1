@@ -77,7 +77,7 @@ public final class WeighingStation extends SimulationObject
 	 *         could get assigned
 	 */
 	@Override
-	public boolean simulate(int timeStep)
+	public boolean simulate(long timeStep)
 	{
 		Event event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.Weighing, this.getClass(), null);
 		if (truckInWeighingStation == null && event != null && event.getObjectAttached() != null
@@ -96,7 +96,7 @@ public final class WeighingStation extends SimulationObject
 		{
 			eventQueue.remove(event);
 			final Integer truckToWeighLoad = truckInWeighingStation.getLoad();
-			int driveToLoadingStation;
+			long driveToLoadingStation;
 
 			if (truckToWeighLoad != null && truckToWeighLoad > MAXLOAD)
 			{

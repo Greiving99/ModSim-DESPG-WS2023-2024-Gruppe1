@@ -46,7 +46,7 @@ public class GravelShipping extends Simulation
 		EventQueue eventqueue = EventQueue.getInstance();
 
 		for (int i = 0; i < NUM_TRUCKS; i++)
-			eventqueue.add(new Event(0, GravelLoadingEventTypes.Loading, new Truck("T" + i), LoadingDock.class, null));
+			eventqueue.add(new Event(0L, GravelLoadingEventTypes.Loading, new Truck("T" + i), LoadingDock.class, null));
 
 		for (int i = 0; i < NUM_LOADING_DOCKS; i++)
 			new LoadingDock("LD" + i);
@@ -55,7 +55,7 @@ public class GravelShipping extends Simulation
 			new WeighingStation("WS" + i);
 
 		GravelShipping gs = new GravelShipping();
-		int timeStep = gs.simulate();
+		long timeStep = gs.simulate();
 
 		// output some statistics after simulation run
 		logger.log(Level.INFO, "Gravel shipped\t\t = " + gravelShipped + " tons");
@@ -76,7 +76,7 @@ public class GravelShipping extends Simulation
 	 * Prints information after every timeStep in which an event got triggered.
 	 */
 	@Override
-	protected void printEveryStep(int numberOfSteps, int timeStep)
+	protected void printEveryStep(long numberOfSteps, long timeStep)
 	{
 		String time = numberOfSteps + ". " + Time.stepsToString(timeStep);
 		String eventQueue = "EventQueue: " + EventQueue.getInstance().toString();

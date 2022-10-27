@@ -36,7 +36,7 @@ public abstract class Simulation
 	 * @param numberOfSteps number of simulation steps (main-loop)
 	 * @param timeStep current timeStep
 	 */
-	protected abstract void printEveryStep(int numberOfSteps, int timeStep);
+	protected abstract void printEveryStep(long numberOfSteps, long timeStep);
 
 	/**
 	 * The simulate() method contains the main loop of the simulation. For every
@@ -46,12 +46,12 @@ public abstract class Simulation
 	 *
 	 * @return timeStep after the simulation is over
 	 */
-	public int simulate()
+	public long simulate()
 	{
 		EventQueue eventqueue = EventQueue.getInstance();
 		SimulationObjects simulationObjects = SimulationObjects.getInstance();
-		int numberOfSteps = 1;
-		int timeStep = 0;
+		long numberOfSteps = 1;
+		long timeStep = 0;
 		Event e = null;
 
 		do
@@ -97,7 +97,7 @@ public abstract class Simulation
 	 *
 	 * @param timeStep TimeStep at the end of the simulation
 	 */
-	private void printPostSimStats(int timeStep)
+	private void printPostSimStats(long timeStep)
 	{
 		logger.log(Level.INFO, "----------------------------------");
 		double utilSumPerSimClass = 0.0;

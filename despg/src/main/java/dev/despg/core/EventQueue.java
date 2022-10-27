@@ -70,7 +70,7 @@ public final class EventQueue extends ArrayList<Event>
 		logger.log(Level.FINEST, "removeEvent '" + e + "' " + this);
 	}
 
-	private ArrayList<Event> filterEvents(int timeStep, boolean past, UniqueEventDescription eventTypeNumber,
+	private ArrayList<Event> filterEvents(long timeStep, boolean past, UniqueEventDescription eventTypeNumber,
 			Class<? extends SimulationObject> receiverClass, SimulationObject receiverObject)
 	{
 		ArrayList<Event> subevents = new ArrayList<Event>(this.size());
@@ -98,7 +98,7 @@ public final class EventQueue extends ArrayList<Event>
 	 * @return returns the Event in the EventQueue with the lowest timeStep which
 	 *         matches the defined filters or null of no Event could be filtered
 	 */
-	public Event getNextEvent(int timeStep, boolean past, UniqueEventDescription eventTypeNumber,
+	public Event getNextEvent(long timeStep, boolean past, UniqueEventDescription eventTypeNumber,
 			Class<? extends SimulationObject> receiverClass, SimulationObject receiverObject)
 	{
 		ArrayList<Event> events = filterEvents(timeStep, past, eventTypeNumber, receiverClass, receiverObject);
@@ -112,7 +112,7 @@ public final class EventQueue extends ArrayList<Event>
 		return null;
 	}
 
-	public int countEvents(int timeStep, boolean past, UniqueEventDescription eventTypeNumber,
+	public int countEvents(long timeStep, boolean past, UniqueEventDescription eventTypeNumber,
 			Class<? extends SimulationObject> receiverClass, SimulationObject receiverObject)
 	{
 		return filterEvents(timeStep, past, eventTypeNumber, receiverClass, receiverObject).size();

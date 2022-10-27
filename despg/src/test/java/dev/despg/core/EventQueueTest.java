@@ -38,11 +38,11 @@ class EventQueueTest
 		receiving = Mockito.mock(SimulationObject.class);
 		description = Mockito.mock(UniqueEventDescription.class);
 		toAdd = new ArrayList<Event>();
-		toAdd.add(new Event(2, null, null, null, null));
-		toAdd.add(new Event(0, null, null, null, null));
-		toAdd.add(new Event(3, null, null, SimulationObject.class, null));
-		toAdd.add(new Event(3, null, null, null, receiving));
-		toAdd.add(new Event(3, description, null, null, null));
+		toAdd.add(new Event(2L, null, null, null, null));
+		toAdd.add(new Event(0L, null, null, null, null));
+		toAdd.add(new Event(3L, null, null, SimulationObject.class, null));
+		toAdd.add(new Event(3L, null, null, null, receiving));
+		toAdd.add(new Event(3L, description, null, null, null));
 		e.addAll(toAdd);
 	}
 
