@@ -18,5 +18,4 @@ public class SimulationException extends RuntimeException
 	{
 		super(message);
 	}
-
 }
