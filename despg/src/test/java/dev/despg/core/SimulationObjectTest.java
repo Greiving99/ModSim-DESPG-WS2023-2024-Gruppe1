@@ -26,8 +26,8 @@ class SimulationObjectTest
 	void init()
 	{
 		simObject = Mockito.mock(SimulationObject.class);
-		ReflectionTestUtils.setField(simObject, "timeUtilized", 0);
-		ReflectionTestUtils.setField(simObject, "utilStart", 0);
+		ReflectionTestUtils.setField(simObject, "timeUtilized", 0L);
+		ReflectionTestUtils.setField(simObject, "utilStart", 0L);
 	}
 
 
@@ -58,8 +58,8 @@ class SimulationObjectTest
 		when(simObject.getTimeUtilized()).thenCallRealMethod();
 		when(simObject.getUtilStart()).thenCallRealMethod();
 
-		ReflectionTestUtils.setField(simObject, "utilStart", 2);
-		ReflectionTestUtils.setField(simObject, "timeUtilized", 0);
+		ReflectionTestUtils.setField(simObject, "utilStart", 2L);
+		ReflectionTestUtils.setField(simObject, "timeUtilized", 0L);
 		simObject.utilStop(6);
 
 		assertThat(simObject.getTimeUtilized()).isEqualTo(expected);
@@ -74,7 +74,7 @@ class SimulationObjectTest
 	{
 		int expected = 4;
 		when(simObject.addUtilization(expected)).thenCallRealMethod();
-		ReflectionTestUtils.setField(simObject, "timeUtilized", 0);
+		ReflectionTestUtils.setField(simObject, "timeUtilized", 0L);
 
 		assertThat(simObject.addUtilization(expected)).isEqualTo(expected);
 	}
