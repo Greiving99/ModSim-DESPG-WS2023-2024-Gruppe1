@@ -11,9 +11,13 @@ package dev.despg.core;
 
 public final class Time
 {
-	private static final int MINUTES_PER_HOUR = 60;
-	private static final int HOURS_PER_DAY = 24;
-	private static final int MINUTES_PER_DAY = HOURS_PER_DAY * MINUTES_PER_HOUR;
+	private static final long SECONDS_PER_MINUTE = 60;
+	private static final long MINUTES_PER_HOUR = 60;
+	private static final long HOURS_PER_DAY = 24;
+
+	private static final long SECONDS_PER_HOUR = MINUTES_PER_HOUR * SECONDS_PER_MINUTE;
+   private static final long SECONDS_PER_DAY = HOURS_PER_DAY * SECONDS_PER_HOUR;
+	private static final long STEP_LENGTH_IN_SECONDS = 60;
 
 	private Time()
 	{
@@ -23,23 +27,23 @@ public final class Time
 	/**
 	 * This method computes units of given time scales (all are related to minutes).
 	 * @param result appending the partial string
-	 * @param steps to map
+	 * @param seconds to map
 	 * @param appendix for time unit i.e., "d = days h = hours m = minutes"
 	 * @param factor (e.g., an hour has 60 minutes)
 	 * @return reduced steps (and indirectly the extended result string(builder))
 	 */
-	private static int stepsToPartialString(StringBuilder result, int steps, String appendix, int factor)
+	private static long stepsToPartialString(StringBuilder result, long seconds, String appendix, long factor)
 	{
-		int timeUnits = steps / factor;
+		long timeUnits = seconds / factor;
 		if (timeUnits > 0)
 		{
 			if (result.length() > 0)
 				result.append(":");
 			result.append(timeUnits + appendix);
-			steps -= timeUnits * factor;
+			seconds -= timeUnits * factor;
 		}
 
-		return steps;
+		return seconds;
 	}
 
 	/**
@@ -54,14 +58,16 @@ public final class Time
 		if (steps < 0)
 			throw new SimulationException("Parameter can't be negative");
 
+		long stepsInSeconds = steps * STEP_LENGTH_IN_SECONDS;
+
 		StringBuilder result = new StringBuilder();
 
 		// days
-		steps = stepsToPartialString(result, steps, "d", MINUTES_PER_DAY);
+		stepsInSeconds = stepsToPartialString(result, stepsInSeconds, "d", SECONDS_PER_DAY);
 		// hours
-		steps = stepsToPartialString(result, steps, "h", MINUTES_PER_HOUR);
+		stepsInSeconds = stepsToPartialString(result, stepsInSeconds, "h", SECONDS_PER_HOUR);
 		// minutes
-		steps = stepsToPartialString(result, steps, "m", 1);
+		stepsInSeconds = stepsToPartialString(result, stepsInSeconds, "m", SECONDS_PER_MINUTE);
 
 		return result.toString();
 	}
