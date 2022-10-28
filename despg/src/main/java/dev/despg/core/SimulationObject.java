@@ -12,6 +12,7 @@ package dev.despg.core;
 /**
  * toString should be implemented if something meaningful should be printed
  * (after simulation (step)).
+ * Class (attributes / methods) should not be final because mocking can't mock them.
  */
 public abstract class SimulationObject
 {
@@ -21,7 +22,7 @@ public abstract class SimulationObject
 	public abstract boolean simulate(long timeStep);
 
 	/**
-	 *
+	 * set timeUtilized.
 	 * @param timeUtilized
 	 */
 	public void setTimeUtilized(Long timeUtilized)
@@ -30,7 +31,7 @@ public abstract class SimulationObject
 	}
 
 	/**
-	 *
+	 * set utilStart.
 	 * @param utilStart
 	 */
 	public void setUtilStart(Long utilStart)
@@ -39,8 +40,8 @@ public abstract class SimulationObject
 	}
 
 	/**
-	 *
-	 * @return
+	 * get utilStart.
+	 * @return utilStart
 	 */
 	public Long getUtilStart()
 	{
@@ -48,8 +49,8 @@ public abstract class SimulationObject
 	}
 
 	/**
-	 *
-	 * @return
+	 * get timeUtilized.
+	 * @return timeUtilized
 	 */
 	public Long getTimeUtilized()
 	{
@@ -57,7 +58,7 @@ public abstract class SimulationObject
 	}
 
 	/**
-	 *
+	 * start utilization.
 	 * @param timeStep
 	 */
 	public void utilStart(long timeStep)
@@ -66,7 +67,7 @@ public abstract class SimulationObject
 	}
 
 	/**
-	 *
+	 * stop utilization.
 	 * @param timeStep
 	 */
 	public void utilStop(long timeStep)
@@ -76,9 +77,9 @@ public abstract class SimulationObject
 	}
 
 	/**
-	 *
+	 * increase utilization.
 	 * @param timeUtilizedDelta
-	 * @return
+	 * @return increased utilization
 	 */
 	public long addUtilization(long timeUtilizedDelta)
 	{
