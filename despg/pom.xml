@@ -63,6 +63,13 @@
     	<version>5.3.8</version>
    		<scope>test</scope>
 	</dependency>
+	<!-- https://openjfx.io/openjfx-docs/maven 
+ 	javafx locally installed & referenced in run configuration -->
+  	<dependency>
+    	<groupId>org.openjfx</groupId>
+    	<artifactId>javafx-controls</artifactId>
+    	<version>11</version>
+  	</dependency>
   </dependencies>
 
   <build>
@@ -134,7 +141,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+          </plugin>
       </plugins>
     </pluginManagement>
   </build>

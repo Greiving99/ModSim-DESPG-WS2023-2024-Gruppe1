@@ -86,6 +86,48 @@ public final class Randomizer
 		throw new SimulationException("Probability not covered");
 	}
 
+	/**
+	 * returns a (uniform) number between min and max.
+	 * @param min
+	 * @param max
+	 * @return
+	 */
+	public double getUniform(double min, double max)
+	{
+		 assert (max > min);
+	    return random.nextDouble() * max + min;
+	}
+
+	/**
+	 * returns a (triangular) number between min and max with mode.
+	 * @param min
+	 * @param max
+	 * @param mode
+	 * @return
+	 */
+	public double getTriangular(double min, double max, double mode)
+	{
+	    double f = (mode - min) / (max - min);
+	    double rand = Math.random();
+
+	    return rand < f
+	   		 ? min + Math.sqrt(rand * (max - min) * (mode - min))
+	   		 : max - Math.sqrt((1 - rand) * (max - min) * (max - mode));
+	}
+
+	public Double getExponential(double lambda)
+	{
+	    double u;
+	    do
+	    {
+	        // Get a uniformly-distributed random double between
+	        // zero (inclusive) and 1 (exclusive)
+	        u = random.nextDouble();
+	    } while (u == 0d); // Reject zero, u must be positive for this to work.
+
+	    return -(Math.log(u) / (lambda));
+	}
+
 	public int getPoisson(double lambda)
 	{
 		double l = Math.exp(-lambda);
@@ -101,16 +143,4 @@ public final class Randomizer
 		return k - 1;
 	}
 
-	public Double getExponential(double lambda)
-	{
-	    double u;
-	    do
-	    {
-	        // Get a uniformly-distributed random double between
-	        // zero (inclusive) and 1 (exclusive)
-	        u = random.nextDouble();
-	    } while (u == 0d); // Reject zero, u must be positive for this to work.
-
-	    return -(Math.log(u) / (lambda));
-	}
 }
