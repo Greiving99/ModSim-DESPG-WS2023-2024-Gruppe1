@@ -38,13 +38,12 @@ public final class Time
 	private static long stepsToPartialString(StringBuilder result, long seconds, String appendix, long factor)
 	{
 		long timeUnits = seconds / factor;
-		if (timeUnits > 0)
-		{
-			if (result.length() > 0)
-				result.append(":");
-			result.append(timeUnits + appendix);
-			seconds -= timeUnits * factor;
-		}
+		String formatString = appendix == "d" ? "%03d" : "%02d";
+
+		if (result.length() > 0)
+			result.append(":");
+		result.append(String.format(formatString, timeUnits) + appendix);
+		seconds -= timeUnits * factor;
 
 		return seconds;
 	}

@@ -88,8 +88,8 @@ public class GravelShipping extends Simulation
 				(double) gravelShipped / gravelToShippedFinal * 100);
 
 		logger.log(Level.INFO, time + " " + shipped
-				+ " #Trucks Loading: " + numberOfTrucksLoadingQueue + ", #Trucks Weighing: " + numberOfTrucksWeighingQueue);
-		logger.log(Level.FINE, eventQueue);
+				+ " #Loading: " + numberOfTrucksLoadingQueue + ", #Weighing: " + numberOfTrucksWeighingQueue);
+		logger.log(Level.CONFIG, eventQueue);
 	}
 
 	public static Integer getGravelToShip()

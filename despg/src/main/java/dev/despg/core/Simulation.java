@@ -9,8 +9,10 @@
  */
 package dev.despg.core;
 
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public abstract class Simulation
 {
@@ -32,13 +34,21 @@ public abstract class Simulation
 		}
 		*/
 
-		// global vs. local in each class
-		Logger root = Logger.getLogger("");
-		root.setLevel(Level.FINE);
+		Level level = Level.INFO;
 
-		// String.format(format, date, source, logger, level, message, thrown);
-		System.setProperty("java.util.logging.SimpleFormatter.format", "%4$s: %5$s %n");
+		// global vs. local in each class
+		Logger globalLogger = Logger.getLogger("");
+
+		globalLogger.setLevel(level);
+		for (Handler handler : globalLogger.getHandlers())
+		{
+			// String.format(format, date, source, logger, level, message, thrown);
+			System.setProperty("java.util.logging.SimpleFormatter.format", "%4$s: %5$s %n");
+			handler.setFormatter(new SimpleFormatter());
+			handler.setLevel(level);
+		}
 	}
+
 
 	/**
 	 * Called at every timeStep where one or more events occurred.
