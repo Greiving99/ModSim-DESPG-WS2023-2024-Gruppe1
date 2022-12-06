@@ -84,11 +84,12 @@ public class GravelShipping extends Simulation
 		int numberOfTrucksLoadingQueue = EventQueue.getInstance().countEvents(timeStep, true, GravelLoadingEventTypes.Loading, null, null);
 		int numberOfTrucksWeighingQueue = EventQueue.getInstance().countEvents(timeStep, true, GravelLoadingEventTypes.Weighing, null, null);
 
-		String shipped = String.format("shipped/toShip : %dt(%.2f%%) / %dt", gravelShipped,
-				(double) gravelShipped / gravelToShippedFinal * 100, gravelToShip);
+		String shipped = String.format("- %dt / %dt (%.2f%%)", gravelShipped, gravelToShip,
+				(double) gravelShipped / gravelToShippedFinal * 100);
 
-		logger.log(Level.INFO, time + " " + shipped + "\n " + eventQueue
-				+ " #Trucks Loading Queue: " + numberOfTrucksLoadingQueue + ", # Trucks Weighing Queue: " + numberOfTrucksWeighingQueue);
+		logger.log(Level.INFO, time + " " + shipped
+				+ " #Trucks Loading: " + numberOfTrucksLoadingQueue + ", #Trucks Weighing: " + numberOfTrucksWeighingQueue);
+		logger.log(Level.FINE, eventQueue);
 	}
 
 	public static Integer getGravelToShip()

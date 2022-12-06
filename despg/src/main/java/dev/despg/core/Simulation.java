@@ -18,8 +18,10 @@ public abstract class Simulation
 
 	static
 	{
+		/*
 		try
 		{
+			// location required under src/main/resources/logging.properties
 			String path = Simulation.class.getClassLoader().getResource("logging.properties").getFile();
 			System.setProperty("java.util.logging.config.file", path);
 		}
@@ -28,6 +30,14 @@ public abstract class Simulation
 			logger.setLevel(Level.INFO);
 			System.setProperty("java.util.logging.SimpleFormatter.format", "%4$s: %5$s %n");
 		}
+		*/
+
+		// global vs. local in each class
+		Logger root = Logger.getLogger("");
+		root.setLevel(Level.FINE);
+
+		// String.format(format, date, source, logger, level, message, thrown);
+		System.setProperty("java.util.logging.SimpleFormatter.format", "%4$s: %5$s %n");
 	}
 
 	/**

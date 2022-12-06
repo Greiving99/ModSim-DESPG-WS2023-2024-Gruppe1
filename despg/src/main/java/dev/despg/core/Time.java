@@ -68,7 +68,7 @@ public final class Time
 		stepsInSeconds = stepsToPartialString(result, stepsInSeconds, "y", SECONDS_PER_YEAR); 		// year
 		stepsInSeconds = stepsToPartialString(result, stepsInSeconds, "d", SECONDS_PER_DAY); 		// days
 		stepsInSeconds = stepsToPartialString(result, stepsInSeconds, "h", SECONDS_PER_HOUR); 		// hours
-		stepsInSeconds = stepsToPartialString(result, stepsInSeconds, "m", SECONDS_PER_MINUTE);	// minutes
+		stepsInSeconds = stepsToPartialString(result, stepsInSeconds, "m", SECONDS_PER_MINUTE);		// minutes
 
 		return result.toString();
 	}
