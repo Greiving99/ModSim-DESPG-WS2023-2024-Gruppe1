@@ -17,8 +17,8 @@ public final class Time
 	private static final long DAYS_PER_YEAR = 365;
 
 	private static final long SECONDS_PER_HOUR = MINUTES_PER_HOUR * SECONDS_PER_MINUTE;
-   private static final long SECONDS_PER_DAY = HOURS_PER_DAY * SECONDS_PER_HOUR;
-   private static final long SECONDS_PER_YEAR = SECONDS_PER_DAY * DAYS_PER_YEAR;
+    private static final long SECONDS_PER_DAY = HOURS_PER_DAY * SECONDS_PER_HOUR;
+    private static final long SECONDS_PER_YEAR = SECONDS_PER_DAY * DAYS_PER_YEAR;
 
 	private static final long STEP_LENGTH_IN_SECONDS = 60;
 
