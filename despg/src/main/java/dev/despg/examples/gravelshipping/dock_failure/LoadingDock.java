@@ -7,7 +7,7 @@
  * see LICENSE
  *
  */
-package dev.despg.examples.gravelshipping;
+package dev.despg.examples.gravelshipping.dock_failure;
 
 import dev.despg.core.Event;
 import dev.despg.core.EventQueue;
@@ -20,12 +20,15 @@ public class LoadingDock extends SimulationObject
 {
 	private String name;
 	private Truck truckCurrentlyLoaded;
+	private boolean dockFailed;
 
 	private static EventQueue eventQueue;
 
 	private static Randomizer loadingWeight;
 	private static Randomizer loadingTime;
 	private static Randomizer drivingToWeighingStation;
+
+	private static Randomizer dockFailureRepairTime;
 
 	/**
 	 * Constructor for new LoadingDocks, injects its dependency to SimulationObjects
@@ -36,6 +39,7 @@ public class LoadingDock extends SimulationObject
 	public LoadingDock(String name)
 	{
 		this.name = name;
+		dockFailed = false;
 
 		eventQueue = EventQueue.getInstance();
 		SimulationObjects.getInstance().add(this);
@@ -54,6 +58,11 @@ public class LoadingDock extends SimulationObject
 		drivingToWeighingStation.addProbInt(0.5, 30);
 		drivingToWeighingStation.addProbInt(0.78, 45);
 		drivingToWeighingStation.addProbInt(1.0, 60);
+
+		dockFailureRepairTime = new Randomizer();
+		dockFailureRepairTime.addProbInt(0.80, 0);
+		dockFailureRepairTime.addProbInt(0.98, 1440);	// one day
+		dockFailureRepairTime.addProbInt(1.0, 2880);	// two days
 	}
 
 	@Override
@@ -88,7 +97,18 @@ public class LoadingDock extends SimulationObject
 	@Override
 	public boolean simulate(long timeStep)
 	{
-		if (truckCurrentlyLoaded == null && GravelShipping.getGravelToShip() > 0)
+		if (dockFailed)
+		{
+			Event event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.DockRepaired, null, this);
+			if (event != null)
+			{
+				eventQueue.remove(event);
+				dockFailed = false;
+				trackerStop(TrackerType.Failure, timeStep);
+			}
+			return false;
+		}
+		else if (truckCurrentlyLoaded == null && GravelShipping.getGravelToShip() > 0)
 		{
 			Event event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.Loading, this.getClass(), null);
 			if (event != null && event.getObjectAttached() != null
@@ -122,6 +142,14 @@ public class LoadingDock extends SimulationObject
 				truckCurrentlyLoaded = null;
 				trackerStop(TrackerType.Utilization, timeStep);
 
+				// failure
+				int failureInMinutes = dockFailureRepairTime.nextInt();
+				if (failureInMinutes > 0)
+				{
+					eventQueue.add(new Event(timeStep + failureInMinutes, GravelLoadingEventTypes.DockRepaired, null, null, this));
+					dockFailed = true;
+					trackerStart(TrackerType.Failure, timeStep);
+				}
 				return true;
 			}
 		}

@@ -102,8 +102,8 @@ public final class Randomizer
 	 * returns a (triangular) number between min and max with mode.
 	 * @param min
 	 * @param max
-	 * @param mode
-	 * @return
+	 * @param mode - highest probability
+	 * @return random value between min and max
 	 */
 	public double getTriangular(double min, double max, double mode)
 	{
@@ -115,19 +115,38 @@ public final class Randomizer
 	   		 : max - Math.sqrt((1 - rand) * (max - min) * (max - mode));
 	}
 
-	public Double getExponential(double lambda)
+	/**
+	 * Computes a uniformly-distributed random double with parameterized rate.
+	 * @param rate
+	 * @return
+	 */
+	public Double getExponential(double rate)
 	{
 	    double u;
 	    do
 	    {
-	        // Get a uniformly-distributed random double between
-	        // zero (inclusive) and 1 (exclusive)
 	        u = random.nextDouble();
 	    } while (u == 0d); // Reject zero, u must be positive for this to work.
 
-	    return -(Math.log(u) / (lambda));
+	    return -(Math.log(u) / (rate));
 	}
 
+	/**
+	 * Computes a value of a normal distribution with parameterized mean and deviation.
+	 * @param mean
+	 * @param deviation
+	 * @return
+	 */
+	public double getNormal(double mean, double deviation)
+	{
+		return random.nextGaussian() * deviation + mean;
+	}
+
+	/**
+	 * Computes a value of a discrete poisson distribution with parameterized lambda.
+	 * @param lambda
+	 * @return
+	 */
 	public int getPoisson(double lambda)
 	{
 		double l = Math.exp(-lambda);

@@ -27,8 +27,9 @@ public final class Time
 
 	}
 
+
 	/**
-	 * This method computes units of given time scales (all are related to minutes).
+	 * Computes units of given time scales (all are related to minutes).
 	 * @param result appending the partial string
 	 * @param seconds to map
 	 * @param appendix for time unit i.e., "d = days h = hours m = minutes"
@@ -70,5 +71,40 @@ public final class Time
 		stepsInSeconds = stepsToPartialString(result, stepsInSeconds, "m", SECONDS_PER_MINUTE);		// minutes
 
 		return result.toString();
+	}
+
+	public static long secondsToSteps(long seconds)
+	{
+		return (long) seconds / STEP_LENGTH_IN_SECONDS;
+	}
+
+	public static long minutesToSteps(long minutes)
+	{
+		return (long) minutes * SECONDS_PER_MINUTE / STEP_LENGTH_IN_SECONDS;
+	}
+
+	public static long minutesToSteps(double minutes)
+	{
+		return (long) (minutes * SECONDS_PER_MINUTE / STEP_LENGTH_IN_SECONDS);
+	}
+
+	public static long hoursToSteps(long hours)
+	{
+		return (long) hours * SECONDS_PER_HOUR / STEP_LENGTH_IN_SECONDS;
+	}
+
+	public static long hoursToSteps(double hours)
+	{
+		return (long) (hours * SECONDS_PER_HOUR / STEP_LENGTH_IN_SECONDS);
+	}
+
+	public static long daysToSteps(long days)
+	{
+		return (long) days * SECONDS_PER_DAY / STEP_LENGTH_IN_SECONDS;
+	}
+
+	public static long daysToSteps(double days)
+	{
+		return (long) days * SECONDS_PER_DAY / STEP_LENGTH_IN_SECONDS;
 	}
 }
