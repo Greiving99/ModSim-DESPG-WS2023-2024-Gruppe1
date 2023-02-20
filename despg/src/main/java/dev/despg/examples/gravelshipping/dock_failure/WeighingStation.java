@@ -7,7 +7,7 @@
  * see LICENSE
  *
  */
-package dev.despg.examples.gravelshipping;
+package dev.despg.examples.gravelshipping.dock_failure;
 
 import dev.despg.core.Event;
 import dev.despg.core.EventQueue;

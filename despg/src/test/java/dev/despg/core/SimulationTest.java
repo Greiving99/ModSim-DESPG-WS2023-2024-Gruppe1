@@ -20,7 +20,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.test.util.ReflectionTestUtils;
 
 
 class SimulationTest
@@ -46,8 +45,8 @@ class SimulationTest
 		toAdd = new ArrayList<Event>();
 		simObjects = SimulationObjects.getInstance();
 		simObject = Mockito.mock(SimulationObject.class);
-		ReflectionTestUtils.setField(simObject, "timeUtilized", 0L);
-		ReflectionTestUtils.setField(simObject, "utilStart", 0L);
+		//ReflectionTestUtils.setField(simObject, "timeUtilized", 0L);
+		//ReflectionTestUtils.setField(simObject, "utilStart", 0L);
 		simObjects.add(simObject);
 	}
 
