@@ -8,7 +8,6 @@
  *
  */
 package dev.despg.core;
-
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,7 +33,7 @@ public abstract class Simulation
 		}
 		*/
 
-		Level level = Level.INFO;
+		Level level = Level.CONFIG;
 
 		// global vs. local in each class
 		Logger globalLogger = Logger.getLogger("");
@@ -48,7 +47,6 @@ public abstract class Simulation
 			handler.setLevel(level);
 		}
 	}
-
 
 	/**
 	 * Called at every timeStep where one or more events occurred.
@@ -119,40 +117,44 @@ public abstract class Simulation
 	 */
 	private void printPostSimStats(long timeStep)
 	{
-		logger.log(Level.INFO, "----------------------------------");
-		double utilSumPerSimClass = 0.0;
-		int sumObjectsSimClass = 0;
+ 		logger.log(Level.INFO, "----------------------------------");
+		double trackedSumClassValue = 0.0;
+
 		Class<? extends SimulationObject> simulationObjectClass = null;
 		final SimulationObjects simulationObjects = SimulationObjects.getInstance();
 
-		// only works all simulation objects of one class are adjacent stored in
-		// simulationobjects
-		for (SimulationObject simulationObject : simulationObjects)
+		for (TrackerType trackerType : TrackerType.values())
 		{
-			double utilSimObject = simulationObject.getTimeUtilized().doubleValue() / timeStep * 100;
+			long sumObjectsSimClass = 0;
 
-			if (simulationObjectClass == simulationObject.getClass())
+			// only works if all simulation objects of one class are adjacent stored in simulationobjects
+			for (SimulationObject simulationObject : simulationObjects)
 			{
-				utilSumPerSimClass += utilSimObject;
-				sumObjectsSimClass++;
-			}
-			else
-			{
-				if (simulationObjectClass != null && sumObjectsSimClass > 1)
-					logger.log(Level.INFO, String.format("Utilization Class %s = %.2f %%",
-							simulationObjectClass.getName(), utilSumPerSimClass / sumObjectsSimClass));
+				double trackedSimObjectValue = simulationObject.getTracker(trackerType).doubleValue() / timeStep * 100;
 
-				simulationObjectClass = simulationObject.getClass();
-				utilSumPerSimClass = utilSimObject;
-				sumObjectsSimClass = 1;
+				if (simulationObjectClass == simulationObject.getClass())
+				{
+					trackedSumClassValue += trackedSimObjectValue;
+					sumObjectsSimClass++;
+				}
+				else
+				{
+					if (simulationObjectClass != null && sumObjectsSimClass > 1)
+						logger.log(Level.INFO, String.format("%s Class %s = %.2f %%", trackerType,
+								simulationObjectClass.getName(), trackedSumClassValue / sumObjectsSimClass));
+
+					simulationObjectClass = simulationObject.getClass();
+					trackedSumClassValue = trackedSimObjectValue;
+					sumObjectsSimClass = 1;
+				}
+
+				logger.log(Level.INFO, String.format("%s %s = %.2f %%", trackerType, simulationObject, trackedSimObjectValue));
 			}
 
-			logger.log(Level.INFO, String.format("Utilization %s = %.2f %%", simulationObject, utilSimObject));
+			if (sumObjectsSimClass > 1)
+				logger.log(Level.INFO, String.format("%s Class %s = %.2f %%", trackerType, simulationObjectClass.getName(),
+						trackedSumClassValue / sumObjectsSimClass));
+			logger.log(Level.INFO, "----------------------------------");
 		}
-
-		if (sumObjectsSimClass > 1)
-			logger.log(Level.INFO, String.format("Utilization Class %s = %.2f %%", simulationObjectClass.getName(),
-					utilSumPerSimClass / sumObjectsSimClass));
-		logger.log(Level.INFO, "----------------------------------");
 	}
 }

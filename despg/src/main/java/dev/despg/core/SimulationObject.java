@@ -9,6 +9,8 @@
  */
 package dev.despg.core;
 
+import java.util.HashMap;
+
 /**
  * toString should be implemented if something meaningful should be printed
  * (after simulation (step)).
@@ -16,74 +18,74 @@ package dev.despg.core;
  */
 public abstract class SimulationObject
 {
-	private Long timeUtilized = 0L;
-	private Long utilStart;
+	private HashMap<TrackerType, Long> trackers = new HashMap<TrackerType, Long>();
+	private HashMap<TrackerType, Long> trackersStart = new HashMap<TrackerType, Long>();
 
 	public abstract boolean simulate(long timeStep);
 
 	/**
-	 * set timeUtilized.
-	 * @param timeUtilized
+	 * setTracker.
+	 * @param counterType
+	 * @param time
 	 */
-	public void setTimeUtilized(Long timeUtilized)
+	public void setTracker(TrackerType counterType, Long time)
 	{
-		this.timeUtilized = timeUtilized;
+		trackers.put(counterType, time);
 	}
 
 	/**
-	 * set utilStart.
-	 * @param utilStart
+	 * getTracker.
+	 * @param counterType
+	 * @return value
 	 */
-	public void setUtilStart(Long utilStart)
+	public Long getTracker(TrackerType counterType)
 	{
-		this.utilStart = utilStart;
-	}
-
-	/**
-	 * get utilStart.
-	 * @return utilStart
-	 */
-	public Long getUtilStart()
-	{
-		return utilStart;
-	}
-
-	/**
-	 * get timeUtilized.
-	 * @return timeUtilized
-	 */
-	public Long getTimeUtilized()
-	{
-		return timeUtilized;
+		Long tracker = trackers.get(counterType);
+		return (tracker == null) ? 0L : tracker;
 	}
 
 	/**
 	 * start utilization.
+	 * @param counterType
 	 * @param timeStep
 	 */
-	public void utilStart(long timeStep)
+	public void trackerStart(TrackerType counterType, long timeStep)
 	{
-		utilStart = timeStep;
+		trackersStart.put(counterType, timeStep);
 	}
 
 	/**
 	 * stop utilization.
+	 * @param counterType
 	 * @param timeStep
 	 */
-	public void utilStop(long timeStep)
+	public long trackerStop(TrackerType counterType, long timeStep)
 	{
-		timeUtilized += timeStep - utilStart;
-		utilStart = null;
+		Long trackerValue = trackers.get(counterType);
+		if (trackerValue == null)
+			trackerValue = 0L;
+
+		long timeDelta = timeStep - trackersStart.get(counterType);
+
+		trackers.put(counterType, trackerValue + timeDelta);
+		trackersStart.remove(counterType);
+
+		return timeDelta;
 	}
 
 	/**
 	 * increase utilization.
-	 * @param timeUtilizedDelta
+	 * @param counterType
+	 * @param timeStepDelta
 	 * @return increased utilization
 	 */
-	public long addUtilization(long timeUtilizedDelta)
+	public long addTimeStepDelta(TrackerType counterType, long timeStepDelta)
 	{
-		timeUtilized += timeUtilizedDelta;
-		return timeUtilizedDelta;
+		Long trackerValue = trackers.get(counterType);
+		if (trackerValue == null)
+			trackerValue = 0L;
+
+		trackers.put(counterType, trackerValue + timeStepDelta);
+		return trackerValue + timeStepDelta;
 	}
 }

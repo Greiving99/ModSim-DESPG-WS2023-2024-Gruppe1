@@ -13,6 +13,8 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.when;
 
+import java.util.HashMap;
+
 import org.mockito.Mockito;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,24 +28,23 @@ class SimulationObjectTest
 	void init()
 	{
 		simObject = Mockito.mock(SimulationObject.class);
-		ReflectionTestUtils.setField(simObject, "timeUtilized", 0L);
-		ReflectionTestUtils.setField(simObject, "utilStart", 0L);
+
+		ReflectionTestUtils.setField(simObject, "trackers", new HashMap<TrackerType, Long>());
+		ReflectionTestUtils.setField(simObject, "trackersStart", new HashMap<TrackerType, Long>());
 	}
 
 
-	/**
-	 * Checks if utilStart start the utilization correctly.
-	 */
 	@Test
 	void doesStartUtilization()
 	{
-		int expected = 4;
-		doCallRealMethod().when(simObject).utilStart(expected);
-		when(simObject.getUtilStart()).thenCallRealMethod();
-		simObject.utilStart(expected);
+		long expected = 4;
+		doCallRealMethod().when(simObject).trackerStart(TrackerType.Utilization, expected);
+		when(simObject.trackerStop(TrackerType.Utilization, expected + expected)).thenCallRealMethod();
 
-		assertThat(simObject.getUtilStart()).isEqualTo(expected);
+		simObject.trackerStart(TrackerType.Utilization, expected);
+		assertThat(simObject.trackerStop(TrackerType.Utilization, expected + expected)).isEqualTo(expected);
 	}
+
 
 	/**
 	 * Checks if utilStop stops the utilization correctly and if it sets utilStart
@@ -53,17 +54,15 @@ class SimulationObjectTest
 			// and doesResetUtilStart
 	void doesStopUtilizationAndReset()
 	{
-		int expected = 4;
-		doCallRealMethod().when(simObject).utilStop(6);
-		when(simObject.getTimeUtilized()).thenCallRealMethod();
-		when(simObject.getUtilStart()).thenCallRealMethod();
+		long trackerStart = 2L;
+		long trackerStop = 8L;
+		long expected = 6L;
 
-		ReflectionTestUtils.setField(simObject, "utilStart", 2L);
-		ReflectionTestUtils.setField(simObject, "timeUtilized", 0L);
-		simObject.utilStop(6);
+		doCallRealMethod().when(simObject).trackerStart(TrackerType.Utilization, trackerStart);
+		when(simObject.trackerStop(TrackerType.Utilization, trackerStop)).thenCallRealMethod();
 
-		assertThat(simObject.getTimeUtilized()).isEqualTo(expected);
-		assertThat(simObject.getUtilStart()).isNull();
+		simObject.trackerStart(TrackerType.Utilization, trackerStart);
+		assertThat(simObject.trackerStop(TrackerType.Utilization, trackerStop)).isEqualTo(expected);
 	}
 
 	/**
@@ -72,11 +71,10 @@ class SimulationObjectTest
 	@Test
 	void addsToTimeUtilized()
 	{
-		int expected = 4;
-		when(simObject.addUtilization(expected)).thenCallRealMethod();
-		ReflectionTestUtils.setField(simObject, "timeUtilized", 0L);
+		long expected = 4;
+		when(simObject.addTimeStepDelta(TrackerType.Utilization, expected)).thenCallRealMethod();
 
-		assertThat(simObject.addUtilization(expected)).isEqualTo(expected);
+		assertThat(simObject.addTimeStepDelta(TrackerType.Utilization, expected)).isEqualTo(expected);
 	}
 
 }

@@ -7,7 +7,7 @@
  * see LICENSE
  *
  */
-package dev.despg.examples.gravelshipping;
+package dev.despg.examples.gravelshipping.dock_failure;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
