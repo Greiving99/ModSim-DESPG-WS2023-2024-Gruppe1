@@ -23,7 +23,7 @@ class TimeTest
 	@Test
 	void returnsCorrectTime()
 	{
-		String expectedString = "00y:001d:05h:50m"; // 1790 min
+		String expectedString = "02-01-2023 13:50:00"; // 1790 min
 
 		assertThat(Time.stepsToString(1790)).isEqualTo(expectedString);
 	}

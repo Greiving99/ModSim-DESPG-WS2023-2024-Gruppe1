@@ -11,6 +11,10 @@ package dev.despg.core;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -66,6 +70,23 @@ public final class Time
 	 * @param steps The steps are related to the time unit specified and converted to ...
 	 * @return Date according to Date String
 	 */
+	public static String stepsToStringWithoutOffset(long steps) throws SimulationException
+	{
+		if (steps < 0)
+			throw new SimulationException("Parameter can't be negative");
+
+		long stepsInSeconds = convertStepsToMilliseconds(steps);
+		Date date = new Date(stepsInSeconds);
+
+		return DATEFORMAT.format(date);
+	}
+
+	/**
+	 * This method takes an number of steps and converts it into a defined Date String.
+	 *
+	 * @param steps The steps are related to the time unit specified and converted to ...
+	 * @return Date according to Date String
+	 */
 	public static String stepsToString(long steps) throws SimulationException
 	{
 		if (steps < 0)
@@ -77,11 +98,16 @@ public final class Time
 		return DATEFORMAT.format(date);
 	}
 
-	public static int getHourOfDay(long steps)
+	private static Calendar setCalendar(long steps)
 	{
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTimeInMillis(convertStepsToMilliseconds(steps));
-		return calendar.get(Calendar.HOUR_OF_DAY);
+		return calendar;
+	}
+
+	public static int getHourOfDay(long steps)
+	{
+		return setCalendar(steps).get(Calendar.HOUR_OF_DAY);
 	}
 
 	/**
@@ -89,11 +115,52 @@ public final class Time
 	 * @param steps
 	 * @return 1 = Sunday, ... , 7 = Saturday
 	 */
-	public static int getDayofWeek(long steps)
+	public static int getDayOfWeek(long steps)
 	{
-		Calendar calendar = new GregorianCalendar();
-		calendar.setTimeInMillis(convertStepsToMilliseconds(steps));
-		return calendar.get(Calendar.DAY_OF_WEEK);
+		return setCalendar(steps).get(Calendar.DAY_OF_WEEK);
+	}
+
+	/**
+	 *
+	 * @param steps
+	 * @return
+	 */
+	public static int getDayOfMonth(long steps)
+	{
+		return setCalendar(steps).get(Calendar.DAY_OF_MONTH);
+	}
+
+	/**
+	 *
+	 * @param steps
+	 * @return 1 = Sunday, ... , 7 = Saturday
+	 */
+	public static int getMonthOfYear(long steps)
+	{
+		return setCalendar(steps).get(Calendar.MONTH);
+	}
+
+	/**
+	 *
+	 * @param steps
+	 * @return
+	 */
+	public static int getYear(long steps)
+	{
+		return setCalendar(steps).get(Calendar.YEAR);
+	}
+
+
+	public static long stepsToNext(long steps, DayOfWeek dayOfWeek)
+	{
+		Date stepDate = new Date(steps * STEP_LENGTH_IN_MILLISECONDS);
+		LocalDateTime ld = stepDate.toInstant()
+	      .atZone(ZoneId.systemDefault())
+	      .toLocalDateTime();
+
+		ld = ld.with(TemporalAdjusters.next(dayOfWeek));
+
+		return (ld.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() - stepDate.getTime()) / STEP_LENGTH_IN_MILLISECONDS;
 	}
 
 
