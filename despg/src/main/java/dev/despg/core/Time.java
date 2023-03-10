@@ -177,7 +177,7 @@ public final class Time
 
 		ld = ld.with(TemporalAdjusters.next(dayOfWeek));
 		System.out.println(ld);
-		
+
 		long difference = ld.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() - stepDate.getTime();
 
 		return difference / STEP_LENGTH_IN_MILLISECONDS;
