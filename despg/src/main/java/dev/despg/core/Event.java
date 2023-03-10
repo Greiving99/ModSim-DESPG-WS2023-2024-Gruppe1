@@ -89,7 +89,7 @@ public final class Event implements Comparable<Event>
 	@Override
 	public String toString()
 	{
-		return Time.stepsToString(timeStep) + " " + description;
+		return Time.stepsToDateString(timeStep) + " " + description;
 	}
 
 	/**

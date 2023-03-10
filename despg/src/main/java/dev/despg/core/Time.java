@@ -70,15 +70,29 @@ public final class Time
 	 * @param steps The steps are related to the time unit specified and converted to ...
 	 * @return Date according to Date String
 	 */
-	public static String stepsToStringWithoutOffset(long steps) throws SimulationException
+	public static String stepsToTimeString(long steps) throws SimulationException
 	{
 		if (steps < 0)
 			throw new SimulationException("Parameter can't be negative");
 
-		long stepsInSeconds = convertStepsToMilliseconds(steps);
-		Date date = new Date(stepsInSeconds);
+		long milliseconds = steps * STEP_LENGTH_IN_MILLISECONDS;
 
-		return DATEFORMAT.format(date);
+
+		long[] days = completeTimeUnits(milliseconds, MILLISECONDS_PER_DAY);
+		long[] hours = completeTimeUnits(days[0], MILLISECONDS_PER_HOUR);
+		long[] minutes = completeTimeUnits(hours[0], MILLISECONDS_PER_MINUTE);
+		long[] seconds = completeTimeUnits(minutes[0], MILLISECONDS_PER_SECOND);
+
+		return String.format("%02d days %02d:%02d:%02d.%d", days[1], hours[1], minutes[1], seconds[1], seconds[0]);
+	}
+
+
+	private static long[] completeTimeUnits(long milliseconds, long millisecondsOfTemporalUnit)
+	{
+		long temporalUnits = milliseconds / millisecondsOfTemporalUnit;
+		milliseconds -= temporalUnits * millisecondsOfTemporalUnit;
+
+		return new long[] {milliseconds, temporalUnits};
 	}
 
 	/**
@@ -87,7 +101,7 @@ public final class Time
 	 * @param steps The steps are related to the time unit specified and converted to ...
 	 * @return Date according to Date String
 	 */
-	public static String stepsToString(long steps) throws SimulationException
+	public static String stepsToDateString(long steps) throws SimulationException
 	{
 		if (steps < 0)
 			throw new SimulationException("Parameter can't be negative");
@@ -151,16 +165,22 @@ public final class Time
 	}
 
 
-	public static long stepsToNext(long steps, DayOfWeek dayOfWeek)
+	public static long stepsToDay(long steps, DayOfWeek dayOfWeek)
 	{
 		Date stepDate = new Date(steps * STEP_LENGTH_IN_MILLISECONDS);
+
+		System.out.println(stepDate);
+
 		LocalDateTime ld = stepDate.toInstant()
 	      .atZone(ZoneId.systemDefault())
 	      .toLocalDateTime();
 
 		ld = ld.with(TemporalAdjusters.next(dayOfWeek));
+		System.out.println(ld);
+		
+		long difference = ld.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() - stepDate.getTime();
 
-		return (ld.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() - stepDate.getTime()) / STEP_LENGTH_IN_MILLISECONDS;
+		return difference / STEP_LENGTH_IN_MILLISECONDS;
 	}
 
 

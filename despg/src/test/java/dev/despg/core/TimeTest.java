@@ -25,7 +25,7 @@ class TimeTest
 	{
 		String expectedString = "02-01-2023 13:50:00"; // 1790 min
 
-		assertThat(Time.stepsToString(1790)).isEqualTo(expectedString);
+		assertThat(Time.stepsToDateString(1790)).isEqualTo(expectedString);
 	}
 
 	/**
@@ -37,7 +37,7 @@ class TimeTest
 	{
 		assertThatThrownBy(() ->
 		{
-			Time.stepsToString(-1790);
+			Time.stepsToDateString(-1790);
 		}).isInstanceOf(SimulationException.class).hasMessageContaining("can't be negative");
 	}
 

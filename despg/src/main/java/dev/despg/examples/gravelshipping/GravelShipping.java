@@ -78,7 +78,7 @@ public class GravelShipping extends Simulation
 	@Override
 	protected void printEveryStep(long numberOfSteps, long timeStep)
 	{
-		String time = numberOfSteps + ". " + Time.stepsToString(timeStep);
+		String time = numberOfSteps + ". " + Time.stepsToDateString(timeStep);
 		String eventQueue = "EventQueue: " + EventQueue.getInstance().toString();
 
 		int numberOfTrucksLoadingQueue = EventQueue.getInstance().countEvents(timeStep, true, GravelLoadingEventTypes.Loading, null, null);
