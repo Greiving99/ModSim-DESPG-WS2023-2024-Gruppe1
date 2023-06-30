@@ -1,9 +1,9 @@
 /**
  * Copyright (C) 2021 despg.dev, Ralf Buschermöhle
- *
+ * <p>
  * DESPG is made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- *
+ * <p>
  * see LICENSE
  *
  */
@@ -25,8 +25,6 @@ public abstract class SimulationObject
 
 	/**
 	 * setTracker.
-	 * @param counterType
-	 * @param time
 	 */
 	public void setTracker(TrackerType counterType, Long time)
 	{
@@ -35,7 +33,6 @@ public abstract class SimulationObject
 
 	/**
 	 * getTracker.
-	 * @param counterType
 	 * @return value
 	 */
 	public Long getTracker(TrackerType counterType)
@@ -46,8 +43,6 @@ public abstract class SimulationObject
 
 	/**
 	 * start utilization.
-	 * @param counterType
-	 * @param timeStep
 	 */
 	public void trackerStart(TrackerType counterType, long timeStep)
 	{
@@ -56,8 +51,6 @@ public abstract class SimulationObject
 
 	/**
 	 * stop utilization.
-	 * @param counterType
-	 * @param timeStep
 	 */
 	public long trackerStop(TrackerType counterType, long timeStep)
 	{
@@ -75,8 +68,6 @@ public abstract class SimulationObject
 
 	/**
 	 * increase utilization.
-	 * @param counterType
-	 * @param timeStepDelta
 	 * @return increased utilization
 	 */
 	public long addTimeStepDelta(TrackerType counterType, long timeStepDelta)

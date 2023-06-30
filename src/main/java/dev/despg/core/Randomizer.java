@@ -1,9 +1,9 @@
 /**
  * Copyright (C) 2021 despg.dev, Ralf Buschermöhle
- *
+ * <p>
  * DESPG is made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- *
+ * <p>
  * see LICENSE
  *
  */
@@ -88,9 +88,6 @@ public final class Randomizer
 
 	/**
 	 * returns a (uniform) number between min and max.
-	 * @param min
-	 * @param max
-	 * @return
 	 */
 	public double getUniform(double min, double max)
 	{
@@ -100,8 +97,6 @@ public final class Randomizer
 
 	/**
 	 * returns a (triangular) number between min and max with mode.
-	 * @param min
-	 * @param max
 	 * @param mode - highest probability
 	 * @return random value between min and max
 	 */
@@ -117,8 +112,6 @@ public final class Randomizer
 
 	/**
 	 * Computes a uniformly-distributed random double with parameterized rate.
-	 * @param rate
-	 * @return
 	 */
 	public Double getExponential(double rate)
 	{
@@ -133,9 +126,6 @@ public final class Randomizer
 
 	/**
 	 * Computes a value of a normal distribution with parameterized mean and deviation.
-	 * @param mean
-	 * @param deviation
-	 * @return
 	 */
 	public double getNormal(double mean, double deviation)
 	{
@@ -144,8 +134,6 @@ public final class Randomizer
 
 	/**
 	 * Computes a value of a discrete poisson distribution with parameterized lambda.
-	 * @param lambda
-	 * @return
 	 */
 	public int getPoisson(double lambda)
 	{

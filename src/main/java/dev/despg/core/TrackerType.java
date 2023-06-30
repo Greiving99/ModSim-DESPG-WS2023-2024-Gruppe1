@@ -2,9 +2,7 @@ package dev.despg.core;
 
 public enum TrackerType
 {
-	/** */
 	Utilization("Utilization"),
-	/** */
 	Failure("Failure");
 
 

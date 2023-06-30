@@ -1,9 +1,9 @@
 /**
  * Copyright (C) 2021 despg.dev, Ralf Buschermöhle
- *
+ * <p>
  * DESPG is made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- *
+ * <p>
  * see LICENSE
  *
  */
@@ -126,7 +126,6 @@ public final class Time
 
 	/**
 	 *
-	 * @param steps
 	 * @return 1 = Sunday, ... , 7 = Saturday
 	 */
 	public static int getDayOfWeek(long steps)
@@ -136,8 +135,6 @@ public final class Time
 
 	/**
 	 *
-	 * @param steps
-	 * @return
 	 */
 	public static int getDayOfMonth(long steps)
 	{
@@ -146,7 +143,6 @@ public final class Time
 
 	/**
 	 *
-	 * @param steps
 	 * @return 1 = Sunday, ... , 7 = Saturday
 	 */
 	public static int getMonthOfYear(long steps)
@@ -156,8 +152,6 @@ public final class Time
 
 	/**
 	 *
-	 * @param steps
-	 * @return
 	 */
 	public static int getYear(long steps)
 	{

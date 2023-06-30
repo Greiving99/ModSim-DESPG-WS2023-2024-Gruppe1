@@ -1,9 +1,9 @@
 /**
  * Copyright (C) 2021 despg.dev, Ralf Buschermöhle
- *
+ * <p>
  * DESPG is made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- *
+ * <p>
  * see LICENSE
  *
  */
@@ -58,14 +58,14 @@ public final class WeighingStation extends SimulationObject
 
 	/**
 	 * Gets called every timeStep
-	 *
+	 * <p>
 	 * Checks events from the event queue that either are assigned to this class or
 	 * to an object of this class. If it is assigned to this class, the object of
 	 * which the simulate function got called, checks if it is currently occupied
 	 * and if the attached object is indeed a truck. In that case, the event gets
 	 * removed from the queue, gets executed and a new event gets added to the queue
 	 * which gets triggered when the weighting is done.
-	 *
+	 * <p>
 	 * A "weighting is done" event gets pulled from the queue if the receiving
 	 * object is the object on which the simulate function got called on. In that
 	 * case the event gets removed from the queue and handled by checking if trucks

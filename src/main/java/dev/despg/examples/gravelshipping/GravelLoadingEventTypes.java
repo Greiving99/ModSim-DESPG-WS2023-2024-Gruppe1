@@ -1,9 +1,9 @@
 /**
  * Copyright (C) 2021 despg.dev, Ralf Buschermöhle
- *
+ * <p>
  * DESPG is made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- *
+ * <p>
  * see LICENSE
  *
  */
@@ -17,13 +17,9 @@ import dev.despg.core.UniqueEventDescription;
  */
 public enum GravelLoadingEventTypes implements UniqueEventDescription
 {
-	/** */
 	Loading("Loading Truck"),
-	/** */
 	LoadingDone("Loading Truck done"),
-	/** */
 	Weighing("Weighing Truck"),
-	/** */
 	WeighingDone("Weighing Truck done");
 
 	private final String eventTypeUniqueDescription;

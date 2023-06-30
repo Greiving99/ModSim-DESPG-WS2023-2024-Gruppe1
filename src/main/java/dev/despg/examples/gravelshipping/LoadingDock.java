@@ -1,9 +1,9 @@
 /**
  * Copyright (C) 2021 despg.dev, Ralf Buschermöhle
- *
+ * <p>
  * DESPG is made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- *
+ * <p>
  * see LICENSE
  *
  */
@@ -67,7 +67,7 @@ public class LoadingDock extends SimulationObject
 
 	/**
 	 * Gets called every timeStep.
-	 *
+	 * <p>
 	 * If it is not currently occupied ({@link #truckCurrentlyLoaded} == null) and
 	 * the simulation goal still is not archived, it checks if there is an event in
 	 * the queue that got assigned to this class with the correct event description.
@@ -76,7 +76,7 @@ public class LoadingDock extends SimulationObject
 	 * {@link #truckCurrentlyLoaded} is set to the events attached object, and the
 	 * truck gets loaded. Adds a new event to the event queue for when the loading
 	 * is done and returns true.
-	 *
+	 * <p>
 	 * When the loading is done, it grabs the corresponding event from the event
 	 * queue and handles it by removing it from the queue, setting
 	 * {@link truckCurrentlyLoaded} to null and adding a new event to the event
