@@ -7,7 +7,7 @@
  * see LICENSE
  *
  */
-package dev.despg.examples.gravelshipping.dock_failure;
+package dev.despg.examples.gravelshipping;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -78,7 +78,7 @@ public class GravelShipping extends Simulation
 	@Override
 	protected void printEveryStep(long numberOfSteps, long timeStep)
 	{
-		String time = numberOfSteps + ". " + Time.stepsToDateString(timeStep);
+		String time = numberOfSteps + " " + Time.stepsToDateString(timeStep);
 		String eventQueue = "EventQueue: " + EventQueue.getInstance().toString();
 
 		int numberOfTrucksLoadingQueue = EventQueue.getInstance().countEvents(timeStep, true, GravelLoadingEventTypes.Loading, null, null);
