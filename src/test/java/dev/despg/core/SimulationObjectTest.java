@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
 import java.util.HashMap;
 
 import org.mockito.Mockito;
-import org.springframework.test.util.ReflectionTestUtils;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,10 +27,7 @@ class SimulationObjectTest
 	@BeforeEach
 	void init()
 	{
-		simObject = Mockito.mock(SimulationObject.class);
-
-		ReflectionTestUtils.setField(simObject, "trackers", new HashMap<TrackerType, Long>());
-		ReflectionTestUtils.setField(simObject, "trackersStart", new HashMap<TrackerType, Long>());
+		simObject = Mockito.spy(SimulationObject.class);
 	}
 
 
@@ -38,8 +35,6 @@ class SimulationObjectTest
 	void doesStartUtilization()
 	{
 		long expected = 4;
-		doCallRealMethod().when(simObject).trackerStart(TrackerType.Utilization, expected);
-		when(simObject.trackerStop(TrackerType.Utilization, expected + expected)).thenCallRealMethod();
 
 		simObject.trackerStart(TrackerType.Utilization, expected);
 		assertThat(simObject.trackerStop(TrackerType.Utilization, expected + expected)).isEqualTo(expected);
@@ -58,9 +53,6 @@ class SimulationObjectTest
 		long trackerStop = 8L;
 		long expected = 6L;
 
-		doCallRealMethod().when(simObject).trackerStart(TrackerType.Utilization, trackerStart);
-		when(simObject.trackerStop(TrackerType.Utilization, trackerStop)).thenCallRealMethod();
-
 		simObject.trackerStart(TrackerType.Utilization, trackerStart);
 		assertThat(simObject.trackerStop(TrackerType.Utilization, trackerStop)).isEqualTo(expected);
 	}
@@ -72,7 +64,6 @@ class SimulationObjectTest
 	void addsToTimeUtilized()
 	{
 		long expected = 4;
-		when(simObject.addTimeStepDelta(TrackerType.Utilization, expected)).thenCallRealMethod();
 
 		assertThat(simObject.addTimeStepDelta(TrackerType.Utilization, expected)).isEqualTo(expected);
 	}

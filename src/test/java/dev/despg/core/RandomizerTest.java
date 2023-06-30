@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.springframework.test.util.ReflectionTestUtils;
 import static org.assertj.core.api.Assertions.*;
 
 
@@ -44,7 +43,7 @@ class RandomizerTest
 		ArrayList<Probability2Value<Integer>> p = new ArrayList<Probability2Value<Integer>>();
 		p.add(new Probability2Value<Integer>(0.5, 2));
 
-		ReflectionTestUtils.setField(rExpected, "prob2Int", p);
+		//ReflectionTestUtils.setField(rExpected, "prob2Int", p);
 		r.addProbInt(0.5, 2);
 		Probability2Value<Integer> actual = r.getProb2Int().get(0);
 		Probability2Value<Integer> expected = r.getProb2Int().get(0);
@@ -94,7 +93,8 @@ class RandomizerTest
 		ArrayList<Probability2Value<Integer>> p = new ArrayList<Probability2Value<Integer>>();
 		p.add(new Probability2Value<Integer>(1.0, 2));
 
-		ReflectionTestUtils.setField(r, "prob2Int", p);
+		//ReflectionTestUtils.setField(r, "prob2Int", p);
+		r.addProbInt(1.0, 2);
 
 		assertThat(r.nextInt()).isEqualTo(expected);
 
@@ -109,11 +109,12 @@ class RandomizerTest
 	{
 		ArrayList<Probability2Value<Integer>> p = new ArrayList<Probability2Value<Integer>>();
 		p.add(new Probability2Value<Integer>(Randomizer.getMaxProbability() + 0.1, 2));
-		ReflectionTestUtils.setField(r, "prob2Int", p);
+		//ReflectionTestUtils.setField(r, "prob2Int", p);
+
 
 		assertThatThrownBy(() ->
 		{
-			r.nextInt();
+			r.addProbInt(Randomizer.getMaxProbability() + 0.1, 2);
 		}).isInstanceOf(SimulationException.class).hasMessageContaining("is out of bounds");
 
 
@@ -129,7 +130,8 @@ class RandomizerTest
 	{
 		ArrayList<Probability2Value<Integer>> p = new ArrayList<Probability2Value<Integer>>();
 		p.add(new Probability2Value<Integer>(0.0, 2));
-		ReflectionTestUtils.setField(r, "prob2Int", p);
+		//ReflectionTestUtils.setField(r, "prob2Int", p);
+		r.addProbInt(0.0, 2);
 
 		assertThatThrownBy(() ->
 		{
@@ -147,7 +149,7 @@ class RandomizerTest
 	void nextIntShouldThrowBecauseEmptyArrayList()
 	{
 		ArrayList<Probability2Value<Integer>> p = new ArrayList<Probability2Value<Integer>>();
-		ReflectionTestUtils.setField(r, "prob2Int", p);
+		//ReflectionTestUtils.setField(r, "prob2Int", p);
 
 		assertThatThrownBy(() ->
 		{

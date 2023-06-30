@@ -50,12 +50,6 @@
     	<version>3.19.0</version>
     	<scope>test</scope>
 	</dependency>
-	<dependency>
-    	<groupId>org.springframework</groupId>
-    	<artifactId>spring-test</artifactId>
-    	<version>5.3.8</version>
-   		<scope>test</scope>
-	</dependency>
 	<!-- https://openjfx.io/openjfx-docs/maven
  	javafx locally installed & referenced in run configuration -->
   	<dependency>
