@@ -99,7 +99,7 @@ public abstract class Simulation
 			// switch time to next event
 			e = eventqueue.getNextEvent(timeStep, false, null, null, null);
 			if (e != null)
-				timeStep = e.getTimeStep();
+				timeStep = e.timeStep();
 
 		} while (e != null);
 

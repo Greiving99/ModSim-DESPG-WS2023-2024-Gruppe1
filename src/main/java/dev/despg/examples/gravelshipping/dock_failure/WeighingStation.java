@@ -81,11 +81,11 @@ public final class WeighingStation extends SimulationObject
 	public boolean simulate(long timeStep)
 	{
 		Event event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.Weighing, this.getClass(), null);
-		if (truckInWeighingStation == null && event != null && event.getObjectAttached() != null
-				&& event.getObjectAttached().getClass() == Truck.class)
+		if (truckInWeighingStation == null && event != null && event.objectAttached() != null
+				&& event.objectAttached().getClass() == Truck.class)
 		{
 			eventQueue.remove(event);
-			truckInWeighingStation = (Truck) event.getObjectAttached();
+			truckInWeighingStation = (Truck) event.objectAttached();
 			eventQueue.add(new Event(timeStep + truckInWeighingStation.addTimeStepDelta(TrackerType.Utilization, TIME_TO_WEIGH_TRUCK),
 					GravelLoadingEventTypes.WeighingDone, truckInWeighingStation, null, this));
 			trackerStart(TrackerType.Utilization, timeStep);
@@ -93,7 +93,7 @@ public final class WeighingStation extends SimulationObject
 		}
 
 		event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.WeighingDone, null, this);
-		if (event != null && event.getObjectAttached() != null && event.getObjectAttached().getClass() == Truck.class)
+		if (event != null && event.objectAttached() != null && event.objectAttached().getClass() == Truck.class)
 		{
 			eventQueue.remove(event);
 			final Integer truckToWeighLoad = truckInWeighingStation.getLoad();

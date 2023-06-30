@@ -111,12 +111,12 @@ public class LoadingDock extends SimulationObject
 		else if (truckCurrentlyLoaded == null && GravelShipping.getGravelToShip() > 0)
 		{
 			Event event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.Loading, this.getClass(), null);
-			if (event != null && event.getObjectAttached() != null
-					&& event.getObjectAttached().getClass() == Truck.class)
+			if (event != null && event.objectAttached() != null
+					&& event.objectAttached().getClass() == Truck.class)
 			{
 				eventQueue.remove(event);
 
-				truckCurrentlyLoaded = (Truck) event.getObjectAttached();
+				truckCurrentlyLoaded = (Truck) event.objectAttached();
 				truckCurrentlyLoaded.load(Math.min(loadingWeight.nextInt(), GravelShipping.getGravelToShip()));
 				GravelShipping.setGravelToShip(GravelShipping.getGravelToShip() - truckCurrentlyLoaded.getLoad());
 
@@ -130,12 +130,12 @@ public class LoadingDock extends SimulationObject
 		else
 		{
 			Event event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.LoadingDone, null, this);
-			if (event != null && event.getObjectAttached() != null
-					&& event.getObjectAttached().getClass() == Truck.class)
+			if (event != null && event.objectAttached() != null
+					&& event.objectAttached().getClass() == Truck.class)
 			{
 				eventQueue.remove(event);
 				eventQueue.add(new Event(
-						timeStep + event.getObjectAttached().addTimeStepDelta(TrackerType.Utilization,
+						timeStep + event.objectAttached().addTimeStepDelta(TrackerType.Utilization,
 						drivingToWeighingStation.nextInt()), GravelLoadingEventTypes.Weighing,
 						truckCurrentlyLoaded, WeighingStation.class, null));
 

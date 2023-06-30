@@ -9,36 +9,14 @@
  */
 package dev.despg.core;
 
-public final class Probability2Value<T> implements Comparable<Probability2Value<T>>
+public record Probability2Value<T>(
+		Double probabilityUpperLimit,
+		T value)
+		implements Comparable<Probability2Value<T>>
 {
-	private final Double probabilityUpperLimit;
-	private final T value;
-
-	/**
-	 * Assigns the upper limit of a probability to a value.
-	 *
-	 * @param to    Upper limit of probability
-	 * @param value Value of that probability
-	 */
-	public Probability2Value(Double to, T value)
-	{
-		this.probabilityUpperLimit = to;
-		this.value = value;
-	}
-
 	@Override
-	public int compareTo(Probability2Value<T> o)
-	{
+	public int compareTo(Probability2Value<T> o) {
 		return probabilityUpperLimit.compareTo(o.probabilityUpperLimit);
 	}
 
-	public Double getProbabilityUpperLimit()
-	{
-		return probabilityUpperLimit;
-	}
-
-	public T getValue()
-	{
-		return value;
-	}
 }

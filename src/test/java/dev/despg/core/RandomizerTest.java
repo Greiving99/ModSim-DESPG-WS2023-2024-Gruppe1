@@ -47,8 +47,8 @@ class RandomizerTest
 		r.addProbInt(0.5, 2);
 		Probability2Value<Integer> actual = r.getProb2Int().get(0);
 		Probability2Value<Integer> expected = r.getProb2Int().get(0);
-		assertThat(actual.getValue()).isEqualTo(expected.getValue());
-		assertThat(actual.getProbabilityUpperLimit()).isEqualTo(expected.getProbabilityUpperLimit());
+		assertThat(actual.value()).isEqualTo(expected.value());
+		assertThat(actual.probabilityUpperLimit()).isEqualTo(expected.probabilityUpperLimit());
 	}
 
 	/**

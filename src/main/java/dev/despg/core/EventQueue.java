@@ -79,10 +79,10 @@ public final class EventQueue extends ArrayList<Event>
 
 		for (Event e : this)
 		{
-			if ((past && timeStep >= e.getTimeStep() || !past && timeStep <= e.getTimeStep())
-					&& (receiverClass == null || receiverClass == e.getReceiverClass())
-					&& (receiverObject == null || receiverObject == e.getReceiver())
-					&& (eventTypeNumber == null || eventTypeNumber == e.getEventDescription()))
+			if ((past && timeStep >= e.timeStep() || !past && timeStep <= e.timeStep())
+					&& (receiverClass == null || receiverClass == e.receiverClass())
+					&& (receiverObject == null || receiverObject == e.receiver())
+					&& (eventTypeNumber == null || eventTypeNumber == e.eventDescription()))
 				subevents.add(e);
 		}
 		return subevents;

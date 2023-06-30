@@ -49,7 +49,7 @@ public final class Randomizer
 	{
 		for (Probability2Value<Integer> prob2value : prob2Int)
 		{
-			if (prob2value.getProbabilityUpperLimit() == to)
+			if (prob2value.probabilityUpperLimit() == to)
 				throw new SimulationException("Probability " + to + " already exists");
 		}
 
@@ -76,11 +76,11 @@ public final class Randomizer
 
 		for (Probability2Value<Integer> pI : prob2Int)
 		{
-			if (pI.getProbabilityUpperLimit() < MIN_PROBABILITY || pI.getProbabilityUpperLimit() > MAX_PROBABILITY)
-				throw new SimulationException("Probability " + pI.getProbabilityUpperLimit() + " is out of bounds ("
+			if (pI.probabilityUpperLimit() < MIN_PROBABILITY || pI.probabilityUpperLimit() > MAX_PROBABILITY)
+				throw new SimulationException("Probability " + pI.probabilityUpperLimit() + " is out of bounds ("
 						+ MIN_PROBABILITY + "-" + MAX_PROBABILITY + ")");
-			else if (r <= pI.getProbabilityUpperLimit())
-				return pI.getValue();
+			else if (r <= pI.probabilityUpperLimit())
+				return pI.value();
 		}
 
 		throw new SimulationException("Probability not covered");

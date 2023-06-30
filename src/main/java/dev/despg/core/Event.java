@@ -14,90 +14,28 @@ package dev.despg.core;
  * EventQueue. When an Event occurs, the attached SimulationObject may produce
  * and/or consume Events.
  */
-public final class Event implements Comparable<Event>
+public record Event(
+		Long timeStep,
+		UniqueEventDescription eventDescription,
+		SimulationObject objectAttached,
+		Class<? extends SimulationObject> receiverClass,
+		SimulationObject receiver
+		) implements Comparable<Event>
 {
-	private final Long timeStep;
-	private final SimulationObject objectAttached;
-
-	private final Class<? extends SimulationObject> receivingClass;
-	private final SimulationObject receivingObject;
-
-	private final UniqueEventDescription description;
-
-	/**
-	 * Event constructor.
-	 *
-	 * @param timeStep       timeStep the event will occur
-	 * @param description    Description of the event
-	 * @param objectAttached Object that is attached to the event
-	 * @param receiverClass  Receiving class for the event
-	 * @param receiverObject Receiving object for the event
-	 */
-	public Event(Long timeStep, UniqueEventDescription description, SimulationObject objectAttached,
-			Class<? extends SimulationObject> receiverClass, SimulationObject receiverObject)
-	{
-		this.timeStep = timeStep;
-		this.description = description;
-		this.objectAttached = objectAttached;
-		this.receivingClass = receiverClass;
-		this.receivingObject = receiverObject;
-	}
-
-	/**
-	 * @return timeStep the event will occur in
-	 */
-	public Long getTimeStep()
-	{
-		return timeStep;
-	}
-
-	/**
-	 * @return Object attached to event
-	 */
-	public SimulationObject getObjectAttached()
-	{
-		return objectAttached;
-	}
-
-	/**
-	 * @return Receiving class of the event (i.e. a group of instantiated objects) instead of a certain object
-	 */
-	public Class<? extends SimulationObject> getReceiverClass()
-	{
-		return receivingClass;
-	}
-
-	/**
-	 * @return Receiving object for the event
-	 */
-	public SimulationObject getReceiver()
-	{
-		return receivingObject;
-	}
-
-	/**
-	 * @return Description of the event
-	 */
-	public UniqueEventDescription getEventDescription()
-	{
-		return description;
-	}
 
 	/**
 	 * Describes event as String.
 	 */
 	@Override
-	public String toString()
-	{
-		return Time.stepsToDateString(timeStep) + " " + description;
+	public String toString() {
+		return Time.stepsToDateString(timeStep) + " " + eventDescription;
 	}
 
 	/**
 	 * Compares two events based on their time step.
 	 */
 	@Override
-	public int compareTo(Event event)
-	{
+	public int compareTo(Event event) {
 		return timeStep.compareTo(event.timeStep);
 	}
 }
