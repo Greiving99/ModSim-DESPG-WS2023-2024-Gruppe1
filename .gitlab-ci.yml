@@ -1,4 +1,4 @@
-image: maven:3.6.3-openjdk-15
+image: maven:3.6.3-openjdk-17
 include:
   - template: Code-Quality.gitlab-ci.yml
 stages:

@@ -14,8 +14,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>15</maven.compiler.source>
-    <maven.compiler.target>15</maven.compiler.target>
+    <maven.compiler.release>17</maven.compiler.release>
     <junit.jupiter.version>5.7.2</junit.jupiter.version>
   </properties>
 
@@ -63,7 +62,7 @@
     	<version>5.3.8</version>
    		<scope>test</scope>
 	</dependency>
-	<!-- https://openjfx.io/openjfx-docs/maven 
+	<!-- https://openjfx.io/openjfx-docs/maven
  	javafx locally installed & referenced in run configuration -->
   	<dependency>
     	<groupId>org.openjfx</groupId>
