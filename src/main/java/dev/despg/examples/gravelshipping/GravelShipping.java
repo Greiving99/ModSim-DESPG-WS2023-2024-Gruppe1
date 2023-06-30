@@ -19,7 +19,7 @@ import dev.despg.core.Time;
 
 public class GravelShipping extends Simulation
 {
-	private static final Logger logger = Logger.getLogger("GravelShipping");
+	private static final Logger LOG = Logger.getLogger("GravelShipping");
 
 	private static Integer gravelToShip = 2000;
 	private static Integer gravelShipped = 0;
@@ -58,15 +58,15 @@ public class GravelShipping extends Simulation
 		long timeStep = gs.simulate();
 
 		// output some statistics after simulation run
-		logger.log(Level.INFO, "Gravel shipped\t\t = " + gravelShipped + " tons");
-		logger.log(Level.INFO, "Mean Time / Gravel Unit\t = " + ((double) timeStep / gravelShipped) + " minutes");
+		LOG.log(Level.INFO, "Gravel shipped\t\t = " + gravelShipped + " tons");
+		LOG.log(Level.INFO, "Mean Time / Gravel Unit\t = " + ((double) timeStep / gravelShipped) + " minutes");
 
-		logger.log(Level.INFO,
+		LOG.log(Level.INFO,
 				String.format("Successfull loadings\t = %d(%.2f%%), mean size %.2ft", successfulLoadings,
 						(double) successfulLoadings / (successfulLoadings + unsuccessfulLoadings) * 100,
 						(double) successfulLoadingSizes / successfulLoadings));
 
-		logger.log(Level.INFO,
+		LOG.log(Level.INFO,
 				String.format("Unsuccessfull loadings\t = %d(%.2f%%), mean size %.2ft", unsuccessfulLoadings,
 						(double) unsuccessfulLoadings / (successfulLoadings + unsuccessfulLoadings) * 100,
 						(double) unsuccessfulLoadingSizes / unsuccessfulLoadings));
@@ -87,9 +87,9 @@ public class GravelShipping extends Simulation
 		String shipped = String.format("- %dt / %dt (%.2f%%)", gravelShipped, gravelToShip,
 				(double) gravelShipped / gravelToShippedFinal * 100);
 
-		logger.log(Level.INFO, time + " " + shipped
+		LOG.log(Level.INFO, time + " " + shipped
 				+ " #Trucks Loading: " + numberOfTrucksLoadingQueue + ", #Trucks Weighing: " + numberOfTrucksWeighingQueue);
-		logger.log(Level.CONFIG, eventQueue);
+		LOG.log(Level.CONFIG, eventQueue);
 	}
 
 	public static Integer getGravelToShip()

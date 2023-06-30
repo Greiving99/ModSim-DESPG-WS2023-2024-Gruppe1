@@ -15,7 +15,7 @@ import java.util.logging.SimpleFormatter;
 
 public abstract class Simulation
 {
-	private static final Logger logger = Logger.getLogger("dev.despg.core.Simulation");
+	private static final Logger LOG = Logger.getLogger(Simulation.class.getName());
 
 	static
 	{
@@ -88,7 +88,7 @@ public abstract class Simulation
 					if (so.simulate(timeStep))
 					{
 						oneSwitched = true;
-						logger.log(Level.FINEST, timeStep + " switched" + so);
+						LOG.log(Level.FINEST, timeStep + " switched" + so);
 					}
 				}
 			} while (oneSwitched);
@@ -117,7 +117,7 @@ public abstract class Simulation
 	 */
 	private void printPostSimStats(long timeStep)
 	{
- 		logger.log(Level.INFO, "----------------------------------");
+ 		LOG.log(Level.INFO, "----------------------------------");
 		double trackedSumClassValue = 0.0;
 
 		Class<? extends SimulationObject> simulationObjectClass = null;
@@ -140,7 +140,7 @@ public abstract class Simulation
 				else
 				{
 					if (simulationObjectClass != null && sumObjectsSimClass > 1)
-						logger.log(Level.INFO, String.format("%s Class %s = %.2f %%", trackerType,
+						LOG.log(Level.INFO, String.format("%s Class %s = %.2f %%", trackerType,
 								simulationObjectClass.getName(), trackedSumClassValue / sumObjectsSimClass));
 
 					simulationObjectClass = simulationObject.getClass();
@@ -148,13 +148,13 @@ public abstract class Simulation
 					sumObjectsSimClass = 1;
 				}
 
-				logger.log(Level.INFO, String.format("%s %s = %.2f %%", trackerType, simulationObject, trackedSimObjectValue));
+				LOG.log(Level.INFO, String.format("%s %s = %.2f %%", trackerType, simulationObject, trackedSimObjectValue));
 			}
 
 			if (sumObjectsSimClass > 1)
-				logger.log(Level.INFO, String.format("%s Class %s = %.2f %%", trackerType, simulationObjectClass.getName(),
+				LOG.log(Level.INFO, String.format("%s Class %s = %.2f %%", trackerType, simulationObjectClass.getName(),
 						trackedSumClassValue / sumObjectsSimClass));
-			logger.log(Level.INFO, "----------------------------------");
+			LOG.log(Level.INFO, "----------------------------------");
 		}
 	}
 }

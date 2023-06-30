@@ -15,7 +15,8 @@ public record Probability2Value<T>(
 		implements Comparable<Probability2Value<T>>
 {
 	@Override
-	public int compareTo(Probability2Value<T> o) {
+	public int compareTo(Probability2Value<T> o)
+	{
 		return probabilityUpperLimit.compareTo(o.probabilityUpperLimit);
 	}
 

@@ -25,7 +25,8 @@ public class ScatterPlot extends Application
 	}
 
 	@Override
-	public void start(Stage stage) {
+	public void start(Stage stage)
+	{
 		stage.setTitle(PLOT_TITLE);
 
 		Randomizer r = new Randomizer();

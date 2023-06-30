@@ -27,7 +27,8 @@ public record Event(
 	 * Describes event as String.
 	 */
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return Time.stepsToDateString(timeStep) + " " + eventDescription;
 	}
 
@@ -35,7 +36,8 @@ public record Event(
 	 * Compares two events based on their time step.
 	 */
 	@Override
-	public int compareTo(Event event) {
+	public int compareTo(Event event)
+	{
 		return timeStep.compareTo(event.timeStep);
 	}
 }

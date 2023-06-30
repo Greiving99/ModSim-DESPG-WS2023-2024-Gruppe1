@@ -17,6 +17,7 @@ public final class Randomizer
 {
 	private static final double MIN_PROBABILITY = 0.0;
 	private static final double MAX_PROBABILITY = 1.0;
+	private static final Random RANDOM = new Random();
 
 	public static double getMinProbability()
 	{
@@ -28,7 +29,6 @@ public final class Randomizer
 		return MAX_PROBABILITY;
 	}
 
-	private static final Random random = new Random();
 	private final List<Probability2Value<Integer>> prob2Int = new ArrayList<>();
 
 	/**
@@ -73,7 +73,7 @@ public final class Randomizer
 		if (prob2Int.isEmpty())
 			throw new SimulationException("No probabilities in ArrayList");
 
-		double r = random.nextDouble();
+		double r = RANDOM.nextDouble();
 
 		for (Probability2Value<Integer> pI : prob2Int)
 		{
@@ -93,7 +93,7 @@ public final class Randomizer
 	public double getUniform(double min, double max)
 	{
 		 assert (max > min);
-	    return random.nextDouble() * max + min;
+	    return RANDOM.nextDouble() * max + min;
 	}
 
 	/**
@@ -119,7 +119,7 @@ public final class Randomizer
 	    double u;
 	    do
 	    {
-	        u = random.nextDouble();
+	        u = RANDOM.nextDouble();
 	    } while (u == 0d); // Reject zero, u must be positive for this to work.
 
 	    return -(Math.log(u) / (rate));
@@ -130,7 +130,7 @@ public final class Randomizer
 	 */
 	public double getNormal(double mean, double deviation)
 	{
-		return random.nextGaussian() * deviation + mean;
+		return RANDOM.nextGaussian() * deviation + mean;
 	}
 
 	/**
@@ -145,7 +145,7 @@ public final class Randomizer
 		do
 		{
 			k++;
-			p *= random.nextDouble();
+			p *= RANDOM.nextDouble();
 		} while (p > l);
 
 		return k - 1;

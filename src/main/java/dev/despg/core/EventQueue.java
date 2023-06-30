@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  */
 public final class EventQueue extends ArrayList<Event>
 {
-	private static final Logger logger = Logger.getLogger("dev.despg.core.EventQueue");
+	private static final Logger LOG = Logger.getLogger(EventQueue.class.getName());
 
 	@Serial
 	private static final long serialVersionUID = 1L;
@@ -37,7 +37,7 @@ public final class EventQueue extends ArrayList<Event>
 	 */
 	private static class Inner
 	{
-		private static final EventQueue eventqueue = new EventQueue();
+		private static final EventQueue EVENT_QUEUE = new EventQueue();
 	}
 
 	/**
@@ -47,7 +47,7 @@ public final class EventQueue extends ArrayList<Event>
 	 */
 	public static EventQueue getInstance()
 	{
-		return Inner.eventqueue;
+		return Inner.EVENT_QUEUE;
 	}
 
 	/**
@@ -58,7 +58,7 @@ public final class EventQueue extends ArrayList<Event>
 	public boolean add(Event e)
 	{
 		boolean success = super.add(e);
-		logger.log(Level.FINEST, "addEvent '" + e + "' " + this);
+		LOG.log(Level.FINEST, "addEvent '" + e + "' " + this);
 		return success;
 	}
 
@@ -70,7 +70,7 @@ public final class EventQueue extends ArrayList<Event>
 	public void remove(Event e)
 	{
 		super.remove(e);
-		logger.log(Level.FINEST, "removeEvent '" + e + "' " + this);
+		LOG.log(Level.FINEST, "removeEvent '" + e + "' " + this);
 	}
 
 	private List<Event> filterEvents(long timeStep, boolean past, UniqueEventDescription eventTypeNumber,

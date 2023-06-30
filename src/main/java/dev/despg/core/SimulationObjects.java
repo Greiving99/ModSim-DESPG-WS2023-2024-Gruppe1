@@ -27,7 +27,7 @@ public final class SimulationObjects extends ArrayList<SimulationObject>
 
 	private static class Inner
 	{
-		private static final SimulationObjects simulationObjects = new SimulationObjects();
+		private static final SimulationObjects SIMULATION_OBJECTS = new SimulationObjects();
 	}
 
 	/**
@@ -37,7 +37,7 @@ public final class SimulationObjects extends ArrayList<SimulationObject>
 	 */
 	public static SimulationObjects getInstance()
 	{
-		return Inner.simulationObjects;
+		return Inner.SIMULATION_OBJECTS;
 	}
 
 }
