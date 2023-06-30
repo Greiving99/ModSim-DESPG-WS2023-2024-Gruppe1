@@ -27,8 +27,8 @@ public final class Randomizer
 		return MAX_PROBABILITY;
 	}
 
-	private static Random random = new Random();
-	private ArrayList<Probability2Value<Integer>> prob2Int = new ArrayList<Probability2Value<Integer>>();
+	private static final Random random = new Random();
+	private final ArrayList<Probability2Value<Integer>> prob2Int = new ArrayList<>();
 
 	/**
 	 *
@@ -54,7 +54,7 @@ public final class Randomizer
 		}
 
 		if (to >= MIN_PROBABILITY && to <= MAX_PROBABILITY)
-			prob2Int.add(new Probability2Value<Integer>(to, value));
+			prob2Int.add(new Probability2Value<>(to, value));
 		else
 			throw new SimulationException(
 					"Probability " + to + " is out of bounds (" + MIN_PROBABILITY + "-" + MAX_PROBABILITY + ")");

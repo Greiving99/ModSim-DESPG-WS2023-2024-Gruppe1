@@ -8,7 +8,7 @@ public enum TrackerType
 	Failure("Failure");
 
 
-	private String trackerTypeString;
+	private final String trackerTypeString;
 
 	TrackerType(String value)
 	{

@@ -19,7 +19,7 @@ import dev.despg.core.Time;
 
 public class GravelShipping extends Simulation
 {
-	private static Logger logger = Logger.getLogger("GravelShipping");
+	private static final Logger logger = Logger.getLogger("GravelShipping");
 
 	private static Integer gravelToShip = 2000;
 	private static Integer gravelShipped = 0;

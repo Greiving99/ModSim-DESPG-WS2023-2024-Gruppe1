@@ -9,6 +9,7 @@
  */
 package dev.despg.core;
 
+import java.io.Serial;
 import java.util.ArrayList;
 
 /**
@@ -16,6 +17,7 @@ import java.util.ArrayList;
  */
 public final class SimulationObjects extends ArrayList<SimulationObject>
 {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private SimulationObjects()
@@ -25,7 +27,7 @@ public final class SimulationObjects extends ArrayList<SimulationObject>
 
 	private static class Inner
 	{
-		private static SimulationObjects simulationObjects = new SimulationObjects();
+		private static final SimulationObjects simulationObjects = new SimulationObjects();
 	}
 
 	/**

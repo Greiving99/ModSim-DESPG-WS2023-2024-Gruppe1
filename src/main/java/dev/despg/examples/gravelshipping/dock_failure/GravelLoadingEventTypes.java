@@ -28,7 +28,7 @@ public enum GravelLoadingEventTypes implements UniqueEventDescription
 	/** */
 	DockRepaired("Dock repaired.");
 
-	private String eventTypeUniqueDescription;
+	private final String eventTypeUniqueDescription;
 
 	GravelLoadingEventTypes(String value)
 	{

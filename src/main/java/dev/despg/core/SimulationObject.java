@@ -18,8 +18,8 @@ import java.util.HashMap;
  */
 public abstract class SimulationObject
 {
-	private HashMap<TrackerType, Long> trackers = new HashMap<TrackerType, Long>();
-	private HashMap<TrackerType, Long> trackersStart = new HashMap<TrackerType, Long>();
+	private final HashMap<TrackerType, Long> trackers = new HashMap<>();
+	private final HashMap<TrackerType, Long> trackersStart = new HashMap<>();
 
 	public abstract boolean simulate(long timeStep);
 

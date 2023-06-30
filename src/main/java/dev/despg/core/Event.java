@@ -16,13 +16,13 @@ package dev.despg.core;
  */
 public final class Event implements Comparable<Event>
 {
-	private Long timeStep;
-	private SimulationObject objectAttached;
+	private final Long timeStep;
+	private final SimulationObject objectAttached;
 
-	private Class<? extends SimulationObject> receivingClass;
-	private SimulationObject receivingObject;
+	private final Class<? extends SimulationObject> receivingClass;
+	private final SimulationObject receivingObject;
 
-	private UniqueEventDescription description;
+	private final UniqueEventDescription description;
 
 	/**
 	 * Event constructor.

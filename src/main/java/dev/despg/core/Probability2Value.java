@@ -11,8 +11,8 @@ package dev.despg.core;
 
 public final class Probability2Value<T> implements Comparable<Probability2Value<T>>
 {
-	private Double probabilityUpperLimit;
-	private T value;
+	private final Double probabilityUpperLimit;
+	private final T value;
 
 	/**
 	 * Assigns the upper limit of a probability to a value.

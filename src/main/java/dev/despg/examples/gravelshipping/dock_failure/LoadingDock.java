@@ -18,7 +18,7 @@ import dev.despg.core.TrackerType;
 
 public class LoadingDock extends SimulationObject
 {
-	private String name;
+	private final String name;
 	private Truck truckCurrentlyLoaded;
 	private boolean dockFailed;
 

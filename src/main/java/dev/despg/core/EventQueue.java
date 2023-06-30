@@ -9,6 +9,7 @@
  */
 package dev.despg.core;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Level;
@@ -19,8 +20,9 @@ import java.util.logging.Logger;
  */
 public final class EventQueue extends ArrayList<Event>
 {
-	private static Logger logger = Logger.getLogger("dev.despg.core.EventQueue");
+	private static final Logger logger = Logger.getLogger("dev.despg.core.EventQueue");
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 	private static final int MAX_EVENTS = 10000;
 
@@ -34,7 +36,7 @@ public final class EventQueue extends ArrayList<Event>
 	 */
 	private static class Inner
 	{
-		private static EventQueue eventqueue = new EventQueue();
+		private static final EventQueue eventqueue = new EventQueue();
 	}
 
 	/**
@@ -73,7 +75,7 @@ public final class EventQueue extends ArrayList<Event>
 	private ArrayList<Event> filterEvents(long timeStep, boolean past, UniqueEventDescription eventTypeNumber,
 			Class<? extends SimulationObject> receiverClass, SimulationObject receiverObject)
 	{
-		ArrayList<Event> subevents = new ArrayList<Event>(this.size());
+		ArrayList<Event> subevents = new ArrayList<>(this.size());
 
 		for (Event e : this)
 		{

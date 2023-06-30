@@ -26,7 +26,7 @@ public enum GravelLoadingEventTypes implements UniqueEventDescription
 	/** */
 	WeighingDone("Weighing Truck done");
 
-	private String eventTypeUniqueDescription;
+	private final String eventTypeUniqueDescription;
 
 	GravelLoadingEventTypes(String value)
 	{

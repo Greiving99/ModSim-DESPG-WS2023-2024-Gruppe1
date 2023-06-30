@@ -9,10 +9,13 @@
  */
 package dev.despg.core;
 
+import java.io.Serial;
+
 public class SimulationException extends RuntimeException
 {
 
-	private static final long serialVersionUID = 1L;
+	@Serial
+    private static final long serialVersionUID = 1L;
 
 	public SimulationException(String message)
 	{

@@ -186,12 +186,12 @@ public final class Time
 
 	public static long secondsToSteps(long seconds)
 	{
-		return (long) seconds *  MILLISECONDS_PER_SECOND / STEP_LENGTH_IN_MILLISECONDS;
+		return seconds *  MILLISECONDS_PER_SECOND / STEP_LENGTH_IN_MILLISECONDS;
 	}
 
 	public static long minutesToSteps(long minutes)
 	{
-		return (long) minutes * MILLISECONDS_PER_MINUTE / STEP_LENGTH_IN_MILLISECONDS;
+		return minutes * MILLISECONDS_PER_MINUTE / STEP_LENGTH_IN_MILLISECONDS;
 	}
 
 	public static long minutesToSteps(double minutes)
@@ -201,7 +201,7 @@ public final class Time
 
 	public static long hoursToSteps(long hours)
 	{
-		return (long) hours * MILLISECONDS_PER_HOUR / STEP_LENGTH_IN_MILLISECONDS;
+		return hours * MILLISECONDS_PER_HOUR / STEP_LENGTH_IN_MILLISECONDS;
 	}
 
 	public static long hoursToSteps(double hours)
@@ -211,7 +211,7 @@ public final class Time
 
 	public static long daysToSteps(long days)
 	{
-		return (long) days * MILLISECONDS_PER_DAY / STEP_LENGTH_IN_MILLISECONDS;
+		return days * MILLISECONDS_PER_DAY / STEP_LENGTH_IN_MILLISECONDS;
 	}
 
 	public static long daysToSteps(double days)
@@ -221,7 +221,7 @@ public final class Time
 
 	public static long yearsToSteps(long years)
 	{
-		return (long) years * MILLISECONDS_PER_YEAR / STEP_LENGTH_IN_MILLISECONDS;
+		return years * MILLISECONDS_PER_YEAR / STEP_LENGTH_IN_MILLISECONDS;
 	}
 
 	public static long yearsToSteps(double years)

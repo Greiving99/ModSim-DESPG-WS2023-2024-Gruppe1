@@ -15,7 +15,7 @@ import java.util.logging.SimpleFormatter;
 
 public abstract class Simulation
 {
-	private static Logger logger = Logger.getLogger("dev.despg.core.Simulation");
+	private static final Logger logger = Logger.getLogger("dev.despg.core.Simulation");
 
 	static
 	{
@@ -70,7 +70,7 @@ public abstract class Simulation
 		SimulationObjects simulationObjects = SimulationObjects.getInstance();
 		long numberOfSteps = 1;
 		long timeStep = 0;
-		Event e = null;
+		Event e;
 
 		do
 		{

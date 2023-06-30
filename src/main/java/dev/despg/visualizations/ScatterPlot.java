@@ -24,19 +24,18 @@ public class ScatterPlot extends Application
 	}
 
 	@Override
-	public void start(Stage stage) throws Exception
-	{
+	public void start(Stage stage) {
 		stage.setTitle(PLOT_TITLE);
 
 		Randomizer r = new Randomizer();
-		Series<Number, Number> xy = new Series<Number, Number>();
+		Series<Number, Number> xy = new Series<>();
 		double min = 1;
 		double mode = 8;
 		double max = 10;
 		double precision = 0.1;
 		final int numbersComputed = 10000;
 
-		HashMap<Double, Double> densityFunction = new HashMap<Double, Double>();
+		HashMap<Double, Double> densityFunction = new HashMap<>();
 
 		for (int i = 0; i < numbersComputed; i++)
 		{
@@ -46,15 +45,14 @@ public class ScatterPlot extends Application
 			densityFunction.put(value, existingValue == null ? 1.0 : ++existingValue);
 		}
 
-		for (Double key : densityFunction.keySet())
-			densityFunction.put(key, densityFunction.get(key) / numbersComputed);
+		densityFunction.replaceAll((k, v) -> densityFunction.get(k) / numbersComputed);
 
 		for (Double key : densityFunction.keySet())
-			xy.getData().add(new XYChart.Data<Number, Number>(key, densityFunction.get(key)));
+			xy.getData().add(new XYChart.Data<>(key, densityFunction.get(key)));
 
 		NumberAxis xAxis = new NumberAxis(min, max, 0.01);
 		NumberAxis yAxis = new NumberAxis();
-		ScatterChart<Number, Number> sc = new ScatterChart<Number, Number>(xAxis, yAxis);
+		ScatterChart<Number, Number> sc = new ScatterChart<>(xAxis, yAxis);
 		xAxis.setLabel("random value");
 		yAxis.setLabel("probability");
 

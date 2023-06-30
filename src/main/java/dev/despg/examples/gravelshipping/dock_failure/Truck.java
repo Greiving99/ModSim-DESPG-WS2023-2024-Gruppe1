@@ -14,7 +14,7 @@ import dev.despg.core.SimulationObjects;
 
 public final class Truck extends SimulationObject
 {
-	private String name;
+	private final String name;
 	private Integer loadedWithTons;
 
 	public Truck(String name)

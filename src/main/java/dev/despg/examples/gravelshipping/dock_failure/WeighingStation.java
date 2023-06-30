@@ -21,7 +21,7 @@ public final class WeighingStation extends SimulationObject
 	private static final int TIME_TO_WEIGH_TRUCK = 10;
 	private static final int MAXLOAD = 40;
 
-	private String name;
+	private final String name;
 	private Truck truckInWeighingStation;
 
 	private static Randomizer drivingToLoadingDock;
