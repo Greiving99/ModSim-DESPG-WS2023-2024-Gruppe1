@@ -13,6 +13,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +27,7 @@ class SimulationTest
 {
 	private EventQueue e;
 	private SimulationObjects simObjects;
-	private ArrayList<Event> toAdd;
+	private List<Event> toAdd;
 	private Simulation sim;
 	private SimulationObject simObject;
 	private boolean answered;

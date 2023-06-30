@@ -10,6 +10,7 @@
 package dev.despg.core;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +22,7 @@ import static org.assertj.core.api.Assertions.*;
 
 class EventQueueTest
 {
-	private ArrayList<Event> toAdd;
+	private List<Event> toAdd;
 	private EventQueue e;
 	private SimulationObject receiving;
 	private UniqueEventDescription description;

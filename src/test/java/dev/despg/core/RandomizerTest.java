@@ -11,6 +11,7 @@ package dev.despg.core;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,7 @@ class RandomizerTest
 	void addProb2IntShouldAddProbability()
 	{
 		Randomizer rExpected = new Randomizer();
-		ArrayList<Probability2Value<Integer>> p = new ArrayList<Probability2Value<Integer>>();
+		List<Probability2Value<Integer>> p = new ArrayList<Probability2Value<Integer>>();
 		p.add(new Probability2Value<Integer>(0.5, 2));
 
 		//ReflectionTestUtils.setField(rExpected, "prob2Int", p);
@@ -90,7 +91,7 @@ class RandomizerTest
 	void nextIntPickedCorrect()
 	{
 		int expected = 2;
-		ArrayList<Probability2Value<Integer>> p = new ArrayList<Probability2Value<Integer>>();
+		List<Probability2Value<Integer>> p = new ArrayList<Probability2Value<Integer>>();
 		p.add(new Probability2Value<Integer>(1.0, 2));
 
 		//ReflectionTestUtils.setField(r, "prob2Int", p);
@@ -107,7 +108,7 @@ class RandomizerTest
 	@Test
 	void nextIntShouldThrowBecauseOutOfBounds()
 	{
-		ArrayList<Probability2Value<Integer>> p = new ArrayList<Probability2Value<Integer>>();
+		List<Probability2Value<Integer>> p = new ArrayList<Probability2Value<Integer>>();
 		p.add(new Probability2Value<Integer>(Randomizer.getMaxProbability() + 0.1, 2));
 		//ReflectionTestUtils.setField(r, "prob2Int", p);
 
@@ -128,7 +129,7 @@ class RandomizerTest
 	@Test
 	void nextIntShouldThrowBecauseProbabilityNotCovered()
 	{
-		ArrayList<Probability2Value<Integer>> p = new ArrayList<Probability2Value<Integer>>();
+		List<Probability2Value<Integer>> p = new ArrayList<Probability2Value<Integer>>();
 		p.add(new Probability2Value<Integer>(0.0, 2));
 		//ReflectionTestUtils.setField(r, "prob2Int", p);
 		r.addProbInt(0.0, 2);
@@ -148,7 +149,7 @@ class RandomizerTest
 	@Test
 	void nextIntShouldThrowBecauseEmptyArrayList()
 	{
-		ArrayList<Probability2Value<Integer>> p = new ArrayList<Probability2Value<Integer>>();
+		List<Probability2Value<Integer>> p = new ArrayList<Probability2Value<Integer>>();
 		//ReflectionTestUtils.setField(r, "prob2Int", p);
 
 		assertThatThrownBy(() ->

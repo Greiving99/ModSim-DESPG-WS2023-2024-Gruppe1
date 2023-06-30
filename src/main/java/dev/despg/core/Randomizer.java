@@ -10,6 +10,7 @@
 package dev.despg.core;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public final class Randomizer
@@ -28,13 +29,13 @@ public final class Randomizer
 	}
 
 	private static final Random random = new Random();
-	private final ArrayList<Probability2Value<Integer>> prob2Int = new ArrayList<>();
+	private final List<Probability2Value<Integer>> prob2Int = new ArrayList<>();
 
 	/**
 	 *
 	 * @return defined probability intervals -> integer values
 	 */
-	public ArrayList<Probability2Value<Integer>> getProb2Int()
+	public List<Probability2Value<Integer>> getProb2Int()
 	{
 		return prob2Int;
 	}

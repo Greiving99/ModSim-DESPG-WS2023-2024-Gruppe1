@@ -1,6 +1,7 @@
 package dev.despg.visualizations;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import dev.despg.core.Randomizer;
 import javafx.application.Application;
@@ -35,7 +36,7 @@ public class ScatterPlot extends Application
 		double precision = 0.1;
 		final int numbersComputed = 10000;
 
-		HashMap<Double, Double> densityFunction = new HashMap<>();
+		Map<Double, Double> densityFunction = new HashMap<>();
 
 		for (int i = 0; i < numbersComputed; i++)
 		{

@@ -12,6 +12,7 @@ package dev.despg.core;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -72,10 +73,10 @@ public final class EventQueue extends ArrayList<Event>
 		logger.log(Level.FINEST, "removeEvent '" + e + "' " + this);
 	}
 
-	private ArrayList<Event> filterEvents(long timeStep, boolean past, UniqueEventDescription eventTypeNumber,
+	private List<Event> filterEvents(long timeStep, boolean past, UniqueEventDescription eventTypeNumber,
 			Class<? extends SimulationObject> receiverClass, SimulationObject receiverObject)
 	{
-		ArrayList<Event> subevents = new ArrayList<>(this.size());
+		List<Event> subevents = new ArrayList<>(this.size());
 
 		for (Event e : this)
 		{
@@ -103,7 +104,7 @@ public final class EventQueue extends ArrayList<Event>
 	public Event getNextEvent(long timeStep, boolean past, UniqueEventDescription eventTypeNumber,
 			Class<? extends SimulationObject> receiverClass, SimulationObject receiverObject)
 	{
-		ArrayList<Event> events = filterEvents(timeStep, past, eventTypeNumber, receiverClass, receiverObject);
+		List<Event> events = filterEvents(timeStep, past, eventTypeNumber, receiverClass, receiverObject);
 
 		if (events.size() > 0)
 		{

@@ -10,6 +10,7 @@
 package dev.despg.core;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * toString should be implemented if something meaningful should be printed
@@ -18,8 +19,8 @@ import java.util.HashMap;
  */
 public abstract class SimulationObject
 {
-	private final HashMap<TrackerType, Long> trackers = new HashMap<>();
-	private final HashMap<TrackerType, Long> trackersStart = new HashMap<>();
+	private final Map<TrackerType, Long> trackers = new HashMap<>();
+	private final Map<TrackerType, Long> trackersStart = new HashMap<>();
 
 	public abstract boolean simulate(long timeStep);
 
