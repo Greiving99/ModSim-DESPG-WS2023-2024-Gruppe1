@@ -20,7 +20,7 @@ import org.mockito.Mockito;
 import static org.assertj.core.api.Assertions.*;
 
 
-class EventQueueTest
+class EventQueueGetNextEventTest
 {
 	private List<Event> toAdd;
 	private EventQueue e;
@@ -123,5 +123,15 @@ class EventQueueTest
 		assertThat(event).isNull();
 	}
 
+	/**
+	 * Counts the events in the Queue.
+	 */
+	@Test
+	void countEventsInQueue()
+	{
+		int events = e.countEvents(0, false, null, null, null);
+
+		assertThat(events).isEqualTo(5);
+	}
 
 }

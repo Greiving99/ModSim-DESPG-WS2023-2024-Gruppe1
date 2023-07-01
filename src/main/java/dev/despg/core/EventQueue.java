@@ -58,7 +58,10 @@ public final class EventQueue extends ArrayList<Event>
 	public boolean add(Event e)
 	{
 		boolean success = super.add(e);
-		LOG.log(Level.FINEST, "addEvent '" + e + "' " + this);
+
+		if (success)
+			LOG.log(Level.FINEST, "addEvent '" + e + "' " + this);
+
 		return success;
 	}
 
@@ -67,10 +70,14 @@ public final class EventQueue extends ArrayList<Event>
 	 *
 	 * @param e Event to be removed
 	 */
-	public void remove(Event e)
+	public boolean remove(Event e)
 	{
-		super.remove(e);
-		LOG.log(Level.FINEST, "removeEvent '" + e + "' " + this);
+		boolean success = super.remove(e);
+
+		if (success)
+			LOG.log(Level.FINEST, "removeEvent '" + e + "' " + this);
+
+		return success;
 	}
 
 	private List<Event> filterEvents(long timeStep, boolean past, UniqueEventDescription eventTypeNumber,
