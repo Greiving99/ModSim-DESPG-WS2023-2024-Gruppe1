@@ -1,4 +1,4 @@
-image: maven:3.6.3-openjdk-15
+image: maven:3.6.3-openjdk-17
 include:
   - template: Code-Quality.gitlab-ci.yml
 stages:
@@ -9,13 +9,11 @@ stages:
 compile:
   stage: compile
   script:
-    - cd despg
     - $MAVEN_HOME/bin/mvn clean compile
 
 test:
   stage: test
   script:
-    - cd despg
     - $MAVEN_HOME/bin/mvn test
   artifacts:
     when: always
@@ -27,5 +25,4 @@ test:
 checkstyle:
   stage: checkstyle
   script:
-    - cd despg
     - $MAVEN_HOME/bin/mvn checkstyle:check
