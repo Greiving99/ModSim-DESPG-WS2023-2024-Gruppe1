@@ -134,7 +134,7 @@ public final class Randomizer
 	}
 
 	/**
-	 * Computes a value of a discrete poisson distribution with parameterized lambda.
+	 * Computes a value of a discrete Poisson distribution with parameterized lambda.
 	 */
 	public int getPoisson(double lambda)
 	{
