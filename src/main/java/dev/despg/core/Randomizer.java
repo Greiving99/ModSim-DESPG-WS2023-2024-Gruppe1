@@ -97,6 +97,16 @@ public final class Randomizer
 	}
 
 	/**
+	 * returns a (uniform) number between min and max with a certain precision.
+	 */
+	public double getUniformWithPrecision(double min, double max, double precision)
+	{
+		assert (precision > 0);
+
+	    return Math.round(getUniform(min, max) / precision) * precision;
+	}
+
+	/**
 	 * returns a (triangular) number between min and max with mode.
 	 * @param mode - highest probability
 	 * @return random value between min and max
@@ -112,6 +122,16 @@ public final class Randomizer
 	    return rand < f
 	   		 ? min + Math.sqrt(rand * (max - min) * (mode - min))
 	   		 : max - Math.sqrt((1 - rand) * (max - min) * (max - mode));
+	}
+
+	/**
+	 * returns a (triangular) number between min and max with mode and a certain precision.
+	 */
+	public double getTriangularWithPrecision(double min, double max, double mode, double precision)
+	{
+		assert (precision > 0);
+
+	    return Math.round(getTriangular(min, max, mode) / precision) * precision;
 	}
 
 	/**
