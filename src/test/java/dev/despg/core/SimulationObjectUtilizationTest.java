@@ -16,7 +16,7 @@ import org.mockito.Mockito;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class SimulationObjectTest
+class SimulationObjectUtilizationTest
 {
 	private SimulationObject simObject;
 
