@@ -10,31 +10,31 @@ import javafx.scene.chart.XYChart.Series;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public abstract class Data
+public abstract class Scatterplot
 {
 	private static final int PIXEL_Y 			= 800;
 	private static final int PIXEL_X 			= 1000;
 
-	public static final double PRECISION 		= 0.0001;
+	public static final double PRECISION 		= 0.1;
 	public static final int NUMBERS_COMPUTED 	= 100000;
 
 	public static final double MIN = 0;
 	public static final double MAX = 10;
 
 
-	public static void draw(Stage stage, String plotTitle, RandomValue generate)
+	public static void drawPlotWithRandoms(Stage stage, String plotTitle, RandomValue generate)
 	{
 		stage.setTitle(plotTitle);
 
 		Map<Double, Double> densityFunction = new HashMap<>();
-		for (int i = 0; i < Data.NUMBERS_COMPUTED; i++)
+		for (int i = 0; i < Scatterplot.NUMBERS_COMPUTED; i++)
 		{
-			double value = Math.round(generate.getDouble() / Data.PRECISION) * Data.PRECISION;
+			double value = Math.round(generate.getDouble() / Scatterplot.PRECISION) * Scatterplot.PRECISION;
 			Double existingValue = densityFunction.get(value);
 
 			densityFunction.put(value, existingValue == null ? 1.0 : ++existingValue);
 		}
-		densityFunction.replaceAll((k, v) -> densityFunction.get(k) / Data.NUMBERS_COMPUTED);
+		densityFunction.replaceAll((k, v) -> densityFunction.get(k) / Scatterplot.NUMBERS_COMPUTED);
 
 		Series<Number, Number> xy = new Series<>();
 

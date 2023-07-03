@@ -18,7 +18,7 @@ public final class Exponential extends Application
 	{
 		Randomizer r = new Randomizer();
 
-		Data.draw(stage, "Exponential Density", () -> r.getExponential(RATE));
+		Scatterplot.drawPlotWithRandoms(stage, "Exponential Density", () -> r.getExponential(RATE));
 	}
 }
 

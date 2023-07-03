@@ -16,7 +16,7 @@ public final class Uniform extends Application
 	{
 		Randomizer r = new Randomizer();
 
-		Data.draw(stage, "Uniform Density", () -> r.getUniform(Data.MIN, Data.MAX));
+		Scatterplot.drawPlotWithRandoms(stage, "Uniform Density", () -> r.getUniform(Scatterplot.MIN, Scatterplot.MAX));
 	}
 }
 

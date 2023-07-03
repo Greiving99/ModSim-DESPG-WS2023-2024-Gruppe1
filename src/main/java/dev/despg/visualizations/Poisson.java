@@ -18,7 +18,7 @@ public final class Poisson extends Application
 	{
 		Randomizer r = new Randomizer();
 
-		Data.draw(stage, "Poisson Density", () -> r.getPoisson(LAMBDA));
+		Scatterplot.drawPlotWithRandoms(stage, "Poisson Density", () -> r.getPoisson(LAMBDA));
 	}
 }
 
