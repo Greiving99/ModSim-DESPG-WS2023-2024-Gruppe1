@@ -4,7 +4,7 @@ import dev.despg.core.Randomizer;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class Poisson extends Application
+public final class Poisson extends Application
 {
 	private static final double LAMBDA = 3;
 

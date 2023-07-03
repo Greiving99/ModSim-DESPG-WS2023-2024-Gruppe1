@@ -4,7 +4,7 @@ import dev.despg.core.Randomizer;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class Normal extends Application
+public final class Normal extends Application
 {
 	private static final double MEAN = 2;
 	private static final double DEVIATION = 0.5;

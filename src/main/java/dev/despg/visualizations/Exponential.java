@@ -4,7 +4,7 @@ import dev.despg.core.Randomizer;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class Exponential extends Application
+public final class Exponential extends Application
 {
 	private static final double RATE = 1;
 

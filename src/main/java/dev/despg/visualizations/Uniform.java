@@ -4,7 +4,7 @@ import dev.despg.core.Randomizer;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class Uniform extends Application
+public final class Uniform extends Application
 {
 	public static void main(String[] args)
 	{

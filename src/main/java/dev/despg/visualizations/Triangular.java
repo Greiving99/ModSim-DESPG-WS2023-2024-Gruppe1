@@ -4,7 +4,7 @@ import dev.despg.core.Randomizer;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class Triangular extends Application
+public final class Triangular extends Application
 {
 	private static final double MODE = 8;
 
