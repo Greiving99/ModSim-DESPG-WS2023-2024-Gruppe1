@@ -18,7 +18,7 @@ public final class Triangular extends Application
 	{
 		Randomizer r = new Randomizer();
 
-		Data.draw(stage, "Triangular Density", () -> r.getTriangular(Data.MIN, Data.MAX, MODE));
+		Scatterplot.drawPlotWithRandoms(stage, "Triangular Density", () -> r.getTriangular(Scatterplot.MIN, Scatterplot.MAX, MODE));
 	}
 }
 

@@ -20,7 +20,7 @@ public final class Normal extends Application
 	{
 		Randomizer r = new Randomizer();
 
-		Data.draw(stage, "Normal Density", () -> r.getNormal(MEAN, DEVIATION));
+		Scatterplot.drawPlotWithRandoms(stage, "Normal Density", () -> r.getNormal(MEAN, DEVIATION));
 	}
 }
 
