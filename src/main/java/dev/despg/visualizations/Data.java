@@ -2,9 +2,6 @@ package dev.despg.visualizations;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import dev.despg.core.Randomizer;
-import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
@@ -13,46 +10,38 @@ import javafx.scene.chart.XYChart.Series;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class ScatterPlot extends Application
+public abstract class Data
 {
-	private static final String PLOT_TITLE = "Triangular Density";
-	private static final int PIXEL_Y = 800;
-	private static final int PIXEL_X = 1000;
+	private static final int PIXEL_Y 			= 800;
+	private static final int PIXEL_X 			= 1000;
 
-	public static void main(String[] args)
+	public static final double PRECISION 		= 0.0001;
+	public static final int NUMBERS_COMPUTED 	= 100000;
+
+	public static final double MIN = 0;
+	public static final double MAX = 10;
+
+
+	public static void draw(Stage stage, String plotTitle, RandomValue generate)
 	{
-		launch(args);
-	}
-
-	@Override
-	public void start(Stage stage)
-	{
-		stage.setTitle(PLOT_TITLE);
-
-		Randomizer r = new Randomizer();
-		Series<Number, Number> xy = new Series<>();
-		double min = 1;
-		double mode = 8;
-		double max = 10;
-		double precision = 0.1;
-		final int numbersComputed = 10000;
+		stage.setTitle(plotTitle);
 
 		Map<Double, Double> densityFunction = new HashMap<>();
-
-		for (int i = 0; i < numbersComputed; i++)
+		for (int i = 0; i < Data.NUMBERS_COMPUTED; i++)
 		{
-			double value = Math.round(r.getTriangular(min, max, mode) / precision) * precision;
+			double value = Math.round(generate.getDouble() / Data.PRECISION) * Data.PRECISION;
 			Double existingValue = densityFunction.get(value);
 
 			densityFunction.put(value, existingValue == null ? 1.0 : ++existingValue);
 		}
+		densityFunction.replaceAll((k, v) -> densityFunction.get(k) / Data.NUMBERS_COMPUTED);
 
-		densityFunction.replaceAll((k, v) -> densityFunction.get(k) / numbersComputed);
+		Series<Number, Number> xy = new Series<>();
 
 		for (Double key : densityFunction.keySet())
 			xy.getData().add(new XYChart.Data<>(key, densityFunction.get(key)));
 
-		NumberAxis xAxis = new NumberAxis(min, max, 0.01);
+		NumberAxis xAxis = new NumberAxis(MIN, MAX, 0.01);
 		NumberAxis yAxis = new NumberAxis();
 		ScatterChart<Number, Number> sc = new ScatterChart<>(xAxis, yAxis);
 		xAxis.setLabel("random value");
@@ -60,7 +49,7 @@ public class ScatterPlot extends Application
 
 		sc.getData().add(xy);
 		sc.setPrefSize(PIXEL_X, PIXEL_Y);
-		sc.setTitle(PLOT_TITLE);
+		sc.setTitle(plotTitle);
 
 		VBox vb = new VBox();
 		vb.getChildren().add(sc);
@@ -68,4 +57,3 @@ public class ScatterPlot extends Application
 		stage.show();
 	}
 }
-

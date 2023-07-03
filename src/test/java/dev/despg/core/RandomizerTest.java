@@ -40,7 +40,6 @@ class RandomizerTest
 	@Test
 	void addProb2IntShouldAddProbability()
 	{
-		Randomizer rExpected = new Randomizer();
 		List<Probability2Value<Integer>> p = new ArrayList<Probability2Value<Integer>>();
 		p.add(new Probability2Value<Integer>(0.5, 2));
 
@@ -149,9 +148,6 @@ class RandomizerTest
 	@Test
 	void nextIntShouldThrowBecauseEmptyArrayList()
 	{
-		List<Probability2Value<Integer>> p = new ArrayList<Probability2Value<Integer>>();
-		//ReflectionTestUtils.setField(r, "prob2Int", p);
-
 		assertThatThrownBy(() ->
 		{
 			r.nextInt();
