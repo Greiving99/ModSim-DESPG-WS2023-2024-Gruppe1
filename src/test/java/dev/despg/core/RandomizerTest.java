@@ -61,11 +61,11 @@ class RandomizerTest
 		assertThatThrownBy(() ->
 		{
 			r.addProbInt(Randomizer.getMinProbability() - 0.1, 5);
-		}).isInstanceOf(SimulationException.class).hasMessageContaining("is out of bounds");
+		}).isInstanceOf(AssertionError.class);
 		assertThatThrownBy(() ->
 		{
 			r.addProbInt(Randomizer.getMaxProbability() + 0.1, 5);
-		}).isInstanceOf(SimulationException.class).hasMessageContaining("is out of bounds");
+		}).isInstanceOf(AssertionError.class);
 
 	}
 
@@ -115,7 +115,7 @@ class RandomizerTest
 		assertThatThrownBy(() ->
 		{
 			r.addProbInt(Randomizer.getMaxProbability() + 0.1, 2);
-		}).isInstanceOf(SimulationException.class).hasMessageContaining("is out of bounds");
+		}).isInstanceOf(AssertionError.class);
 
 
 	}

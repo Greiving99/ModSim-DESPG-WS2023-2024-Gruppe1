@@ -48,17 +48,16 @@ public final class Randomizer
 	 */
 	public void addProbInt(double to, int value) throws SimulationException
 	{
+		assert (to >= MIN_PROBABILITY);
+		assert (to <= MAX_PROBABILITY);
+
 		for (Probability2Value<Integer> prob2value : prob2Int)
 		{
 			if (prob2value.probabilityUpperLimit() == to)
 				throw new SimulationException("Probability " + to + " already exists");
 		}
 
-		if (to >= MIN_PROBABILITY && to <= MAX_PROBABILITY)
-			prob2Int.add(new Probability2Value<>(to, value));
-		else
-			throw new SimulationException(
-					"Probability " + to + " is out of bounds (" + MIN_PROBABILITY + "-" + MAX_PROBABILITY + ")");
+		prob2Int.add(new Probability2Value<>(to, value));
 	}
 
 	/**
@@ -92,8 +91,19 @@ public final class Randomizer
 	 */
 	public double getUniform(double min, double max)
 	{
-		 assert (max > min);
+		assert (max > min);
+
 	    return RANDOM.nextDouble() * max + min;
+	}
+
+	/**
+	 * returns a (uniform) number between min and max with a certain precision.
+	 */
+	public double getUniformWithPrecision(double min, double max, double precision)
+	{
+		assert (precision > 0);
+
+	    return Math.round(getUniform(min, max) / precision) * precision;
 	}
 
 	/**
@@ -103,6 +113,9 @@ public final class Randomizer
 	 */
 	public double getTriangular(double min, double max, double mode)
 	{
+		assert (max > mode);
+		assert (mode > min);
+
 	    double f = (mode - min) / (max - min);
 	    double rand = Math.random();
 
@@ -112,10 +125,22 @@ public final class Randomizer
 	}
 
 	/**
+	 * returns a (triangular) number between min and max with mode and a certain precision.
+	 */
+	public double getTriangularWithPrecision(double min, double max, double mode, double precision)
+	{
+		assert (precision > 0);
+
+	    return Math.round(getTriangular(min, max, mode) / precision) * precision;
+	}
+
+	/**
 	 * Computes a uniformly-distributed random double with parameterized rate.
 	 */
 	public Double getExponential(double rate)
 	{
+		assert (rate > 0);
+
 	    double u;
 	    do
 	    {
@@ -130,6 +155,9 @@ public final class Randomizer
 	 */
 	public double getNormal(double mean, double deviation)
 	{
+		assert (mean > 0);
+		assert (deviation > 0);
+
 		return RANDOM.nextGaussian() * deviation + mean;
 	}
 
@@ -138,6 +166,8 @@ public final class Randomizer
 	 */
 	public int getPoisson(double lambda)
 	{
+		assert (lambda > 0);
+
 		double l = Math.exp(-lambda);
 		double p = 1.0;
 		int k = 0;
