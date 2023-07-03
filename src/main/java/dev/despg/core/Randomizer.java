@@ -48,17 +48,16 @@ public final class Randomizer
 	 */
 	public void addProbInt(double to, int value) throws SimulationException
 	{
+		assert (to >= MIN_PROBABILITY);
+		assert (to <= MAX_PROBABILITY);
+
 		for (Probability2Value<Integer> prob2value : prob2Int)
 		{
 			if (prob2value.probabilityUpperLimit() == to)
 				throw new SimulationException("Probability " + to + " already exists");
 		}
 
-		if (to >= MIN_PROBABILITY && to <= MAX_PROBABILITY)
-			prob2Int.add(new Probability2Value<>(to, value));
-		else
-			throw new SimulationException(
-					"Probability " + to + " is out of bounds (" + MIN_PROBABILITY + "-" + MAX_PROBABILITY + ")");
+		prob2Int.add(new Probability2Value<>(to, value));
 	}
 
 	/**
