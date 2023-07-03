@@ -92,7 +92,8 @@ public final class Randomizer
 	 */
 	public double getUniform(double min, double max)
 	{
-		 assert (max > min);
+		assert (max > min);
+
 	    return RANDOM.nextDouble() * max + min;
 	}
 
@@ -103,6 +104,9 @@ public final class Randomizer
 	 */
 	public double getTriangular(double min, double max, double mode)
 	{
+		assert (max > mode);
+		assert (mode > min);
+
 	    double f = (mode - min) / (max - min);
 	    double rand = Math.random();
 
@@ -116,6 +120,8 @@ public final class Randomizer
 	 */
 	public Double getExponential(double rate)
 	{
+		assert (rate > 0);
+
 	    double u;
 	    do
 	    {
@@ -130,6 +136,9 @@ public final class Randomizer
 	 */
 	public double getNormal(double mean, double deviation)
 	{
+		assert (mean > 0);
+		assert (deviation > 0);
+
 		return RANDOM.nextGaussian() * deviation + mean;
 	}
 
@@ -138,6 +147,8 @@ public final class Randomizer
 	 */
 	public int getPoisson(double lambda)
 	{
+		assert (lambda > 0);
+
 		double l = Math.exp(-lambda);
 		double p = 1.0;
 		int k = 0;
