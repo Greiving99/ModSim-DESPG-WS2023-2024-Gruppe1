@@ -33,7 +33,7 @@ public abstract class Simulation
 		}
 		*/
 
-		Level level = Level.CONFIG;
+		Level level = Level.INFO;
 
 		// global vs. local in each class
 		Logger globalLogger = Logger.getLogger("");
