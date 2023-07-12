@@ -11,7 +11,6 @@ package dev.despg.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 import org.junit.jupiter.api.Test;
 
 class TimeTest
@@ -39,6 +38,15 @@ class TimeTest
 		{
 			Time.stepsToDateString(-1790);
 		}).isInstanceOf(SimulationException.class).hasMessageContaining("can't be negative");
+	}
+
+	/**
+	 * Checks if getDayOfWeek returns the correct day of week.
+	 */
+	@Test
+	void determinesCorrectWeekDay()
+	{
+		assertThat(Time.getDayOfWeek(0)).isEqualTo(5);
 	}
 
 }
