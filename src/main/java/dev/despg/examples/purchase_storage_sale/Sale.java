@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Level;
+
 import java.util.logging.Logger;
 
 import dev.despg.examples.util.Database;
@@ -22,7 +22,8 @@ public final class Sale extends SimulationObject
 	private double salesquantity;
 	@SuppressWarnings("unused")
 	private int randomCustomerID;
-    public Sale(Database database, Travelcosts travelcosts) {
+    public Sale(Database database, Travelcosts travelcosts)
+    {
         this.database = database;
         this.travelcosts = travelcosts;
         SimulationObjects.getInstance().add(this);
