@@ -74,7 +74,7 @@ public final class PurchasingDepartment extends SimulationObject
 			int bestOfferIndex = bestOffer();
 			if (truckOffers.size() == 0)
 			{
-				logger.log(Level.INFO, Time.stepsToTimeString(timeStep) + " Keine neuen Angebote Verfügbar");
+				logger.log(Level.INFO, Time.stepsToTimeString(timeStep) + " No new offers available ");
 				return false;
 			}
 			int deliveryTime = truckOffers.get(bestOfferIndex).getDeliveryTime();
@@ -102,7 +102,8 @@ public final class PurchasingDepartment extends SimulationObject
 			eventQueue.remove(event);
 			currentTruck = (Truck) event.objectAttached();
 			eventQueue.add(new Event(timeStep + DRIVE_TIME_TO_REPAIR_SHOP, GravelLoadingEventTypes.TruckInspection,
-					currentTruck, TruckRepairShop.class, this)); // nach dem truck geliefert wurde wird eine Inspektion durchgeführt
+					currentTruck, TruckRepairShop.class, this));
+			// After the truck has been delivered, an inspection is carried out.
 			// Message
 			logger.log(Level.INFO, Time.stepsToTimeString(timeStep) + " "
 					+ GravelLoadingEventTypes.NewTruckDelivered.get() + " " + Truck.getName(currentTruck));

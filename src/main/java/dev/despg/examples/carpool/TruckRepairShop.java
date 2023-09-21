@@ -54,20 +54,22 @@ public final class TruckRepairShop extends SimulationObject
 
 	public static String tString()
 	{
-		String toString = "Insgesamt sind LKWs " + (allRepairTime / 60) / 24 + " Tage durch Reperaturen/Inspektion ausgefallen";
+		String toString = "Insgesamt sind LKWs " + (allRepairTime / 60) / 24 + " days out of service due to repairs/inspections";
 		return toString;
 	}
 	@Override
 	public boolean simulate(long timeStep)
 	{
-		Event event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.TruckFailed, this.getClass(), null); // failed trucks aus queue
+		Event event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.TruckFailed, this.getClass(), null);
+		// failed trucks aus queue
 
 		if (event != null)
 		{
 			eventQueue.remove(event);
 			currentTruck = (Truck) event.objectAttached();
 			eventQueue.add(new Event(timeStep + DIAGNOSE_TIME, GravelLoadingEventTypes.TruckDiagnosis,
-					currentTruck, TruckRepairShop.class, this)); // diagnose starten
+					currentTruck, TruckRepairShop.class, this));
+			// start diagnose
 			return true;
 		}
 		event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.TruckDiagnosis, this.getClass(), null);
@@ -93,7 +95,7 @@ public final class TruckRepairShop extends SimulationObject
 				}
 				else
 				{
-					tempRepairTime = REPAIR_TIME_ACCIDENT_DAMAGE; // bei unfall höchste reparaturzeit * 3
+					tempRepairTime = REPAIR_TIME_ACCIDENT_DAMAGE; // Maximum repair time in case of an accident * 3
 				}
 
 			}
@@ -110,7 +112,7 @@ public final class TruckRepairShop extends SimulationObject
 			{
 
 				logger.log(Level.INFO, Time.stepsToTimeString(timeStep) + " "
-				+ Truck.getName(currentTruck) + " lohnt sich nicht reperiert zu werden");
+				+ Truck.getName(currentTruck) + "Not worth repairing");
 				shutDownTrucks(currentTruck, timeStep);
 				eventQueue.add(new Event(timeStep, GravelLoadingEventTypes.GetBestOfferForNewTruck,
 						currentTruck, PurchasingDepartment.class, null));
@@ -124,8 +126,8 @@ public final class TruckRepairShop extends SimulationObject
 				}
 			performedRepair(currentTruck, tempRepairTime);
 			eventQueue.add(new Event(timeStep + tempRepairTime, GravelLoadingEventTypes.TruckInRepair,
-					currentTruck, TruckRepairShop.class, this)); // repairtime festlegen
-			GravelShipping.setNumberOfFailure(); // ausfall erhöhen für mtbf
+					currentTruck, TruckRepairShop.class, this)); // Set the repair time
+			GravelShipping.setNumberOfFailure(); // Increase the downtime for MTBF (Mean Time Between Failures
 			currentTruck.setAccident(false);
 			return true;
 		}
@@ -136,7 +138,7 @@ public final class TruckRepairShop extends SimulationObject
 			eventQueue.remove(event);
 			currentTruck = (Truck) event.objectAttached();
 			eventQueue.add(new Event(timeStep + 30, GravelLoadingEventTypes.TruckRepaired,
-					currentTruck, TruckRepairShop.class, this)); // repair fertig
+					currentTruck, TruckRepairShop.class, this)); // repair ready
 			return true;
 		}
 
@@ -154,7 +156,7 @@ public final class TruckRepairShop extends SimulationObject
 					+ GravelLoadingEventTypes.TruckRepaired.get() + " " + Truck.getName(currentTruck));
 			}
 			eventQueue.add(new Event(timeStep + 30, GravelLoadingEventTypes.Loading,
-					currentTruck, LoadingDock.class, null)); //reparieter truck wird beladen
+					currentTruck, LoadingDock.class, null)); //The repaired truck is being loaded
 			return true;
 		}
 		event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.TruckInspection, this.getClass(), null);
@@ -166,7 +168,7 @@ public final class TruckRepairShop extends SimulationObject
 			allRepairTime += INSPECTION_TIME;
 			currentTruck.setDrivingTimeSinceLastPause(0);
 			eventQueue.add(new Event(timeStep + INSPECTION_TIME, GravelLoadingEventTypes.TruckInspectionDone,
-					currentTruck, TruckRepairShop.class, this)); // inspektion fertig
+					currentTruck, TruckRepairShop.class, this)); // inspection ready
 			return true;
 		}
 		event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.TruckInspectionDone, this.getClass(), null);
@@ -195,7 +197,7 @@ public final class TruckRepairShop extends SimulationObject
 		String repName = getRepairName(tempRepairTime);
 		String formattedName = String.format("%-30s", name);
 		String formaRepName = String.format("%-40s", repName);
-		String repair = String.format("%s druchgeführte Reparatur: %s | Dauer der Reparatur: "
+		String repair = String.format("%s Completed repair: %s | Duration of the repair: "
 				+ Time.stepsToTimeString(tempRepairTime), formattedName, formaRepName);
 
 		allRepairs.add(repair);
@@ -210,13 +212,13 @@ public final class TruckRepairShop extends SimulationObject
 		if (t.isShutDown())
 		{
 		shutdownMessage = String.format(Time.stepsToTimeString(timeStep)
-				+ "\t%s Totalschaden!! Konnte nicht mehr repariert werden! Finaler KM-Stand: %.2f km",
+				+ "\t%s Total loss! Couldn't be repaired anymore! Final mileage: %.2f km",
 				formattedName, Truck.getKMStandOnly(t));
 		}
 		else
 		{
 		shutdownMessage = String.format(Time.stepsToTimeString(timeStep)
-				+ "\t%s stillgelgt. Lohnt nicht mehr zu reparieren, Finaler KM-Stand: %.2f km",
+				+ "\t%s Decommissioned. Not worth repairing anymore. Final mileage: %.2f km",
 				formattedName, Truck.getKMStandOnly(t));
 		}
 		allShutDownTrucks.add(shutdownMessage);
@@ -229,50 +231,50 @@ public final class TruckRepairShop extends SimulationObject
 		if (repairTime == 180)
 		{
 		    // Array of possible repairs for 180 minutes (3 hours)
-		    String[] repairs = {"Austausch von Glühbirnen",
-		                        "Auswechseln von Luftfiltern",
-		                        "Austausch von Scheibenwischern",
-		                        "Austausch von Bremsbelägen"};
+		    String[] repairs = {"Replacement of light bulbs",
+		    		"Replacement of air filters",
+		    		"Replacement of windshield wipers",
+		    		"Replacement of brake pads"};
 		    // Random selection of a repair from the array.
 		    repairName = repairs[random.nextInt(repairs.length)];
 		} else if (repairTime == 720)
 		{
 		    // Array of possible repairs for 720 minutes (12 hours)
-		    String[] repairs = {"Austausch von Bremsen",
-		                        "Austausch von Kühlerschläuchen",
-		                        "Reparatur von Lichtmaschinen",
-		                        "Austausch von Stoßdämpfern"};
+		    String[] repairs = {"Brake replacement",
+		    		"Radiator hose replacement",
+		    		"Alternator repair",
+		    		"Shock absorber replacement"};
 		    repairName = repairs[random.nextInt(repairs.length)];
 		} else if (repairTime == 1440)
 		{
 		    //  Array of possible repairs for 1440 minutes (24 hours)
-		    String[] repairs = {"Austausch der Antriebswelle",
-		                        "Austausch von Stoßfängern",
-		                        "Ersetzen von Lenkgetrieben",
-		                        "Reparatur von Motoren"};
+		    String[] repairs = {"Drive shaft replacement",
+		    		"Bumper replacement",
+		    		"Steering gearbox replacement",
+		    		"Engine repair"};
 		    repairName = repairs[random.nextInt(repairs.length)];
 		} else if (repairTime == 7200)
 		{
 		    // Array of possible repairs for 7200 minutes (5 days)
-		    String[] repairs = {"Austausch von Getriebe",
-		                        "Reparatur von Karosseriebeschädigungen",
-		                        "Reparatur von Elektronikproblemen"};
+		    String[] repairs = {"Transmission replacement",
+		    		"Body damage repair",
+		    		"Electronic problems repair"};
 		    repairName = repairs[random.nextInt(repairs.length)];
 		} else if (repairTime == 12960)
 		{
 		    // Array of possible repairs for 12960 minutes (9 days)
-		    String[] repairs = {"Rostbeseitigung und Neulackierung",
-		                        "Austausch Chassis",
-		                        "Einbau von Spezialteilen"};
+		    String[] repairs = {"Rust removal and repainting",
+		    		"Chassis replacement",
+		    		"Installation of specialized parts"};
 		    repairName = repairs[random.nextInt(repairs.length)];
 		} else if (repairTime == 20160)
 		{
 		    //  Array of possible repairs for 20160 minutes (14 days)
-		    String[] repairs = {"Austausch Antriebswelle",
-		                        "Überholung des ganzen Fahrzeug"};
+		    String[] repairs = {"Drive shaft replacement",
+		    		"Overhaul of the entire vehicle"};
 		    repairName = repairs[random.nextInt(repairs.length)];
 
-		} else repairName = "Wiederaufbau nach schweren Unfallschäden";
+		} else repairName = "Reconstruction after severe accident damage";
 
 
 		return repairName;

@@ -122,7 +122,8 @@ public final class Truck extends SimulationObject
 				if (currentTruck.probToFail > GravelShipping.getProbtoFail() || crash.nextInt() == 1)
 				{
 					int travelTimeToFail = (int) (travelTime * (MIN_ROUTE_PERCENT_UNTIL_FAIL
-							+ Math.random() * MAX_ROUTE_PERCENT_UNTIL_FAIL)); //fährt 35%-90% strecke bevor er einen schaden hat
+							+ Math.random() * MAX_ROUTE_PERCENT_UNTIL_FAIL));
+					//It travels 35% to 90% of the distance before it sustains any damage.
 					currentTruck.currentTravelTime = travelTimeToFail;
 					increaseTruckValues(currentTruck, travelTimeToFail);
 					eventQueue.add(new Event(timeStep + travelTimeToFail + 60, GravelLoadingEventTypes.TruckWillFail,
@@ -167,7 +168,8 @@ public final class Truck extends SimulationObject
 		{
 			eventQueue.remove(event);
 			currentTruck = (Truck) event.objectAttached();
-			currentTruck.drivingTimeSinceLastPause = 0; // fahrzeit auf null setzen
+			currentTruck.drivingTimeSinceLastPause = 0;
+			//Resetting the driving time to zero.
 
 			if (currentTruck.drivingTimeSinceLastPause + currentTruck.remainingTravelTime <= GravelShipping.getMaxDrivingTime())
 			{
@@ -276,7 +278,7 @@ public final class Truck extends SimulationObject
 		{
 			logger.log(Level.INFO, Time.stepsToTimeString(timeStep) + " " + GravelLoadingEventTypes.TruckFailed.get() + " "
 					+ currentTruck.name + " ProbToFail: " + currentTruck.probToFail + " Wartung KM Stand : "
-					+ currentTruck.kmCounterToMaintaince);  // ausgabe für logger entweder per arraylist oder toString
+					+ currentTruck.kmCounterToMaintaince);  // Output for the logger, either via an ArrayList or using toString
 		}
 	}
 
@@ -323,10 +325,10 @@ public final class Truck extends SimulationObject
 	{
 		truck.kmCounterToMaintaince += travelTimeToKm(travelTime);
 		double deviation = (Math.random() * 10) / 100;
-		currentTruck.averageConsumption += truck.fuelConsumption * (1.0 + deviation); //abweichung vom verbruach
+		currentTruck.averageConsumption += truck.fuelConsumption * (1.0 + deviation); //Deviation from the consumption
 		currentTruck.totalConsumption += (truck.fuelConsumption
-				* (travelTimeToKm(travelTime) / 100)) * (1.0 + deviation); //verbrauch
-		setOdometer(truck, travelTimeToKm(travelTime)); //km stand erhöhen
+				* (travelTimeToKm(travelTime) / 100)) * (1.0 + deviation); //consumption
+		setOdometer(truck, travelTimeToKm(travelTime)); //km increase
 		truck.kmCounterToMaintaince += travelTimeToKm(travelTime);
 	}
 
@@ -378,7 +380,7 @@ public final class Truck extends SimulationObject
 
 	public String getTotalAccidents()
 	{
-		String resultString = name + " Anzahl Unfälle: " + numberAccidents;
+		String resultString = name + " Number of accidents: " + numberAccidents;
 		return resultString;
 	}
 
@@ -388,7 +390,7 @@ public final class Truck extends SimulationObject
 		String formattedName = String.format("%-30s", truckName);
 		DecimalFormat f = new DecimalFormat("#0.00");
 		String formattedKmStand = String.format("%-11s", f.format(odometer));
-		String result = String.format("%s Kilometer-Stand: %s km", formattedName, formattedKmStand);
+		String result = String.format("%s Odometer reading: %s km", formattedName, formattedKmStand);
 		return result;
 	}
 
@@ -405,9 +407,9 @@ public final class Truck extends SimulationObject
 	public String getFinalConsumption()
 	{
 		DecimalFormat f = new DecimalFormat("#0.00");
-		String result = name + " Gesamt Diesel-Verbrauch " + f.format(totalConsumption) + " Liter" + " -> Gesamtkosten: "
+		String result = name + " Total diesel consumption " + f.format(totalConsumption) + " liter" + " -> totalcost: "
 				+ f.format(totalConsumption * GravelShipping.getDieselPrice()) + "€\n"
-				+ "\t\tAngegebner Durschnittsverbrauch: " + fuelConsumption + "l/100KM || Real Durchnischtsverbrauch:  "
+				+ "\t\tSpecified average consumption: " + fuelConsumption + "l/100KM || real average consumption:  "
 				+ f.format(averageConsumption / numberOfTrips) + " l/100 KM\n";
 
 		return result;

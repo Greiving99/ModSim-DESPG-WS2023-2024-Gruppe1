@@ -14,6 +14,7 @@ import dev.despg.core.EventQueue;
 import dev.despg.core.Randomizer;
 import dev.despg.core.SimulationObject;
 import dev.despg.core.SimulationObjects;
+import dev.despg.core.TrackerType;
 
 public final class WeighingStation extends SimulationObject
 {
@@ -85,9 +86,9 @@ public final class WeighingStation extends SimulationObject
 		{
 			eventQueue.remove(event);
 			truckInWeighingStation = (Truck) event.objectAttached();
-			eventQueue.add(new Event(timeStep + truckInWeighingStation.addTimeStepDelta(null, timeStep),
+			eventQueue.add(new Event(timeStep + truckInWeighingStation.addTimeStepDelta(TrackerType.Utilization, timeStep),
 					null, truckInWeighingStation, null, truckInWeighingStation));
-			trackerStart(null, timeStep);
+			trackerStart(TrackerType.Utilization, timeStep);
 			return true;
 		}
 
@@ -103,7 +104,7 @@ public final class WeighingStation extends SimulationObject
 				GravelShipping.setGravelToShip(GravelShipping.getGravelToShip() + truckToWeighLoad);
 				GravelShipping.increaseUnsuccessfulLoadingSizes(truckToWeighLoad);
 				GravelShipping.increaseUnsuccessfulLoadings();
-				driveToLoadingStation = truckInWeighingStation.addTimeStepDelta(null, drivingToLoadingDock.nextInt());
+				driveToLoadingStation = truckInWeighingStation.addTimeStepDelta(TrackerType.Utilization, drivingToLoadingDock.nextInt());
 			}
 			else
 			{
@@ -121,7 +122,7 @@ public final class WeighingStation extends SimulationObject
 
 			//truckInWeighingStation.unload();
 			truckInWeighingStation = null;
-			trackerStop(null, timeStep);
+			trackerStop(TrackerType.Utilization, timeStep);
 			return true;
 		}
 

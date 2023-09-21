@@ -100,7 +100,7 @@ public class GravelShipping extends Simulation
 		logger.log(Level.INFO, "Gravel shipped: " + gravelShipped + " tons");
 		logger.log(Level.INFO, "Driven routes: " + successfulLoadings);
 		logger.log(Level.INFO, "-------------------------------");
-		logger.log(Level.INFO, "Truck - Informationen");
+		logger.log(Level.INFO, "Truck - informations");
 		logger.log(Level.INFO, TruckRepairShop.tString());
 		logger.log(Level.INFO, "Total failures = " + numberOfFailure);
 		if (getMTBF() == 0.00)

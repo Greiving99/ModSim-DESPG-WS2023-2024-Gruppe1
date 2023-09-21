@@ -30,9 +30,9 @@ public enum GravelLoadingEventTypes implements UniqueEventDescription
 	/** */
 	TruckStart("Truck starts driving"),
 	/** */
-	TruckBack("Truck zurück"),
+	TruckBack("Truck is back"),
 	/** */
-	TruckEnRoute("Truck ist unterwegs"),
+	TruckEnRoute("Truck is on the road"),
 	/** */
 	TruckFailed("Truck failed"),
 	/** */
@@ -40,21 +40,21 @@ public enum GravelLoadingEventTypes implements UniqueEventDescription
 	/** */
 	TruckInRepair("Truck in repair"),
 	/** */
-	TruckInspection("Truck wird gewartet"),
+	TruckInspection("Truck in maintance"),
 	/** */
-	TruckDiagnosis("Truck in Diagnose"),
+	TruckDiagnosis("Truck in diagnose"),
 	/** */
-	TruckInspectionDone("Truck Inspektion done"),
+	TruckInspectionDone("Truck inspection done"),
 	/** */
-	TruckDriverPause("Truck Fahrer in Pause"),
+	TruckDriverPause("Truck driver on a break"),
 	/** */
-	TruckStartPartRoute("Truck start Teilstrecke"),
+	TruckStartPartRoute("Truck starts a partial leg of the journey"),
 	/** */
-	GetBestOfferForNewTruck("Bestes Angebot für neuen Truck aussuchen"),
+	GetBestOfferForNewTruck("Selecting the best offer for a new truck"),
 	/** */
 	NewTruckDelivered("New Truck delivered -> now inspection"),
 	/** */
-	TruckWillFail("Truck wird auf der Tour kaputt gehen");
+	TruckWillFail("The truck will break down during the journey.");
 
 	private String eventTypeUniqueDescription;
 
