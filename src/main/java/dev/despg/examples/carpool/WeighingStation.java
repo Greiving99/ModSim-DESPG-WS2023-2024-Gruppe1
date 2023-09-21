@@ -54,7 +54,6 @@ public final class WeighingStation extends SimulationObject
 			toString += " " + "loading: " + truckInWeighingStation;
 		return toString;
 	}
-
 	/**
 	 * Gets called every timeStep
 	 *
