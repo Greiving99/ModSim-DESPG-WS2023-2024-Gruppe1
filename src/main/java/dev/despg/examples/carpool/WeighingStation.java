@@ -46,7 +46,6 @@ public final class WeighingStation extends SimulationObject
 
 		SimulationObjects.getInstance().add(this);
 	}
-
 	@Override
 	public String toString()
 	{
