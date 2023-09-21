@@ -10,29 +10,29 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 import java.util.Random;
-
+import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import dev.despg.examples.util.Database;
+
 public final class Sale extends SimulationObject
 {
-	private static final Logger LOGGER = Logger.getLogger(Sale.class.getName());
-	private Database database;
-	private Travelcosts travelcosts;
-	private double salesquantity;
-	@SuppressWarnings("unused")
-	private int randomCustomerID;
+    private static final Logger LOGGER = Logger.getLogger(Sale.class.getName());
+    private final Database database;
+    private final Travelcosts travelcosts;
+    private final SaleRepository saleRepository;
+
     public Sale(Database database, Travelcosts travelcosts)
     {
         this.database = database;
         this.travelcosts = travelcosts;
+        this.saleRepository = new SaleRepository(database.getSession());
         SimulationObjects.getInstance().add(this);
     }
 
     public boolean simulate(long timeStep)
     {
-      performSales(salesquantity);
-      return false;
+        performSales(generateRandomSalesQuantity(1000, 10000));
+        return false;
     }
 
     public void updateCustomerTotalSales()
@@ -40,15 +40,11 @@ public final class Sale extends SimulationObject
         try (Session session = database.getSession())
         {
             Transaction transaction = session.beginTransaction();
-
-            String sumQuery = "SELECT c.id, SUM(s.totalRevenue) FROM SaleEntity s JOIN s.customer c GROUP BY c.id";
-            List<Object[]> results = session.createQuery(sumQuery).getResultList();
-
+            List<Object[]> results = saleRepository.getCustomerTotalSales();
             for (Object[] result : results)
             {
                 int customerId = (int) result[0];
                 BigDecimal totalSales = BigDecimal.valueOf((double) result[1]);
-
                 CustomerEntity customer = session.get(CustomerEntity.class, customerId);
                 if (customer != null)
                 {
@@ -56,8 +52,10 @@ public final class Sale extends SimulationObject
                     session.update(customer);
                 }
             }
-
             transaction.commit();
+        } catch (Exception e)
+        {
+            LOGGER.log(Level.SEVERE, "Error during updating customer total sales", e);
         }
     }
 
@@ -74,19 +72,12 @@ public final class Sale extends SimulationObject
         }
 
         discountRate += (int) (quantity / 1000) * 0.02;  // Dynamischer Rabatt
-
-        // Stellen Sie sicher, dass der maximale Rabattsatz nicht mehr als 100% beträgt.
-        return Math.min(discountRate, 1.0);
+        return Math.min(discountRate, 1.0);  // Max 100% Rabatt
     }
-
 
     public double totalSales()
     {
-        try (Session session = database.getSession())
-        {
-            Query<Double> query = session.createQuery("SELECT SUM(s.totalRevenue) FROM SaleEntity s", Double.class);
-            return query.uniqueResult();
-        }
+        return saleRepository.getTotalSalesRevenue();
     }
 
     public void performSales(double salesQuantity)
@@ -95,91 +86,57 @@ public final class Sale extends SimulationObject
         {
             Transaction transaction = session.beginTransaction();
 
-            int randomCustomerID = getRandomCustomerID();
+            int randomCustomerID = getRandomCustomerID(session);
 
-            // Suche das Lager mit der kürzesten Entfernung zum Kunden.
-            Query<StorageEntity> query = session.createQuery("FROM StorageEntity", StorageEntity.class);
-            List<StorageEntity> storages = query.list();
-            int nearestStorageID = -1;
-            double minDistance = Double.MAX_VALUE;
-            salesQuantity = generateRandomSalesQuantity(1000, 10000);
-            StorageEntity selectedStorage = null;
+            StorageEntity selectedStorage = findNearestStorage(session, salesQuantity, randomCustomerID);
 
-            for (StorageEntity storage : storages)
+            if (selectedStorage == null)
             {
-                BigDecimal effectiveFillLevel = storage.getFillLevel().multiply(storage.getCapacity());
-                if (effectiveFillLevel.compareTo(BigDecimal.valueOf(salesQuantity)) < 0)
-                {
-                    System.out.println("Nicht genug Bestand im Lager " + storage.getStorageID() + " (" + storage.getCity() + ").");
-                    continue;
-                }
-                double distance = travelcosts.getDistanceToCustomer(storage.getStorageID(), randomCustomerID);
-                if (distance < minDistance)
-                {
-                    minDistance = distance;
-                    nearestStorageID = storage.getStorageID();
-                    selectedStorage = storage;
-                }
-            }
-
-            if (nearestStorageID == -1)
-            {
-                System.out.println("Kein geeignetes Lager gefunden.");
+                LOGGER.log(Level.WARNING, "Kein geeignetes Lager gefunden.");
                 return;
             }
 
-            // Führe den Verkaufstransaktion mit dem gefundenen Lager durch
-            double deliveryCosts = travelcosts.calculateDeliveryCosts(nearestStorageID, randomCustomerID);
-            insertSales(randomCustomerID, salesQuantity, calculateSalesPricePerTon(), getMargin(selectedStorage.getFillLevel().doubleValue()),
-                        calculateSalesPricePerTon() * salesQuantity, deliveryCosts,
-                        salesQuantity * calculateSalesPricePerTon() - deliveryCosts, session);
+            double deliveryCosts = travelcosts.calculateDeliveryCosts(selectedStorage.getStorageID(), randomCustomerID);
+            insertSales(randomCustomerID, salesQuantity, calculateSalesPricePerTon(session), getMargin(selectedStorage.getFillLevel().doubleValue()),
+                    calculateSalesPricePerTon(session) * salesQuantity, deliveryCosts,
+                    salesQuantity * calculateSalesPricePerTon(session) - deliveryCosts, session);
 
-            BigDecimal newFillLevel =
-            		selectedStorage.getFillLevel().subtract(BigDecimal.valueOf(salesQuantity).divide(selectedStorage.getCapacity(),
-            				2, RoundingMode.HALF_UP));
-            updateFillLevel(nearestStorageID, newFillLevel, session);
+            BigDecimal newFillLevel = selectedStorage.getFillLevel().subtract(
+                    BigDecimal.valueOf(salesQuantity).divide(selectedStorage.getCapacity(), 2, RoundingMode.HALF_UP)
+            );
+            updateFillLevel(selectedStorage.getStorageID(), newFillLevel, session);
 
             transaction.commit();
+        } catch (Exception e)
+        {
+            LOGGER.log(Level.SEVERE, "Error during sale performance", e);
         }
     }
 
-    private int getRandomCustomerID()
+    private int getRandomCustomerID(Session session)
     {
-        try (Session session = database.getSession())
-        {
-            Query<CustomerEntity> query = session.createQuery("FROM CustomerEntity ORDER BY function('RAND')");
-            query.setMaxResults(1);
-            CustomerEntity customer = query.uniqueResult();
-            return customer.getId();
-        }
+        Query<CustomerEntity> query = session.createQuery("FROM CustomerEntity ORDER BY function('RAND')");
+        query.setMaxResults(1);
+        CustomerEntity customer = query.uniqueResult();
+        return customer.getId();
     }
 
-    private double calculateSalesPricePerTon()
+    private double calculateSalesPricePerTon(Session session)
     {
-        try (Session session = database.getSession())
+        Double result = saleRepository.getAveragePricePerTon();
+        if (result != null)
         {
-            Query<Double> query = session.createQuery("SELECT AVG(p.pricePerTon) FROM PurchaseEntity p", Double.class);
-            Double result = query.uniqueResult();
-            if (result != null)
-            {
-                return result;
-            } else
-            {
-                System.out.println("Es wurden keine durchschnittlichen Preise pro Tonne gefunden.");
-                return 0.0;  // Oder einen anderen Standardwert oder eine Ausnahme werfen.
-            }
+            return result;
+        } else
+        {
+            LOGGER.log(Level.WARNING, "Es wurden keine durchschnittlichen Preise pro Tonne gefunden.");
+            return 0.0;
         }
     }
 
     private double getMargin(double fillLevel)
     {
-        if (fillLevel >= 0.8)
-        {
-            return 0.1;
-        } else
-        {
-            return 0.3 - 0.2 * (0.8 - fillLevel) / 0.8;
-        }
+        return fillLevel >= 0.8 ? 0.1 : 0.3 - 0.2 * (0.8 - fillLevel) / 0.8;
     }
 
     private static double generateRandomSalesQuantity(int min, int max)
@@ -189,27 +146,22 @@ public final class Sale extends SimulationObject
     }
 
     private void insertSales(int customerID, double salesQuantity, double salesPricePerTon, double margin,
-            double totalEarnings, double deliveryCosts, double profit, Session session)
+                             double totalEarnings, double deliveryCosts, double profit, Session session)
     {
         SaleEntity saleEntity = new SaleEntity();
-
-        // Gesamtrabatt berechnen
         double discountRate = calculateDiscountRate(salesQuantity);
-
-        // Den finalen Verkaufspreis pro Tonne unter Berücksichtigung des Gesamtrabatts berechnen
         double finalPricePerTon = salesPricePerTon * (1 - discountRate);
-
         saleEntity.setCustomerId(customerID);
         saleEntity.setQuantity(salesQuantity);
-        saleEntity.setOurPricePerTon(finalPricePerTon); // Verwenden Sie den finalen Preis pro Tonne
+        saleEntity.setOurPricePerTon(finalPricePerTon);
         saleEntity.setMargin(margin);
         saleEntity.setTotalRevenue(totalEarnings * (1 - discountRate));
         saleEntity.setDeliveryCostsCustomer(deliveryCosts);
         saleEntity.setProfit(profit * (1 - discountRate));
         saleEntity.setDiscountRate(discountRate);
-
         session.save(saleEntity);
     }
+
     private void updateFillLevel(int storageID, BigDecimal newFillLevel, Session session)
     {
         StorageEntity storage = session.get(StorageEntity.class, storageID);
@@ -220,10 +172,30 @@ public final class Sale extends SimulationObject
         }
     }
 
-    private double getDynamicDiscountRate(double quantity)
+    private StorageEntity findNearestStorage(Session session, double salesQuantity, int randomCustomerID)
     {
-        int discountPercentage = (int) (quantity / 1000) * 2;
-        return discountPercentage / 100.0;
+        Query<StorageEntity> query = session.createQuery("FROM StorageEntity", StorageEntity.class);
+        List<StorageEntity> storages = query.list();
+
+        StorageEntity selectedStorage = null;
+        double minDistance = Double.MAX_VALUE;
+
+        for (StorageEntity storage : storages)
+        {
+            BigDecimal effectiveFillLevel = storage.getFillLevel().multiply(storage.getCapacity());
+            if (effectiveFillLevel.compareTo(BigDecimal.valueOf(salesQuantity)) < 0)
+            {
+                LOGGER.log(Level.WARNING, "Nicht genug Bestand im Lager " + storage.getStorageID() + " (" + storage.getCity() + ").");
+                continue;
+            }
+            double distance = travelcosts.getDistanceToCustomer(storage.getStorageID(), randomCustomerID);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                selectedStorage = storage;
+            }
+        }
+        return selectedStorage;
     }
 
     public static void main(String[] args)
@@ -231,8 +203,6 @@ public final class Sale extends SimulationObject
         Database database = new Database();
         Travelcosts travelcosts = new Travelcosts(37.0, database);
         Sale sale = new Sale(database, travelcosts);
-        double salesQuantity = generateRandomSalesQuantity(1000, 10000);
-        sale.performSales(salesQuantity);
-
+        sale.performSales(generateRandomSalesQuantity(1000, 10000));
     }
 }
