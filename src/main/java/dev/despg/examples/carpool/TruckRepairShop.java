@@ -55,7 +55,6 @@ public final class TruckRepairShop extends SimulationObject
 	public static String tString()
 	{
 		String toString = "Insgesamt sind LKWs " + (allRepairTime / 60) / 24 + " Tage durch Reperaturen/Inspektion ausgefallen";
-	
 		return toString;
 	}
 	@Override
@@ -82,7 +81,7 @@ public final class TruckRepairShop extends SimulationObject
 			{
 				if (truckTotalDamage.nextInt() == 1)
 				{
-					
+
 					logger.log(Level.INFO, Time.stepsToTimeString(timeStep) + " " + Truck.getName(currentTruck)
 					+ " Totalschaden -> LKW kann nicht mehr repariert werden");
 

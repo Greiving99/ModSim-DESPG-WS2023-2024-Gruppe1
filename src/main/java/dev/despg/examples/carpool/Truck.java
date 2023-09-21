@@ -40,16 +40,17 @@ public final class Truck extends SimulationObject
 	private int allDrivingTime;
 	private Truck currentTruck;
 	private int driveTimeToLoading = 20;
-	private double odometer; 
-	private int currentTravelTime; 
+	private double odometer;
+	private int currentTravelTime;
 
 	private double fuelConsumption;
 	private double totalConsumption;
 	private double averageConsumption;
 	private int numberOfTrips;
 	private int probToFail;
-	private double kmCounterToMaintaince; 
-	private int drivingTimeSinceLastPause; // < 480 -> 8 hours drive time 
+	private double kmCounterToMaintaince;
+	// < 480 -> 8 hours drive time
+	private int drivingTimeSinceLastPause;
 	private int remainingTravelTime;
 	private int numberAccidents;
 	private boolean accident;
@@ -144,7 +145,7 @@ public final class Truck extends SimulationObject
 			else
 			{
 				currentTruck.remainingTravelTime = travelTime - (GravelShipping.getMaxDrivingTime() - currentTruck.drivingTimeSinceLastPause);
-				
+
 				eventQueue.add(new Event(timeStep + (GravelShipping.getMaxDrivingTime() - currentTruck.drivingTimeSinceLastPause),
 						GravelLoadingEventTypes.TruckStartPartRoute, currentTruck, Truck.class, this));
 				truckIsDrivingMessage(timeStep);
@@ -179,7 +180,7 @@ public final class Truck extends SimulationObject
 			{
 				currentTruck.remainingTravelTime = currentTruck.remainingTravelTime
 						- (GravelShipping.getMaxDrivingTime() - currentTruck.drivingTimeSinceLastPause);
-	
+
 				eventQueue.add(new Event(timeStep + (GravelShipping.getMaxDrivingTime() - currentTruck.drivingTimeSinceLastPause),
 						GravelLoadingEventTypes.TruckStartPartRoute, currentTruck, Truck.class, this));
 				return true;

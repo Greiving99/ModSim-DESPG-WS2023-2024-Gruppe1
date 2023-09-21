@@ -33,7 +33,7 @@ public class GravelShipping extends Simulation
 	// 7200 = 5 days / 525600 = 1 year
 	private static final int VMAX = 75;
 	//average speed
-	private static final int PROB_TO_FAIL = 350; 
+	private static final int PROB_TO_FAIL = 350;
 	private static final int MAINTENANCE_INTERVAL = 100000;
 	private static final int MAX_DRIVING_TIME = 480;
 	// 480 = 8 hours // 600 = 10 hours
