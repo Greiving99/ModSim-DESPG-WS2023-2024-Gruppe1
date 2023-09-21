@@ -29,7 +29,10 @@
       <property name="processJavadoc" value="false"/>
     </module>
     <module name="MethodLength"/>
-    <module name="ParameterNumber"/>
+    <module name="ParameterNumber">
+      <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+    </module>
     <module name="GenericWhitespace"/>
     <module name="MethodParamPad"/>
     <module name="NoWhitespaceAfter"/>
