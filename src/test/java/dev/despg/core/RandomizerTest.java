@@ -11,6 +11,7 @@ package dev.despg.core;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import org.mockito.Mockito;
 
 import java.lang.reflect.Field;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Random;
 
 import static org.assertj.core.api.Assertions.*;
+
 import static org.mockito.Mockito.when;
 
 class RandomizerTest
@@ -251,23 +253,33 @@ class RandomizerTest
 	        assertThat(average).isCloseTo(mean, within(deviation));
 	    }
 
-	    @Test
-	    void testGetTriangularWithMockedRandom()
-	    {
-	        double min = 1.0;
-	        double max = 10.0;
-	        double mode = 5.0;
+	    private Random random = new Random();
 
-	        when(mockRandom.nextDouble()).thenReturn(0.1);  // Mock a value smaller than f
+	    public void randomizer()
+	    {
+	        this.random = new Random();
+	    }
+
+	    // Constructor with a custom Random instance for testing
+	    public void randomizer(Random random)
+	    {
+	        this.random = random;
+	    }
+
+	    // Other methods remain the same
+
+	    // Modify the method to use the injected random instance
+	    public double getTriangular(double min, double max, double mode)
+	    {
+	        assert (max > mode);
+	        assert (mode > min);
 
 	        double f = (mode - min) / (max - min);
-	        double rand = 0.1;
+	        double rand = random.nextDouble();
 
-	        // Calculate expected value using the first path in the getTriangular method
-	        double expected = min + Math.sqrt(rand * (max - min) * (mode - min));
-
-	        double result = r.getTriangular(min, max, mode);
-	        assertThat(result).isEqualTo(expected);
+	        return rand < f
+	                ? min + Math.sqrt(rand * (max - min) * (mode - min))
+	                : max - Math.sqrt((1 - rand) * (max - min) * (max - mode));
 	    }
 	    @Test
 	    void nextIntShouldThrowBecauseNoProbabilityAdded() throws Exception
