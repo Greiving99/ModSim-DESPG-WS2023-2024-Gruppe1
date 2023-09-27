@@ -2,30 +2,29 @@ package dev.despg.examples.purchase_storage_sale;
 
 import dev.despg.core.SimulationObject;
 import dev.despg.core.SimulationObjects;
-import jakarta.persistence.*;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import dev.despg.examples.util.Database;
+
 
 public final class Sale extends SimulationObject
 {
     private static final Logger LOGGER = Logger.getLogger(Sale.class.getName());
     private final Database database;
     private final Travelcosts travelcosts;
-    private final SaleRepository saleRepository;
 
     public Sale(Database database, Travelcosts travelcosts)
     {
         this.database = database;
         this.travelcosts = travelcosts;
-        this.saleRepository = new SaleRepository(database.getSession());
         SimulationObjects.getInstance().add(this);
     }
 
@@ -39,23 +38,25 @@ public final class Sale extends SimulationObject
     {
         try (Session session = database.getSession())
         {
+            List<SaleEntity> sales = session.createQuery("FROM SaleEntity", SaleEntity.class).list();
+
+            Map<Integer, Double> customerSalesMap = sales.stream()
+                    .collect(Collectors.groupingBy(SaleEntity::getCustomerId,
+                            Collectors.summingDouble(SaleEntity::getTotalRevenue)));
+
             Transaction transaction = session.beginTransaction();
-            List<Object[]> results = saleRepository.getCustomerTotalSales();
-            for (Object[] result : results)
+
+            for (Map.Entry<Integer, Double> entry : customerSalesMap.entrySet())
             {
-                int customerId = (int) result[0];
-                BigDecimal totalSales = BigDecimal.valueOf((double) result[1]);
-                CustomerEntity customer = session.get(CustomerEntity.class, customerId);
+                CustomerEntity customer = session.get(CustomerEntity.class, entry.getKey());
                 if (customer != null)
                 {
-                    customer.setRevenue(totalSales);
+                    customer.setRevenue(BigDecimal.valueOf(entry.getValue()));
                     session.update(customer);
                 }
             }
+
             transaction.commit();
-        } catch (Exception e)
-        {
-            LOGGER.log(Level.SEVERE, "Error during updating customer total sales", e);
         }
     }
 
@@ -65,19 +66,23 @@ public final class Sale extends SimulationObject
 
         if (quantity >= 6000)
         {
-            discountRate += 0.20;  // 20% Rabatt
+            discountRate += 0.20;
         } else if (quantity >= 3000)
         {
-            discountRate += 0.10;  // 10% Rabatt
+            discountRate += 0.10;
         }
 
-        discountRate += (int) (quantity / 1000) * 0.02;  // Dynamischer Rabatt
-        return Math.min(discountRate, 1.0);  // Max 100% Rabatt
+        discountRate += (int) (quantity / 1000) * 0.02;
+        return Math.min(discountRate, 1.0);
     }
 
     public double totalSales()
     {
-        return saleRepository.getTotalSalesRevenue();
+        try (Session session = database.getSession())
+        {
+            List<SaleEntity> sales = session.createQuery("FROM SaleEntity", SaleEntity.class).list();
+            return sales.stream().mapToDouble(SaleEntity::getTotalRevenue).sum();
+        }
     }
 
     public void performSales(double salesQuantity)
@@ -86,7 +91,7 @@ public final class Sale extends SimulationObject
         {
             Transaction transaction = session.beginTransaction();
 
-            int randomCustomerID = getRandomCustomerID(session);
+            int randomCustomerID = getRandomCustomerID();
 
             StorageEntity selectedStorage = findNearestStorage(session, salesQuantity, randomCustomerID);
 
@@ -97,9 +102,9 @@ public final class Sale extends SimulationObject
             }
 
             double deliveryCosts = travelcosts.calculateDeliveryCosts(selectedStorage.getStorageID(), randomCustomerID);
-            insertSales(randomCustomerID, salesQuantity, calculateSalesPricePerTon(session), getMargin(selectedStorage.getFillLevel().doubleValue()),
-                    calculateSalesPricePerTon(session) * salesQuantity, deliveryCosts,
-                    salesQuantity * calculateSalesPricePerTon(session) - deliveryCosts, session);
+            insertSales(randomCustomerID, salesQuantity, calculateSalesPricePerTon(), getMargin(selectedStorage.getFillLevel().doubleValue()),
+                    calculateSalesPricePerTon() * salesQuantity, deliveryCosts,
+                    salesQuantity * calculateSalesPricePerTon() - deliveryCosts, session);
 
             BigDecimal newFillLevel = selectedStorage.getFillLevel().subtract(
                     BigDecimal.valueOf(salesQuantity).divide(selectedStorage.getCapacity(), 2, RoundingMode.HALF_UP)
@@ -113,17 +118,52 @@ public final class Sale extends SimulationObject
         }
     }
 
-    private int getRandomCustomerID(Session session)
+
+
+    @SuppressWarnings("unused")
+	private double calculateAveragePriceFromPurchases()
     {
-        Query<CustomerEntity> query = session.createQuery("FROM CustomerEntity ORDER BY function('RAND')");
-        query.setMaxResults(1);
-        CustomerEntity customer = query.uniqueResult();
-        return customer.getId();
+        try (Session session = database.getSession())
+        {
+            List<PurchaseEntity> purchases = session.createQuery("FROM PurchaseEntity", PurchaseEntity.class).list();
+
+            double totalCost = 0.0;
+            double totalQuantity = 0.0;
+
+            for (PurchaseEntity purchase : purchases)
+            {
+                totalCost += purchase.getPricePerTon() * purchase.getQuantity();
+                totalQuantity += purchase.getQuantity();
+            }
+
+            if (totalQuantity == 0)
+            {
+                return 0.0;
+            } else
+            {
+                return totalCost / totalQuantity;
+            }
+        }
     }
 
-    private double calculateSalesPricePerTon(Session session)
+    private int getRandomCustomerID()
     {
-        Double result = saleRepository.getAveragePricePerTon();
+        try (Session session = database.getSession())
+        {
+            List<CustomerEntity> customers = session.createQuery("FROM CustomerEntity", CustomerEntity.class).list();
+            if (!customers.isEmpty())
+            {
+                Random random = new Random();
+                int randomIndex = random.nextInt(customers.size());
+                return customers.get(randomIndex).getId();
+            }
+            return -1;
+        }
+    }
+
+    private double calculateSalesPricePerTon()
+    {
+        Double result = calculateAveragePriceFromPurchases();
         if (result != null)
         {
             return result;
@@ -159,6 +199,10 @@ public final class Sale extends SimulationObject
         saleEntity.setDeliveryCostsCustomer(deliveryCosts);
         saleEntity.setProfit(profit * (1 - discountRate));
         saleEntity.setDiscountRate(discountRate);
+        LOGGER.log(Level.INFO, "salesPricePerTon: " + salesPricePerTon);
+        LOGGER.log(Level.INFO, "discountRate: " + discountRate);
+        LOGGER.log(Level.INFO, "finalPricePerTon: " + finalPricePerTon);
+        LOGGER.log(Level.INFO, "TotalRevenue: " + saleEntity.getTotalRevenue());
         session.save(saleEntity);
     }
 
