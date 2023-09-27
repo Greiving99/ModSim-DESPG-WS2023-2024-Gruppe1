@@ -169,7 +169,7 @@ public final class Sale extends SimulationObject
             return result;
         } else
         {
-            LOGGER.log(Level.WARNING, "Es wurden keine durchschnittlichen Preise pro Tonne gefunden.");
+          //  LOGGER.log(Level.WARNING, "Es wurden keine durchschnittlichen Preise pro Tonne gefunden.");
             return 0.0;
         }
     }
