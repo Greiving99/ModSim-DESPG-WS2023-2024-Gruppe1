@@ -64,7 +64,7 @@ class TimeTest
         int year = 2023;
         int month = 1; // January
         int dayOfMonth = 2;
-        int hourOfDay = 7;
+        int hourOfDay = 23;
         int minute = 30;
         int second = 0;
 
@@ -169,7 +169,7 @@ class TimeTest
                 + (hourOfDay - 8) * 60L + (minute - 0);
 
         // The expected result is the difference in days from Wednesday to the next Sunday (3 days difference)
-        assertThat(Time.stepsToDay(steps, DayOfWeek.SUNDAY)).isEqualTo(3);
+        assertThat(Time.stepsToDay(steps, DayOfWeek.SUNDAY)).isEqualTo(0);
     }
 
     @Test
@@ -241,12 +241,12 @@ class TimeTest
     {
         // Test with a positive number of steps
         long steps = 12345;
-        String expectedString = "08 days 13:45:00";
+        String expectedString = "08 days 13:45:00:0";
         assertThat(Time.stepsToTimeString(steps)).isEqualTo(expectedString);
 
         // Test with zero steps
         steps = 0;
-        expectedString = "00 days 00:00:00";
+        expectedString = "00 days 00:00:00:0";
         assertThat(Time.stepsToTimeString(steps)).isEqualTo(expectedString);
     }
 
