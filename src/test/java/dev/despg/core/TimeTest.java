@@ -119,7 +119,8 @@ class TimeTest
     }
 
     @Test
-    void getMonthOfYearReturnsCorrectMonth() {
+    void getMonthOfYearReturnsCorrectMonth()
+    {
         // Define a specific date and time for testing
         int year = 2023;
         int month = 5; // May
@@ -231,7 +232,8 @@ class TimeTest
     }
 
     @Test
-    void stepsToTimeStringReturnsCorrectString() {
+    void stepsToTimeStringReturnsCorrectString()
+    {
         // Test with a positive number of steps
         long steps = 12345;
         String expectedString = "08 days 13:45:00.0"; // Updated expected format
@@ -255,7 +257,8 @@ class TimeTest
     }
 
     @Test
-    void getYearReturnsCorrectYear() {
+    void getYearReturnsCorrectYear()
+    {
         // Define a specific date and time for testing
         int year = 2023;
         int month = 1; // January
