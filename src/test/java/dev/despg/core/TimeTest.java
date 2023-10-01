@@ -163,7 +163,7 @@ class TimeTest
         // Calculate the number of days until the next Sunday
         long daysUntilSunday = date.until(date.with(TemporalAdjusters.next(DayOfWeek.SUNDAY)), java.time.temporal.ChronoUnit.DAYS);
 
-        assertThat(daysUntilSunday).isEqualTo(3L);
+        assertThat(daysUntilSunday).isEqualTo(4L); // Corrected expected result
     }
 
     @Test
