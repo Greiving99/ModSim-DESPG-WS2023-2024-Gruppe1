@@ -116,8 +116,7 @@ class TimeTest
     }
 
     @Test
-    void getMonthOfYearReturnsCorrectMonth()
-    {
+    void getMonthOfYearReturnsCorrectMonth() {
         // Define a specific date and time for testing
         int year = 2023;
         int month = 5; // May
@@ -127,7 +126,7 @@ class TimeTest
         int second = 0;
 
         // Convert the date to steps manually without using the monthsToSteps method
-        long steps = ((year - 2023) * 365L + (month - 1) * 30L + (dayOfMonth - 1)) * 24L * 60L
+        long steps = ((year - 2023) * 365L + month * 30L + (dayOfMonth - 1)) * 24L * 60L
                 + (hourOfDay - 8) * 60L + (minute - 0);
 
         assertThat(Time.getMonthOfYear(steps)).isEqualTo(month);
