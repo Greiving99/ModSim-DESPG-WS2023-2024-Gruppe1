@@ -67,9 +67,9 @@ class TimeTest
         int minute = 30;
         int second = 0;
 
-        // Convert the date to steps manually without using the monthsToSteps method
+        // Convert the date and time to steps manually without using the monthsToSteps method
         long steps = ((year - 2023) * 365L + (month - 1) * 30L + (dayOfMonth - 1)) * 24L * 60L
-                + (hourOfDay - 8) * 60L + (minute - 0);
+                + hourOfDay * 60L + minute;
 
         assertThat(Time.getHourOfDay(steps)).isEqualTo(hourOfDay);
     }
