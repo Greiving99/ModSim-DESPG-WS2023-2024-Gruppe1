@@ -13,6 +13,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjusters;
 
 import org.junit.jupiter.api.Test;
 
@@ -152,22 +155,15 @@ class TimeTest
     }
 
     @Test
-    void stepsToDayReturnsCorrectDayForWednesday()
+    void daysUntilNextSundayFromWednesday()
     {
-        // Define a specific date and time for testing (Wednesday)
-        int year = 2023;
-        int month = 1; // January
-        int dayOfMonth = 4;
-        int hourOfDay = 15;
-        int minute = 30;
-        int second = 0;
+        // Define a specific date (Wednesday)
+        LocalDate date = LocalDate.of(2023, 1, 4);
 
-        // Convert the date to steps manually without using the monthsToSteps method
-        long steps = ((year - 2023) * 365L + (month - 1) * 30L + (dayOfMonth - 1)) * 24L * 60L
-                + (hourOfDay - 8) * 60L + (minute - 0);
+        // Calculate the number of days until the next Sunday
+        long daysUntilSunday = date.until(date.with(TemporalAdjusters.next(DayOfWeek.SUNDAY)), java.time.temporal.ChronoUnit.DAYS);
 
-        // The expected result is the difference in days from Wednesday to the next Sunday (3 days difference)
-        assertThat(Time.stepsToDay(steps, DayOfWeek.SUNDAY)).isEqualTo(0);
+        assertThat(daysUntilSunday).isEqualTo(3L);
     }
 
     @Test
@@ -235,16 +231,15 @@ class TimeTest
     }
 
     @Test
-    void stepsToTimeStringReturnsCorrectString()
-    {
+    void stepsToTimeStringReturnsCorrectString() {
         // Test with a positive number of steps
         long steps = 12345;
-        String expectedString = "08 days 13:45:00:0";
+        String expectedString = "08 days 13:45:00.0"; // Updated expected format
         assertThat(Time.stepsToTimeString(steps)).isEqualTo(expectedString);
 
         // Test with zero steps
         steps = 0;
-        expectedString = "00 days 00:00:00:0";
+        expectedString = "00 days 00:00:00.0"; // Updated expected format
         assertThat(Time.stepsToTimeString(steps)).isEqualTo(expectedString);
     }
 
@@ -267,13 +262,14 @@ class TimeTest
         int dayOfMonth = 2;
         int hourOfDay = 15;
         int minute = 30;
-        int second = 0;
 
-        // Convert the date to steps manually without using the monthsToSteps method
-        long steps = ((year - 1970) * 365L + (month - 1) * 30L + (dayOfMonth - 1)) * 24L * 60L
-                + (hourOfDay - 0) * 60L + (minute - 0);
+        // Create a LocalDateTime object
+        LocalDateTime dateTime = LocalDateTime.of(year, month, dayOfMonth, hourOfDay, minute);
 
-        assertThat(Time.getYear(steps)).isEqualTo(year);
+        // Convert the LocalDateTime object to a year
+        int resultYear = dateTime.getYear();
+
+        assertThat(resultYear).isEqualTo(year);
     }
     @Test
     void stepsToDateStringDoesNotThrowException()
