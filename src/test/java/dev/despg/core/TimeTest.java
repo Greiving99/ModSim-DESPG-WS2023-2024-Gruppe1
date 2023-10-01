@@ -261,8 +261,7 @@ class TimeTest
     }
 
     @Test
-    void getYearReturnsCorrectYear()
-    {
+    void getYearReturnsCorrectYear() {
         // Define a specific date and time for testing
         int year = 2023;
         int month = 1; // January
@@ -272,8 +271,8 @@ class TimeTest
         int second = 0;
 
         // Convert the date to steps manually without using the monthsToSteps method
-        long steps = ((year - 2023) * 365L + (month - 1) * 30L + (dayOfMonth - 1)) * 24L * 60L
-                + (hourOfDay - 8) * 60L + (minute - 0);
+        long steps = ((year - 1970) * 365L + (month - 1) * 30L + (dayOfMonth - 1)) * 24L * 60L
+                + (hourOfDay - 0) * 60L + (minute - 0);
 
         assertThat(Time.getYear(steps)).isEqualTo(year);
     }
