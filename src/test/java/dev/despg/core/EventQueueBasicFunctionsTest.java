@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -71,6 +72,13 @@ class EventQueueBasicFunctionsTest
 
 		Event eventStored = eventQueue.getNextEvent(0, false, null, null, null);
 		assertNull(eventStored);
+	}
+	@Test
+	void objectAttachedIsSetCorrectly()
+	{
+	    SimulationObject mockSimulationObject = Mockito.mock(SimulationObject.class);
+	    Event event = new Event(2L, null, mockSimulationObject, null, null);
+	    assertThat(event.objectAttached()).isEqualTo(mockSimulationObject);
 	}
 
 

@@ -20,14 +20,12 @@ public class Purchase extends SimulationObject
     private static final Logger LOGGER = Logger.getLogger(Purchase.class.getName());
     private final Database database;
     private final Travelcosts travelcosts;
-    private final PurchaseRepository purchaseRepository;
     private double purchaseQuantity;
 
     public Purchase(Database database, Travelcosts travelcosts)
     {
         this.database = database;
         this.travelcosts = travelcosts;
-        this.purchaseRepository = new PurchaseRepository(database.getSession());
         SimulationObjects.getInstance().add(this);
     }
 
@@ -39,21 +37,14 @@ public class Purchase extends SimulationObject
 
     private void updateFillLevel(Session session, int storageID, BigDecimal fillLevel)
     {
-        try
-        {
-            StorageEntity storage = session.get(StorageEntity.class, storageID);
-            storage.setFillLevel(fillLevel);
-            session.update(storage);
-            System.out.println("Fill level for storage " + storageID + " has been updated.");
-        } catch (Exception e)
-        {
-            LOGGER.log(Level.SEVERE, "Error updating the fill level: ", e);
-        }
+        StorageEntity storage = session.get(StorageEntity.class, storageID);
+        storage.setFillLevel(fillLevel);
+        session.update(storage);
     }
-    /**
-     *
-     * @param purchaseQuantity
-     */
+/**
+ *
+ * @param purchaseQuantity
+ */
     public void performPurchase(double purchaseQuantity)
     {
         Properties purchaseProbs = new Properties();
@@ -75,8 +66,9 @@ public class Purchase extends SimulationObject
             {
                 Transaction transaction = session.beginTransaction();
 
-                // Use repository for database operations
-                List<StorageEntity> storages = purchaseRepository.getAllStorages();
+                List<StorageEntity> storages = session.createQuery("FROM StorageEntity", StorageEntity.class).list();
+                List<SupplierEntity> suppliers = session.createQuery("FROM SupplierEntity WHERE pricePerTon IS NOT NULL", SupplierEntity.class).list();
+
                 int selectedStorageID = -1;
                 int selectedSupplierID = -1;
                 BigDecimal selectedCapacity = BigDecimal.ZERO;
@@ -85,28 +77,19 @@ public class Purchase extends SimulationObject
 
                 for (StorageEntity storage : storages)
                 {
-                    BigDecimal filllevel = storage.getFillLevel();
-                    BigDecimal capacity = storage.getCapacity();
-
-                    if (filllevel.doubleValue() < criticalCapacity * capacity.doubleValue())
+                    if (storage.getFillLevel().doubleValue() < criticalCapacity * storage.getCapacity().doubleValue())
                     {
-                        int supplierID = findCheapestSupplier();
-
-                        BigDecimal pricePerTon = getPricePerTon(supplierID);
-                        if (pricePerTon.doubleValue() < selectedPricePerTon.doubleValue())
+                        for (SupplierEntity supplier : suppliers)
                         {
-                            double distance = travelcosts.getDistanceToSupplier(storage.getStorageID(), supplierID);
-                            if (distance < minDistance)
+                            if (supplier.getPricePerTon().compareTo(selectedPricePerTon) < 0)
                             {
-                                BigDecimal refill = capacity.subtract(filllevel);
-                                double quantity = Math.min(refill.doubleValue(), purchaseQuantity);
-                                BigDecimal filllevelnew = filllevel.add(BigDecimal.valueOf(quantity / capacity.doubleValue()));
-                                if (filllevelnew.doubleValue() <= 1.0)
+                                double distance = travelcosts.getDistanceToSupplier(storage.getStorageID(), supplier.getSupplierID());
+                                if (distance < minDistance)
                                 {
                                     selectedStorageID = storage.getStorageID();
-                                    selectedSupplierID = supplierID;
-                                    selectedCapacity = capacity;
-                                    selectedPricePerTon = pricePerTon;
+                                    selectedSupplierID = supplier.getSupplierID();
+                                    selectedCapacity = storage.getCapacity();
+                                    selectedPricePerTon = supplier.getPricePerTon();
                                     minDistance = distance;
                                 }
                             }
@@ -116,29 +99,25 @@ public class Purchase extends SimulationObject
 
                 if (selectedStorageID != -1)
                 {
-                    BigDecimal refill = selectedCapacity.subtract(purchaseRepository.getStorageById(selectedStorageID).getFillLevel());
+                    BigDecimal refill = selectedCapacity.subtract(session.get(StorageEntity.class, selectedStorageID).getFillLevel());
                     double quantity = Math.min(refill.doubleValue(), purchaseQuantity);
-                    BigDecimal gravelcosts = BigDecimal.valueOf(quantity * selectedPricePerTon.doubleValue());
-                    double suppliercosts = quantity / 40 * travelcosts.calculateTravelcosts(selectedStorageID, selectedSupplierID);
-                    BigDecimal totalcosts = gravelcosts.add(BigDecimal.valueOf(suppliercosts));
+                    BigDecimal gravelCosts = BigDecimal.valueOf(quantity * selectedPricePerTon.doubleValue());
+                    double supplierCosts = quantity / 40 * travelcosts.calculateTravelcosts(selectedStorageID, selectedSupplierID);
+                    BigDecimal totalCosts = gravelCosts.add(BigDecimal.valueOf(supplierCosts));
 
-                    insertPurchase(session, selectedSupplierID, selectedStorageID, quantity,
-                            selectedPricePerTon, totalcosts, gravelcosts, BigDecimal.valueOf(suppliercosts));
-                    BigDecimal fillLevelNew = purchaseRepository.getStorageById(selectedStorageID).getFillLevel().add(
-                    		BigDecimal.valueOf(quantity / selectedCapacity.doubleValue()));
+                    insertPurchase(session, selectedSupplierID, selectedStorageID,
+                    		quantity, selectedPricePerTon, totalCosts, gravelCosts, BigDecimal.valueOf(supplierCosts));
+
+                    BigDecimal fillLevelNew = session.get(StorageEntity.class,
+                    		selectedStorageID).getFillLevel().add(BigDecimal.valueOf(quantity / selectedCapacity.doubleValue()));
                     updateFillLevel(session, selectedStorageID, fillLevelNew);
-
-                    LOGGER.log(Level.INFO, "Purchase performed in storage " + selectedStorageID + ".");
                 } else
                 {
-                    System.out.println("No storage found for the purchase.");
+                    LOGGER.log(Level.WARNING, "No storage found for the purchase.");
                 }
 
                 transaction.commit();
 
-                LOGGER.log(Level.INFO, "Purchase process completed.");
-                LOGGER.log(Level.INFO, "Purchase data:");
-                LOGGER.log(Level.INFO, "Purchase quantity: " + purchaseQuantity);
             } catch (Exception e)
             {
                 LOGGER.log(Level.SEVERE, "Error performing the purchase: ", e);
@@ -157,55 +136,25 @@ public class Purchase extends SimulationObject
         return Math.round(randomPurchaseQuantity * 100.0) / 100.0;
     }
 
-    private int findCheapestSupplier()
+    private void insertPurchase(Session session, int supplierID, int storageID, double quantity,
+    		BigDecimal pricePerTon, BigDecimal totalCosts, BigDecimal gravelCosts, BigDecimal deliveryCosts)
     {
-        int cheapestSupplierID = -1;
-        BigDecimal minPrice = BigDecimal.valueOf(Double.MAX_VALUE);
-
-        List<SupplierEntity> suppliers = purchaseRepository.getAllSuppliers();
-        for (SupplierEntity supplier : suppliers)
-        {
-            if (supplier.getPricePerTon().compareTo(minPrice) < 0)
-            {
-                minPrice = supplier.getPricePerTon();
-                cheapestSupplierID = supplier.getSupplierID();
-            }
-        }
-        return cheapestSupplierID;
+        PurchaseEntity purchase = new PurchaseEntity();
+        purchase.setSupplierId(supplierID);
+        purchase.setStorageId(storageID);
+        purchase.setQuantity(quantity);
+        purchase.setPricePerTon(pricePerTon.doubleValue());
+        purchase.setTotalCosts(totalCosts.doubleValue());
+        purchase.setGravelCosts(gravelCosts.doubleValue());
+        purchase.setDeliveryCosts(deliveryCosts.doubleValue());
+        session.save(purchase);
     }
 
-    private BigDecimal getPricePerTon(int supplierID)
-    {
-        return purchaseRepository.getSupplierById(supplierID).getPricePerTon();
-    }
-
-    private void insertPurchase(Session session, int supplierID, int storageID,
-            double quantity, BigDecimal pricePerTon, BigDecimal totalCosts,
-            BigDecimal gravelCosts, BigDecimal deliveryCosts)
-    {
-        try
-        {
-            PurchaseEntity purchase = new PurchaseEntity();
-            purchase.setSupplierId(supplierID);
-            purchase.setStorageId(storageID);
-            purchase.setQuantity(quantity);
-            purchase.setPricePerTon(pricePerTon.doubleValue());
-            purchase.setTotalCosts(totalCosts.doubleValue());
-            purchase.setGravelCosts(gravelCosts.doubleValue());
-            purchase.setDeliveryCosts(deliveryCosts.doubleValue());
-            session.save(purchase);
-            LOGGER.log(Level.INFO, "Purchase in storage " + storageID + " successfully performed.");
-        } catch (Exception e)
-        {
-            LOGGER.log(Level.SEVERE, "Error inserting the purchase: ", e);
-        }
-    }
     public static void main(String[] args)
     {
         Database database = new Database();
         Travelcosts travelcosts = new Travelcosts(37.0, database);
         Purchase purchase = new Purchase(database, travelcosts);
-        double purchasequantity = generateRandomPurchaseQuantity(1000, 10000);
-        purchase.performPurchase(purchasequantity);
+        purchase.performPurchase(generateRandomPurchaseQuantity(1000, 10000));
     }
 }
