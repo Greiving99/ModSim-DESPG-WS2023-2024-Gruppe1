@@ -36,7 +36,6 @@ class TimeTest
             Time.stepsToDateString(-1790);
         }).isInstanceOf(SimulationException.class).hasMessageContaining("can't be negative");
     }
-
     @Test
     void stepsToDayReturnsCorrectDay()
     {
