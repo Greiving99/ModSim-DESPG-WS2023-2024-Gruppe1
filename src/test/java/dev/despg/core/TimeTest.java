@@ -48,7 +48,7 @@ class TimeTest
         int dayOfMonth = 2;
         int hourOfDay = 15;
         int minute = 30;
-        int second = 0;
+       // int second = 0;
 
         // Convert the date to steps manually without using the monthsToSteps method
         long steps = ((year - 2023) * 365L + (month - 1) * 30L + (dayOfMonth - 1)) * 24L * 60L
@@ -68,7 +68,7 @@ class TimeTest
         int dayOfMonth = 2;
         int hourOfDay = 23;
         int minute = 30;
-        int second = 0;
+      // int second = 0;
 
         // Convert the date and time to steps manually without using the monthsToSteps method
         long steps = ((year - 2023) * 365L + (month - 1) * 30L + (dayOfMonth - 1)) * 24L * 60L
@@ -86,7 +86,7 @@ class TimeTest
         int dayOfMonth = 2;
         int hourOfDay = 15;
         int minute = 30;
-        int second = 0;
+       // int second = 0;
 
         // Convert the date to steps manually without using the monthsToSteps method
         long steps = ((year - 2023) * 365L + (month - 1) * 30L + (dayOfMonth - 1)) * 24L * 60L
@@ -109,7 +109,7 @@ class TimeTest
         int dayOfMonth = 15;
         int hourOfDay = 15;
         int minute = 30;
-        int second = 0;
+       // int second = 0;
 
         // Convert the date to steps manually without using the monthsToSteps method
         long steps = ((year - 2023) * 365L + (month - 1) * 30L + (dayOfMonth - 1)) * 24L * 60L
@@ -127,7 +127,7 @@ class TimeTest
         int dayOfMonth = 15;
         int hourOfDay = 15;
         int minute = 30;
-        int second = 0;
+       // int second = 0;
 
         // Convert the date to steps manually without using the monthsToSteps method
         long steps = ((year - 2023) * 365L + month * 30L + (dayOfMonth - 1)) * 24L * 60L
@@ -145,7 +145,7 @@ class TimeTest
         int dayOfMonth = 1;
         int hourOfDay = 15;
         int minute = 30;
-        int second = 0;
+       // int second = 0;
 
         // Convert the date to steps manually without using the monthsToSteps method
         long steps = ((year - 2023) * 365L + (month - 1) * 30L + (dayOfMonth - 1)) * 24L * 60L

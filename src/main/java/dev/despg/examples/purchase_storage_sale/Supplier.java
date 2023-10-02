@@ -28,8 +28,11 @@ public class Supplier extends SimulationObject
         this.database = database;
         SimulationObjects.getInstance().add(this);
     }
-
-    public void updatePricesPerTon()
+/**
+ *
+ */
+    @SuppressWarnings("deprecation")
+	public void updatePricesPerTon()
     {
         Properties supplierProbs = new Properties();
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("config.properties"))
@@ -76,7 +79,9 @@ public class Supplier extends SimulationObject
         Supplier supplier = new Supplier(database);
         supplier.updatePricesPerTon();
     }
-
+/**
+ *
+ */
     @Override
     public boolean simulate(long timeStep)
     {

@@ -86,6 +86,7 @@ public final class WeighingStation extends SimulationObject
 	 * @return true if an assignable event got found and handled, false if no event
 	 *         could get assigned
 	 */
+	@SuppressWarnings("static-access")
 	@Override
 	public boolean simulate(long timeStep)
 	{

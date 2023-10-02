@@ -219,7 +219,8 @@ public final class Travelcosts extends SimulationObject
         lastDieselPriceRefreshTime = currentTime;
         return price;
     }
-    private int getStorageIDFromDatabase()
+    @SuppressWarnings("unused")
+	private int getStorageIDFromDatabase()
     {
         int storageID = -1;
 
@@ -231,7 +232,8 @@ public final class Travelcosts extends SimulationObject
         return storageID;
     }
 
-    private int getSupplierIDFromDatabase()
+    @SuppressWarnings("unused")
+	private int getSupplierIDFromDatabase()
     {
         int supplierID = -1;
 

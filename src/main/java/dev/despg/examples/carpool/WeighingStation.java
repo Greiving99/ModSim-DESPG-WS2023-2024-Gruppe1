@@ -18,6 +18,7 @@ import dev.despg.core.TrackerType;
 
 public final class WeighingStation extends SimulationObject
 {
+	@SuppressWarnings("unused")
 	private static final int TIME_TO_WEIGH_TRUCK = 10;
 	private static final int MAXLOAD = 40;
 

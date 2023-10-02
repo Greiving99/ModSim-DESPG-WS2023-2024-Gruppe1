@@ -227,8 +227,8 @@ class RandomizerTest
 	        double max = 10.0;
 	        double mode = 5.0;
 
-	        Random fixedSeedRandom = new Random(12345); // immer gleiche Sequenz
-	        double mockRandomValue = fixedSeedRandom.nextDouble();
+	        //Random fixedSeedRandom = new Random(12345); // immer gleiche Sequenz
+	        //double mockRandomValue = fixedSeedRandom.nextDouble();
 
 	        // Ersetzen Sie `Math.random()` durch `mockRandomValue` in Ihrem Test oder übergeben Sie `mockRandomValue` an Ihre Methode, wenn möglich.
 

@@ -12,13 +12,9 @@ package dev.despg.core;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.*;
-
-
 import java.util.ArrayList;
 import java.util.List;
-
 import java.util.logging.Level;
-
 import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,7 +32,17 @@ class SimulationTest
 	private Simulation sim;
 	private SimulationObject simObject;
 	private boolean answered;
-	public class TestSimulationObject extends SimulationObject
+
+	class TestSimulationObject extends SimulationObject
+	{
+	    @Override
+	    public boolean simulate(long timeStep)
+	    {
+	        return true;
+	    }
+	}
+
+	public class AnotherTestSimulationObject extends SimulationObject
 	{
 	    @Override
 	    public boolean simulate(long timeStep)
@@ -44,6 +50,8 @@ class SimulationTest
 	        return false;
 	    }
 	}
+
+
 	@BeforeEach
 	void init()
 	{
@@ -193,5 +201,29 @@ class SimulationTest
 	    Long trackerValue = simObject.getTracker(trackerType);
 	    assertThat(trackerValue).isEqualTo(42L);
 	}
+
+	@Test
+	void testLogOutputForMultipleSimulationObjectClasses()
+	{
+	    SimulationObject simObject1 = Mockito.mock(TestSimulationObject.class);
+	    SimulationObject simObject2 = Mockito.mock(TestSimulationObject.class);
+	    SimulationObject simObject3 = Mockito.mock(AnotherTestSimulationObject.class);
+
+	    when(simObject1.getTracker(any())).thenReturn(100L);
+	    when(simObject2.getTracker(any())).thenReturn(200L);
+	    when(simObject3.getTracker(any())).thenReturn(300L);
+
+	    simObjects.add(simObject1);
+	    simObjects.add(simObject2);
+	    simObjects.add(simObject3);
+
+	    sim.simulate();
+
+	    verify(simObject1, times(2)).getTracker(any());
+	    verify(simObject2, times(2)).getTracker(any());
+	    verify(simObject3, times(2)).getTracker(any());
+	}
+
+
 
 }

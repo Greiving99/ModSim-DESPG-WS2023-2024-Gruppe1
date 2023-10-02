@@ -64,7 +64,10 @@ public class StorageEntity
     {
         this.capacity = capacity;
     }
-
+/**
+ *
+ * @return
+ */
     public BigDecimal getFillLevel()
     {
         return fillLevel;

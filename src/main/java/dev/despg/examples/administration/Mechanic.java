@@ -9,6 +9,7 @@ import dev.despg.core.Randomizer;
 public class Mechanic extends Employee
 {
 
+	@SuppressWarnings("unused")
 	private String name;
 	private double quality;
 	private static int holidays;
@@ -113,53 +114,81 @@ public class Mechanic extends Employee
 		Mechanic.holidays = holidays;
 	}
 
-
+/**
+ *
+ * @return
+ */
 	public Integer getDockFailureRepairTime()
 	{
 		return dockFailureRepairTime.nextInt();
 	}
 
-
+/**
+ *
+ * @return
+ */
 	public Integer getStationFailureRepairTime()
 	{
 		return stationFailureRepairTime.nextInt();
 	}
 
-
+/**
+ *
+ * @return
+ */
 	public Integer getTruckFailureRepairTime()
 	{
 		return truckFailureRepairTime.nextInt();
 	}
-
+/**
+ *
+ * @return
+ */
 	public double getQuality()
 	{
 		return quality;
 	}
 
-
+/**
+ *
+ * @param quality
+ */
 	public void setQuality(double quality)
 	{
 		this.quality = quality;
 	}
-
+/**
+ *
+ * @return
+ */
 
 	public Integer getIsReplacedBy()
 	{
 		return isReplacedBy;
 	}
 
-
+/**
+ *
+ * @param isReplacedBy
+ */
 	public void setIsReplacedBy(Integer isReplacedBy)
 	{
 		this.isReplacedBy = isReplacedBy;
 	}
 
-
+/**
+ *
+ * @return
+ */
 	public boolean getIsReplaced()
 	{
 		return isReplacee;
 	}
-
+/**
+ *
+ *
+ * @param isReplaced
+ */
 
 	public void setIsReplaced(boolean isReplaced)
 	{

@@ -34,7 +34,8 @@ public final class Sale extends SimulationObject
         return false;
     }
 
-    public void updateCustomerTotalSales()
+    @SuppressWarnings("deprecation")
+	public void updateCustomerTotalSales()
     {
         try (Session session = database.getSession())
         {
@@ -161,7 +162,8 @@ public final class Sale extends SimulationObject
         }
     }
 
-    private double calculateSalesPricePerTon()
+    @SuppressWarnings("unused")
+	private double calculateSalesPricePerTon()
     {
         Double result = calculateAveragePriceFromPurchases();
         if (result != null)
@@ -185,7 +187,8 @@ public final class Sale extends SimulationObject
         return min + (max - min) * random.nextDouble();
     }
 
-    private void insertSales(int customerID, double salesQuantity, double salesPricePerTon, double margin,
+    @SuppressWarnings("deprecation")
+	private void insertSales(int customerID, double salesQuantity, double salesPricePerTon, double margin,
                              double totalEarnings, double deliveryCosts, double profit, Session session)
     {
         SaleEntity saleEntity = new SaleEntity();
@@ -206,7 +209,8 @@ public final class Sale extends SimulationObject
         session.save(saleEntity);
     }
 
-    private void updateFillLevel(int storageID, BigDecimal newFillLevel, Session session)
+    @SuppressWarnings("deprecation")
+	private void updateFillLevel(int storageID, BigDecimal newFillLevel, Session session)
     {
         StorageEntity storage = session.get(StorageEntity.class, storageID);
         if (storage != null)

@@ -7,9 +7,12 @@ public abstract class Account
 	 * Here, employees from purchasing and sales,
 	 * for example, could deposit money they have earned into our account.*/
 
+	@SuppressWarnings("unused")
 	private static String iban;
 	private static double bankBalance;
+	@SuppressWarnings("unused")
 	private static double amount;
+	@SuppressWarnings("unused")
 	private Businessaccount businessaccount;
 	public Account(Businessaccount businessaccount, String iban, String companyName, Double bankBalance, Double amount)
 	{
@@ -34,7 +37,11 @@ public abstract class Account
 	}
 
 	//Here, it is checked whether the amount is greater than or equal to 0.
-
+/**
+ *
+ * @param amount
+ * @return
+ */
 	public boolean check(double amount)
 	{
 		if (amount <= 0)

@@ -27,6 +27,7 @@ public class GravelShipping extends Simulation
 
 	private static Integer gravelToShip = 2000;
 	private static Integer gravelShipped = 0;
+	@SuppressWarnings("unused")
 	private final int gravelToShippedFinal = gravelToShip;
 
 	private static final int SIM_TIME = 525600 * 5;
@@ -92,6 +93,7 @@ public class GravelShipping extends Simulation
 
 
 		GravelShipping gs = new GravelShipping();
+		@SuppressWarnings("unused")
 		long timeStep = gs.simulate();
 
 		// output some statistics after simulation run
