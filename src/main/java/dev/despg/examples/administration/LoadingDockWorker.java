@@ -8,6 +8,7 @@ import dev.despg.core.Randomizer;
 public class LoadingDockWorker extends Employee
 {
 
+	@SuppressWarnings("unused")
 	private String name;
 	private double quality;
 	private static int holidays;
@@ -113,32 +114,50 @@ public class LoadingDockWorker extends Employee
 		}
 		return 0;
 	}
-
+/**
+ *
+ * @return
+ */
 	public double getQuality()
 	{
 		return quality;
 	}
-
+/**
+ *
+ * @param quality
+ */
 	public void setQuality(double quality)
 	{
 		this.quality = quality;
 	}
-
+/**
+ *
+ * @return
+ */
 	public boolean isReplaced()
 	{
 		return isReplaced;
 	}
-
+/**
+ *
+ * @param isReplaced
+ */
 	public void setIsReplaced(boolean isReplaced)
 	{
 		this.isReplaced = isReplaced;
 	}
-
+/**
+ *
+ * @return
+ */
 	public Integer getIsReplacedBy()
 	{
 		return isReplacedBy;
 	}
-
+/**
+ *
+ * @param isReplacedBy
+ */
 	public void setIsReplacedBy(Integer isReplacedBy)
 	{
 		this.isReplacedBy = isReplacedBy;
@@ -153,12 +172,18 @@ public class LoadingDockWorker extends Employee
 	{
 		LoadingDockWorker.loadingDockWorkerList = loadingDockWorkerList;
 	}
-
+/**
+ *
+ * @return
+ */
 	public Integer getWeightLoaded()
 	{
 		return loadingWeight.nextInt();
 	}
-
+/**
+ *
+ * @return
+ */
 	public Integer getTimeLoad()
 	{
 		return loadingTime.nextInt();

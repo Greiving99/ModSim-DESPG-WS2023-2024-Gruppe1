@@ -23,6 +23,7 @@ public class LoadingDock extends SimulationObject
 	private static final int EMPLOYEEFAILURECOST = 5;
 	private static final double DOCHREPAIRCOST = 0.25;
 	private static final int REPAIRTIMECOST = 100;
+	@SuppressWarnings("unused")
 	private String nameEmployee;
 	private String name;
 	private Truck truckCurrentlyLoaded;
@@ -38,12 +39,15 @@ public class LoadingDock extends SimulationObject
 	private static boolean newTruckMechanic;
 	private static int numTruckMechanic;
 
+	@SuppressWarnings("unused")
 	private int counterFailureLKW = WeighingStation.getCounterFailureTruck();
 	private static double fixedCost;
 
 	private boolean employeeFailed;
 
+	@SuppressWarnings("unused")
 	private double quality;
+	@SuppressWarnings("unused")
 	private static int counterEmployeeSick;
 
 	private static EventQueue eventQueue;
@@ -99,6 +103,7 @@ public class LoadingDock extends SimulationObject
 	 * truck gets loaded. Adds a new event to the event queue for when the loading
 	 * is done and returns true.*/
 
+	@SuppressWarnings("static-access")
 	/* When the loading is done, it grabs the corresponding event from the event
 	 * queue and handles it by removing it from the queue, setting
 	 * {@link truckCurrentlyLoaded} to null and adding a new event to the event
@@ -301,6 +306,10 @@ public class LoadingDock extends SimulationObject
 	{
 		LoadingDock.truckMechanic = truckMechaniker;
 	}
+	/**
+	 *
+	 * @return
+	 */
 	public int getNumMechanic()
 	{
 		return numMechanic;
@@ -320,11 +329,18 @@ public class LoadingDock extends SimulationObject
 	{
 		LoadingDock.numTruckMechanic = numTruckMechaniker;
 	}
+	/**
+	 *
+	 * @return
+	 */
 	public LoadingDockWorker getLoadingDockWorker()
 	{
 		return loadingDockWorker;
 	}
-
+/**
+ *
+ * @param lagerarbeiter
+ */
 	public void setLoadingDockWorker(LoadingDockWorker lagerarbeiter)
 	{
 		LoadingDock.loadingDockWorker = lagerarbeiter;

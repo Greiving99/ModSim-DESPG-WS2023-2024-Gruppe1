@@ -35,7 +35,8 @@ public class Purchase extends SimulationObject
         return false;
     }
 
-    private void updateFillLevel(Session session, int storageID, BigDecimal fillLevel)
+    @SuppressWarnings("deprecation")
+	private void updateFillLevel(Session session, int storageID, BigDecimal fillLevel)
     {
         StorageEntity storage = session.get(StorageEntity.class, storageID);
         storage.setFillLevel(fillLevel);
@@ -136,7 +137,8 @@ public class Purchase extends SimulationObject
         return Math.round(randomPurchaseQuantity * 100.0) / 100.0;
     }
 
-    private void insertPurchase(Session session, int supplierID, int storageID, double quantity,
+    @SuppressWarnings("deprecation")
+	private void insertPurchase(Session session, int supplierID, int storageID, double quantity,
     		BigDecimal pricePerTon, BigDecimal totalCosts, BigDecimal gravelCosts, BigDecimal deliveryCosts)
     {
         PurchaseEntity purchase = new PurchaseEntity();

@@ -20,6 +20,7 @@ public final class TruckRepairShop extends SimulationObject
 
 	private static final int REPAIR_TIME_ACCIDENT_DAMAGE = 20160 * 3;
 	private static Logger logger = Logger.getLogger("GravelShipping");
+	@SuppressWarnings("unused")
 	private String name;
 	private static EventQueue eventQueue;
 	private Truck currentTruck;

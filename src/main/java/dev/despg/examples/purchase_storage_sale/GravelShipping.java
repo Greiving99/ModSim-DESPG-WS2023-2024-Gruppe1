@@ -33,10 +33,14 @@ public class GravelShipping extends Simulation
   private static final int NUM_LOADING_DOCKS = 3;
   private static final int NUM_WEIGHING_STATIONS = 2;
   private Storage storage;
-  private Purchase purchase;
-  private Supplier supplier;
-  private Sale sale;
-  private Customer customer;
+  @SuppressWarnings("unused")
+private Purchase purchase;
+  @SuppressWarnings("unused")
+private Supplier supplier;
+  @SuppressWarnings("unused")
+private Sale sale;
+  @SuppressWarnings("unused")
+private Customer customer;
 
   /**
      * Defines the setup of simulation objects and starting events before executing
@@ -132,27 +136,42 @@ public class GravelShipping extends Simulation
 
     }
   }
-
+/**
+ *
+ * @param storage
+ */
   public void setStorage(Storage storage)
   {
     this.storage = storage;
   }
-
+/**
+ *
+ * @param purchase
+ */
   public void setPurchase(Purchase purchase)
   {
     this.purchase = purchase;
   }
-
+/**
+ *
+ * @param sale
+ */
   public void setSale(Sale sale)
   {
     this.sale = sale;
   }
-
+/**
+ *
+ * @param customer
+ */
   public void setCustomer(Customer customer)
 {
     this.customer = customer;
   }
-
+/**
+ *
+ * @param supplier
+ */
   public void setSupplier(Supplier supplier)
 {
     this.supplier = supplier;

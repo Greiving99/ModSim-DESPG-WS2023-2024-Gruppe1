@@ -20,7 +20,9 @@ public final class Truck extends SimulationObject
 	private String name;
 	private Integer loadedWithTons;
 	private Driver driver;
+	@SuppressWarnings("unused")
 	private String nameDriver;
+	@SuppressWarnings("unused")
 	private double quality;
 	private static final double FUEL_COST = 1.21;
 	private static final double TRUCK_REPAIR_COST = 125;

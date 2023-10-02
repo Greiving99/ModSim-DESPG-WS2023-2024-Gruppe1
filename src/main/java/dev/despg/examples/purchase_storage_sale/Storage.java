@@ -28,14 +28,18 @@ public class Storage extends SimulationObject
         this.storageIDs = new ArrayList<>();
         SimulationObjects.getInstance().add(this);
     }
-
+/**
+ *
+ */
     @Override
     public boolean simulate(long timeStep)
     {
         generateRandomData();
         return false;
     }
-
+/**
+ *
+ */
     @SuppressWarnings("deprecation")
 	public void generateRandomData()
     {
@@ -75,7 +79,11 @@ public class Storage extends SimulationObject
         Random random = new Random();
         return Math.round((min + (max - min) * random.nextDouble()) * 100.0) / 100.0;
     }
-
+/**
+ *
+ * @param storageID
+ * @return
+ */
     public double getCurrentFillLevel(int storageID)
     {
         try (Session session = database.getSession())
@@ -84,7 +92,11 @@ public class Storage extends SimulationObject
             return storageEntity != null ? storageEntity.getFillLevel().doubleValue() : 0.0;
         }
     }
-
+/**
+ *
+ * @param storageID
+ * @return
+ */
     public double getTotalCapacity(int storageID)
     {
         try (Session session = database.getSession())

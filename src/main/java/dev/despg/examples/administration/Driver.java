@@ -8,6 +8,7 @@ import dev.despg.core.Randomizer;
 public class Driver extends Employee
 {
 
+	@SuppressWarnings("unused")
 	private String name;
 
 	private double quality;
@@ -145,32 +146,50 @@ public class Driver extends Employee
 		}
 		return 0;
 	}
-
+/**
+ *
+ * @return
+ */
 	public double getQuality()
 	{
 		return quality;
 	}
-
+/**
+ *
+ * @param qualitaet
+ */
 	public void setQuality(double qualitaet)
 	{
 		this.quality = qualitaet;
 	}
-
+/**
+ *
+ * @return
+ */
 	public boolean isReplaced()
 	{
 		return isReplaced;
 	}
-
+/**
+ *
+ * @param wirdErsetzt
+ */
 	public void setReplaced(boolean wirdErsetzt)
 	{
 		this.isReplaced = wirdErsetzt;
 	}
-
+/**
+ *
+ * @return
+ */
 	public Integer getReplacedBy()
 	{
 		return replacedBy;
 	}
-
+/**
+ *
+ * @param wirdErsetztVon
+ */
 	public void setReplacedBy(Integer wirdErsetztVon)
 	{
 		this.replacedBy = wirdErsetztVon;
@@ -185,21 +204,34 @@ public class Driver extends Employee
 	{
 		Driver.driverList = fahrerListe;
 	}
-
+/**
+ *
+ * @return
+ */
 	public Integer getDrivingToWeighingStation()
 	{
 		return drivingToCustomer.nextInt();
 	}
-
+/**
+ *
+ * @return
+ */
 	public Integer getDrivingToCustomer()
 	{
 		return drivingToCustomer.nextInt();
 	}
+	/**
+	 *
+	 * @return
+	 */
 	public Integer getDrivingToLoadingDock()
 	{
 		return drivingToLoadingDock.nextInt();
 	}
-
+/**
+ *
+ * @return
+ */
 	public Integer getDeloadingTime()
 	{
 		return deloadingTime.nextInt();
