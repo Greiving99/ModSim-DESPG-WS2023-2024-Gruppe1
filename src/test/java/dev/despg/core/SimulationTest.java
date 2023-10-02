@@ -219,9 +219,9 @@ class SimulationTest
 
 	    sim.simulate();
 
-	    verify(simObject1, times(1)).getTracker(any());
-	    verify(simObject2, times(1)).getTracker(any());
-	    verify(simObject3, times(1)).getTracker(any());
+	    verify(simObject1, times(2)).getTracker(any());
+	    verify(simObject2, times(2)).getTracker(any());
+	    verify(simObject3, times(2)).getTracker(any());
 	}
 
 
