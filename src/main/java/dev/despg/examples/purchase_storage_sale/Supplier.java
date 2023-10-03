@@ -2,6 +2,7 @@ package dev.despg.examples.purchase_storage_sale;
 
 
 import dev.despg.examples.util.Database;
+import dev.despg.core.Randomizer;
 import dev.despg.core.SimulationObject;
 import dev.despg.core.SimulationObjects;
 import org.hibernate.Session;
@@ -13,7 +14,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 import java.util.Properties;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,7 +43,6 @@ public class Supplier extends SimulationObject
             }
             supplierProbs.load(is);
 
-            Random random = new Random();
             double minPrice = Double.parseDouble(supplierProbs.getProperty("minPrice"));
             double maxPrice = Double.parseDouble(supplierProbs.getProperty("maxPrice"));
 
@@ -55,7 +54,7 @@ public class Supplier extends SimulationObject
 
                 for (SupplierEntity supplier : suppliers)
                 {
-                    double randomPrice = minPrice + (maxPrice - minPrice) * random.nextDouble();
+                    double randomPrice = minPrice + (maxPrice - minPrice) * Randomizer.nextDouble();
                     BigDecimal roundedPrice = BigDecimal.valueOf(randomPrice).setScale(3, RoundingMode.HALF_UP);
                     supplier.setPricePerTon(roundedPrice);
                     session.saveOrUpdate(supplier);

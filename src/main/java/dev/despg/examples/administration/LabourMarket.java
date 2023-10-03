@@ -1,6 +1,6 @@
 package dev.despg.examples.administration;
 
-import java.util.Random;
+import dev.despg.core.Randomizer;
 
 public class LabourMarket
 {
@@ -9,7 +9,6 @@ public class LabourMarket
 	private double quality;
 	private static Driver driver;
 
-	private static Random randEmployee = new Random();
 	private static Mechanic mechanic;
 	private static LoadingDockWorker loadingDockWorker;
 
@@ -23,8 +22,7 @@ public class LabourMarket
 
 	public static double randomQuality()
 	{
-		Random random = new Random();
-		double quality = random.nextDouble() * 0.2 + 0.9;
+		double quality = Randomizer.nextDouble() * 0.2 + 0.9;
 		return quality;
 
 	}
@@ -33,7 +31,7 @@ public class LabourMarket
 
 	public static int getRandomEmployee()
 	{
-		int probability = randEmployee.nextInt(100) + 1;
+		int probability = Randomizer.nextInt(100) + 1;
 
 		/* There is a 35% probability that it is a driver.
 		 * The number of applicants is increased by 1, and a driver with a random quality is created.
@@ -71,22 +69,34 @@ public class LabourMarket
 	{
 		LabourMarket.driver = driver;
 	}
-
+	/**
+	 *
+	 * @return
+	 */
 	public String getName()
 	{
 		return name;
 	}
-
+	/**
+	 *
+	 * @return
+	 */
 	public void setName(String name)
 	{
 		this.name = name;
 	}
-
+	/**
+	 *
+	 * @return
+	 */
 	public double getQuality()
 	{
 		return quality;
 	}
-
+	/**
+	 *
+	 * @return
+	 */
 	public void setQuality(double quality)
 	{
 		this.quality = quality;

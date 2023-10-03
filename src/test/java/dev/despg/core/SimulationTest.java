@@ -23,6 +23,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import dev.despg.examples.gravelshipping.WeighingStation;
+
 
 class SimulationTest
 {
@@ -222,6 +224,14 @@ class SimulationTest
 	    verify(simObject1, times(2)).getTracker(any());
 	    verify(simObject2, times(2)).getTracker(any());
 	    verify(simObject3, times(2)).getTracker(any());
+	}
+
+	@Test
+	void testLogOutputForMultipleSimulationObjectClasses2()
+	{
+		for (int i = 0; i < 2; i++)
+			new WeighingStation("WS" + i);
+		 sim.simulate();
 	}
 
 

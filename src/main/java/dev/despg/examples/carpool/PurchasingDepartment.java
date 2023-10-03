@@ -2,12 +2,12 @@ package dev.despg.examples.carpool;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import dev.despg.core.Event;
 import dev.despg.core.EventQueue;
+import dev.despg.core.Randomizer;
 import dev.despg.core.SimulationObject;
 import dev.despg.core.SimulationObjects;
 import dev.despg.core.Time;
@@ -23,7 +23,6 @@ public final class PurchasingDepartment extends SimulationObject
 	private String name;
 	private static List<Offer> truckOffers = new ArrayList<>();
 	private static List<Offer> truckOfferCopy = new ArrayList<>();
-	private Random rand = new Random();
 	private Truck currentTruck;
 
 
@@ -35,8 +34,8 @@ public final class PurchasingDepartment extends SimulationObject
 
 		for (int i = 0; i <= MAX_OFFERS; i++)
 		{
-			truckOffers.add(new Offer(i, new Truck("Truck neu " + i), rand.nextInt(150001)
-					+ 100000, rand.nextInt(41761) + 1440));
+			truckOffers.add(new Offer(i, new Truck("Truck neu " + i), Randomizer.nextInt(150001)
+					+ 100000, Randomizer.nextInt(41761) + 1440));
 			//min 1440 (1 day) max 43200 (1 month) // price between 100000 and 250000 €
 
 		}

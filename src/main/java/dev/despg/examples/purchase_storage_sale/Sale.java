@@ -1,5 +1,6 @@
 package dev.despg.examples.purchase_storage_sale;
 
+import dev.despg.core.Randomizer;
 import dev.despg.core.SimulationObject;
 import dev.despg.core.SimulationObjects;
 import org.hibernate.Session;
@@ -154,8 +155,7 @@ public final class Sale extends SimulationObject
             List<CustomerEntity> customers = session.createQuery("FROM CustomerEntity", CustomerEntity.class).list();
             if (!customers.isEmpty())
             {
-                Random random = new Random();
-                int randomIndex = random.nextInt(customers.size());
+                int randomIndex = Randomizer.nextInt(customers.size());
                 return customers.get(randomIndex).getId();
             }
             return -1;
@@ -183,8 +183,7 @@ public final class Sale extends SimulationObject
 
     private static double generateRandomSalesQuantity(int min, int max)
     {
-        Random random = new Random();
-        return min + (max - min) * random.nextDouble();
+        return min + (max - min) * Randomizer.nextDouble();
     }
 
     @SuppressWarnings("deprecation")

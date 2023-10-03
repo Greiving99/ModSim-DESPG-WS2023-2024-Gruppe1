@@ -1,7 +1,6 @@
 package dev.despg.examples.administration;
 
 import java.util.ArrayList;
-import java.util.Random;
 import dev.despg.core.Randomizer;
 
 
@@ -63,7 +62,7 @@ public class LoadingDockWorker extends Employee
 		beSick.addProbInt(0.99, 0);
 		beSick.addProbInt(1, 1);
 
-		if (beSick.nextInt() > 0)
+		if (beSick.nextIntOnProp() > 0)
 		{
 			return true;
 		}
@@ -78,9 +77,8 @@ public class LoadingDockWorker extends Employee
 			return 0;
 		else
 		{
-			Random random = new Random();
-			int dauerUrlaub = random.nextInt(getHolidays()) + 1;
-					setHolidays(dauerUrlaub);
+			int dauerUrlaub = Randomizer.nextInt(getHolidays()) + 1;
+			setHolidays(dauerUrlaub);
 			return dauerUrlaub;
 		}
 	}
@@ -91,7 +89,7 @@ public class LoadingDockWorker extends Employee
 		durationSick.addProbInt(0.8, 1440);
 		durationSick.addProbInt(1, 1440 * 7);
 
-		return durationSick.nextInt();
+		return durationSick.nextIntOnProp();
 	}
 
 	public static int duration()
@@ -104,11 +102,11 @@ public class LoadingDockWorker extends Employee
 		applyForHoliday.addProbInt(0.8, 0);
 		applyForHoliday.addProbInt(1, 1);
 
-		if (beSick.nextInt() > 0)
+		if (beSick.nextIntOnProp() > 0)
 		{
 			return durationSick();
 		}
-		else if (applyForHoliday.nextInt() > 0)
+		else if (applyForHoliday.nextIntOnProp() > 0)
 		{
 			return checkHolidays();
 		}
@@ -178,7 +176,7 @@ public class LoadingDockWorker extends Employee
  */
 	public Integer getWeightLoaded()
 	{
-		return loadingWeight.nextInt();
+		return loadingWeight.nextIntOnProp();
 	}
 /**
  *
@@ -186,7 +184,7 @@ public class LoadingDockWorker extends Employee
  */
 	public Integer getTimeLoad()
 	{
-		return loadingTime.nextInt();
+		return loadingTime.nextIntOnProp();
 	}
 
 	public static int getHolidays()

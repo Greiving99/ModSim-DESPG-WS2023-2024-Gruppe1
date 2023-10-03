@@ -68,21 +68,21 @@ class RandomizerTest
     void nextIntPickedCorrect()
     {
         r.addProbInt(1.0, 2);
-        assertThat(r.nextInt()).isEqualTo(2);
+        assertThat(r.nextIntOnProp()).isEqualTo(2);
     }
 
     @Test
     void nextIntShouldThrowBecauseProbabilityNotCovered()
     {
         r.addProbInt(0.0, 2);
-        assertThatThrownBy(r::nextInt)
+        assertThatThrownBy(r::nextIntOnProp)
                 .isInstanceOf(SimulationException.class).hasMessageContaining("Probability not covered");
     }
 
     @Test
     void nextIntShouldThrowBecauseEmptyArrayList()
     {
-        assertThatThrownBy(r::nextInt)
+        assertThatThrownBy(r::nextIntOnProp)
                 .isInstanceOf(SimulationException.class).hasMessageContaining("No probabilities");
     }
 
@@ -216,7 +216,7 @@ class RandomizerTest
 	        // Call nextInt and expect an exception
 	        assertThatThrownBy(() ->
 	        {
-	            r.nextInt();
+	            r.nextIntOnProp();
 	        }).isInstanceOf(SimulationException.class)
 	          .hasMessageContaining("is out of bounds");
 	    }
@@ -284,7 +284,7 @@ class RandomizerTest
 	    @Test
 	    void nextIntShouldThrowBecauseNoProbabilityAdded() throws Exception
 	    {
-	        assertThatThrownBy(() -> r.nextInt()).isInstanceOf(SimulationException.class)
+	        assertThatThrownBy(() -> r.nextIntOnProp()).isInstanceOf(SimulationException.class)
 	          .hasMessageContaining("No probabilities in ArrayList");
 	    }
 
