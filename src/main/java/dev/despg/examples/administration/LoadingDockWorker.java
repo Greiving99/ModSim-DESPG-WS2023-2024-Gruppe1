@@ -1,7 +1,6 @@
 package dev.despg.examples.administration;
 
 import java.util.ArrayList;
-import java.util.Random;
 import dev.despg.core.Randomizer;
 
 

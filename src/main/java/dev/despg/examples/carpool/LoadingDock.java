@@ -136,7 +136,8 @@ public class LoadingDock extends SimulationObject
 			{
 				eventQueue.remove(event);
 				eventQueue.add(new Event(
-						timeStep + event.objectAttached().addTimeStepDelta(TrackerType.Utilization, drivingToWeighingStation.nextIntOnProp()),
+						timeStep + event.objectAttached().addTimeStepDelta(TrackerType.Utilization,
+								drivingToWeighingStation.nextIntOnProp()),
 						GravelLoadingEventTypes.Weighing, truckCurrentlyLoaded, WeighingStation.class, null));
 
 				truckCurrentlyLoaded = null;

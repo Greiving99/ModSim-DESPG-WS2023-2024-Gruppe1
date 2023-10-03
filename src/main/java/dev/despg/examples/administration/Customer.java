@@ -63,7 +63,9 @@ public class Customer extends SimulationObject
 			toString += " " + "deloading:" + truckatCustomer;
 		return toString;
 	}
-
+	/**
+	 *
+	 */
 	public boolean simulate(long timeStep)
 	{
 

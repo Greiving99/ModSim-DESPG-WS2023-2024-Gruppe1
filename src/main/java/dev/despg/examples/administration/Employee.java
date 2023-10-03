@@ -1,6 +1,5 @@
 package dev.despg.examples.administration;
 
-import java.util.Random;
 import dev.despg.core.*;
 
 public abstract class Employee

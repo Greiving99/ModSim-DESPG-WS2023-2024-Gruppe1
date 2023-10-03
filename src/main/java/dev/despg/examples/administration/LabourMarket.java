@@ -69,22 +69,34 @@ public class LabourMarket
 	{
 		LabourMarket.driver = driver;
 	}
-
+	/**
+	 *
+	 * @return
+	 */
 	public String getName()
 	{
 		return name;
 	}
-
+	/**
+	 *
+	 * @return
+	 */
 	public void setName(String name)
 	{
 		this.name = name;
 	}
-
+	/**
+	 *
+	 * @return
+	 */
 	public double getQuality()
 	{
 		return quality;
 	}
-
+	/**
+	 *
+	 * @return
+	 */
 	public void setQuality(double quality)
 	{
 		this.quality = quality;
