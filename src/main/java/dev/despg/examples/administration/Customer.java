@@ -159,31 +159,58 @@ public class Customer extends SimulationObject
 		}
 		return false;
 	}
-
+	/**
+	 *
+	 * @return
+	 */
 	public Integer getGravelCustomer()
 	{
 		return gravelCustomer;
 	}
+	/**
+	 *
+	 * @return
+	 */
 	public void setGravelCustomer(int gravelLeft)
 	{
 		gravelCustomer = gravelLeft;
 	}
+	/**
+	 *
+	 * @return
+	 */
 	public static double getFixCost()
 	{
 		return fixCost;
 	}
+	/**
+	 *
+	 * @return
+	 */
 	public static void setFixCost(double fixCost)
 	{
 		Customer.fixCost = fixCost;
 	}
+	/**
+	 *
+	 * @return
+	 */
 	public static Integer getCustomerOrder()
 	{
 		return customerOrder;
 	}
+	/**
+	 *
+	 * @return
+	 */
 	public static void setCustomerOrder(Integer customerOrder)
 	{
 		Customer.customerOrder = customerOrder;
 	}
+	/**
+	 *
+	 * @return
+	 */
 	public static Integer getOrderedGravelPrice()
 	{
 		return orderedGravelPrice.nextIntOnProp();
