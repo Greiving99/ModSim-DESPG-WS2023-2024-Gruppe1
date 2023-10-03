@@ -79,10 +79,10 @@ public final class TruckRepairShop extends SimulationObject
 		{
 			eventQueue.remove(event);
 			currentTruck = (Truck) event.objectAttached();
-			int tempRepairTime = repairTime.nextInt();
+			int tempRepairTime = repairTime.nextIntOnProp();
 			if (currentTruck.isAccident())
 			{
-				if (truckTotalDamage.nextInt() == 1)
+				if (truckTotalDamage.nextIntOnProp() == 1)
 				{
 
 					logger.log(Level.INFO, Time.stepsToTimeString(timeStep) + " " + Truck.getName(currentTruck)
@@ -227,7 +227,6 @@ public final class TruckRepairShop extends SimulationObject
 	public static String getRepairName(int repairTime)
 	{
 		String repairName = " ";
-		Random random = new Random();
 
 		if (repairTime == 180)
 		{
@@ -237,7 +236,7 @@ public final class TruckRepairShop extends SimulationObject
 		    		"Replacement of windshield wipers",
 		    		"Replacement of brake pads"};
 		    // Random selection of a repair from the array.
-		    repairName = repairs[random.nextInt(repairs.length)];
+		    repairName = repairs[Randomizer.nextInt(repairs.length)];
 		} else if (repairTime == 720)
 		{
 		    // Array of possible repairs for 720 minutes (12 hours)
@@ -245,7 +244,7 @@ public final class TruckRepairShop extends SimulationObject
 		    		"Radiator hose replacement",
 		    		"Alternator repair",
 		    		"Shock absorber replacement"};
-		    repairName = repairs[random.nextInt(repairs.length)];
+		    repairName = repairs[Randomizer.nextInt(repairs.length)];
 		} else if (repairTime == 1440)
 		{
 		    //  Array of possible repairs for 1440 minutes (24 hours)
@@ -253,27 +252,27 @@ public final class TruckRepairShop extends SimulationObject
 		    		"Bumper replacement",
 		    		"Steering gearbox replacement",
 		    		"Engine repair"};
-		    repairName = repairs[random.nextInt(repairs.length)];
+		    repairName = repairs[Randomizer.nextInt(repairs.length)];
 		} else if (repairTime == 7200)
 		{
 		    // Array of possible repairs for 7200 minutes (5 days)
 		    String[] repairs = {"Transmission replacement",
 		    		"Body damage repair",
 		    		"Electronic problems repair"};
-		    repairName = repairs[random.nextInt(repairs.length)];
+		    repairName = repairs[Randomizer.nextInt(repairs.length)];
 		} else if (repairTime == 12960)
 		{
 		    // Array of possible repairs for 12960 minutes (9 days)
 		    String[] repairs = {"Rust removal and repainting",
 		    		"Chassis replacement",
 		    		"Installation of specialized parts"};
-		    repairName = repairs[random.nextInt(repairs.length)];
+		    repairName = repairs[Randomizer.nextInt(repairs.length)];
 		} else if (repairTime == 20160)
 		{
 		    //  Array of possible repairs for 20160 minutes (14 days)
 		    String[] repairs = {"Drive shaft replacement",
 		    		"Overhaul of the entire vehicle"};
-		    repairName = repairs[random.nextInt(repairs.length)];
+		    repairName = repairs[Randomizer.nextInt(repairs.length)];
 
 		} else repairName = "Reconstruction after severe accident damage";
 

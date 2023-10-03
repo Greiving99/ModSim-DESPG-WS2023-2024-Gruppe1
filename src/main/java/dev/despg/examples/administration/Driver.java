@@ -1,7 +1,6 @@
 package dev.despg.examples.administration;
 
 import java.util.ArrayList;
-import java.util.Random;
 import dev.despg.core.Randomizer;
 
 
@@ -98,7 +97,7 @@ public class Driver extends Employee
 		isSick.addProbInt(0.99, 0);
 		//1% chance that an employee reports sick.
 		isSick.addProbInt(1, 1);
-		if (isSick.nextInt() > 0)
+		if (isSick.nextIntOnProp() > 0)
 		{
 			return true;
 		}
@@ -112,8 +111,7 @@ public class Driver extends Employee
 			return 0;
 		else
 		{
-			Random random = new Random();
-			int lengthHoliday = random.nextInt(getHolidays()) + 1;
+			int lengthHoliday = Randomizer.nextInt(getHolidays()) + 1;
 					setHolidays(lengthHoliday);
 			return lengthHoliday;
 		}
@@ -124,7 +122,7 @@ public class Driver extends Employee
 		Randomizer krankDauer = new Randomizer();
 		krankDauer.addProbInt(0.8, 1440);
 		krankDauer.addProbInt(1, 1440 * 7);
-		return krankDauer.nextInt();
+		return krankDauer.nextIntOnProp();
 	}
 	public static int failure()
 	{
@@ -136,11 +134,11 @@ public class Driver extends Employee
 		applyForHoliday.addProbInt(0.8, 0);
 		applyForHoliday.addProbInt(1, 1);
 
-		if (isSick.nextInt() > 0)
+		if (isSick.nextIntOnProp() > 0)
 		{
 			return timeSick();
 		}
-		else if (applyForHoliday.nextInt() > 0)
+		else if (applyForHoliday.nextIntOnProp() > 0)
 		{
 			return checkHolidays();
 		}
@@ -210,7 +208,7 @@ public class Driver extends Employee
  */
 	public Integer getDrivingToWeighingStation()
 	{
-		return drivingToCustomer.nextInt();
+		return drivingToCustomer.nextIntOnProp();
 	}
 /**
  *
@@ -218,7 +216,7 @@ public class Driver extends Employee
  */
 	public Integer getDrivingToCustomer()
 	{
-		return drivingToCustomer.nextInt();
+		return drivingToCustomer.nextIntOnProp();
 	}
 	/**
 	 *
@@ -226,7 +224,7 @@ public class Driver extends Employee
 	 */
 	public Integer getDrivingToLoadingDock()
 	{
-		return drivingToLoadingDock.nextInt();
+		return drivingToLoadingDock.nextIntOnProp();
 	}
 /**
  *
@@ -234,7 +232,7 @@ public class Driver extends Employee
  */
 	public Integer getDeloadingTime()
 	{
-		return deloadingTime.nextInt();
+		return deloadingTime.nextIntOnProp();
 	}
 	public static int getHolidays()
 	{

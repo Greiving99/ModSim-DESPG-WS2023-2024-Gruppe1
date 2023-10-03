@@ -22,7 +22,7 @@ public class GravelShipping extends Simulation
 {
 	private static Logger logger = Logger.getLogger("GravelShipping");
 
-	private static Integer gravelToShip = 2000;
+	private static Integer gravelToShip = 10000;
 	private static Integer gravelShipped = 0;
 	private final int gravelToShippedFinal = gravelToShip;
 

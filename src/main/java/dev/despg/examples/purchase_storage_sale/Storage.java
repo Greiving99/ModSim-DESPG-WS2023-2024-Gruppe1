@@ -1,5 +1,6 @@
 package dev.despg.examples.purchase_storage_sale;
 
+import dev.despg.core.Randomizer;
 import dev.despg.core.SimulationObject;
 import dev.despg.examples.util.Database;
 import dev.despg.core.SimulationObjects;
@@ -47,7 +48,6 @@ public class Storage extends SimulationObject
         {
             Transaction transaction = session.beginTransaction();
 
-            Random random = new Random();
             double minFilllevel = 0.1;
             double maxFilllevel = 1.0;
 
@@ -56,7 +56,7 @@ public class Storage extends SimulationObject
             for (StorageEntity storage : storages)
             {
                 double randomCapacity = generateRandomCapacity(10000, 100000);
-                double randomFilllevel = minFilllevel + (maxFilllevel - minFilllevel) * random.nextDouble();
+                double randomFilllevel = minFilllevel + (maxFilllevel - minFilllevel) * Randomizer.nextDouble();
                 BigDecimal roundedCapacity = BigDecimal.valueOf(randomCapacity).setScale(1, RoundingMode.HALF_UP);
                 BigDecimal roundedFilllevel = BigDecimal.valueOf(randomFilllevel).setScale(4, RoundingMode.HALF_UP);
                 storage.setCapacity(roundedCapacity);
@@ -76,8 +76,7 @@ public class Storage extends SimulationObject
 
     protected static double generateRandomCapacity(double min, double max)
     {
-        Random random = new Random();
-        return Math.round((min + (max - min) * random.nextDouble()) * 100.0) / 100.0;
+        return Math.round((min + (max - min) * Randomizer.nextDouble()) * 100.0) / 100.0;
     }
 /**
  *

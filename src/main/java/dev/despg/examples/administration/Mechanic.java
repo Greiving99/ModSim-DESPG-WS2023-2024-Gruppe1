@@ -1,8 +1,6 @@
 package dev.despg.examples.administration;
 
 
-import java.util.Random;
-
 import dev.despg.core.Randomizer;
 
 
@@ -61,8 +59,7 @@ public class Mechanic extends Employee
 			return 0;
 		else
 		{
-			Random random = new Random();
-			int durationHoliday = random.nextInt(getHolidays()) + 1;
+			int durationHoliday = Randomizer.nextInt(getHolidays()) + 1;
 					setHolidays(getHolidays() - durationHoliday);
 					Administration.setCounterEmployeeSick(Administration.getCounterEmployeeSick() + 1);
 			return durationHoliday;
@@ -76,7 +73,7 @@ public class Mechanic extends Employee
 		sickDuration.addProbInt(0.8, 1440);
 		sickDuration.addProbInt(1, 1440 * 7);
 
-		return sickDuration.nextInt();
+		return sickDuration.nextIntOnProp();
 	}
 
 	/*Here, it is simulated whether an employee is absent. This can be due to illness or vacation.*/
@@ -91,12 +88,12 @@ public class Mechanic extends Employee
 		applyForHoliday.addProbInt(0.8, 0);
 		applyForHoliday.addProbInt(1, 1);
 
-		if (beSick.nextInt() > 0)
+		if (beSick.nextIntOnProp() > 0)
 		{
 			Administration.setCounterEmployeeSick(Administration.getCounterEmployeeSick() + 1);
 			return durationSick();
 		}
-		else if (applyForHoliday.nextInt() > 0)
+		else if (applyForHoliday.nextIntOnProp() > 0)
 		{
 			return checkHoliday();
 		}
@@ -120,7 +117,7 @@ public class Mechanic extends Employee
  */
 	public Integer getDockFailureRepairTime()
 	{
-		return dockFailureRepairTime.nextInt();
+		return dockFailureRepairTime.nextIntOnProp();
 	}
 
 /**
@@ -129,7 +126,7 @@ public class Mechanic extends Employee
  */
 	public Integer getStationFailureRepairTime()
 	{
-		return stationFailureRepairTime.nextInt();
+		return stationFailureRepairTime.nextIntOnProp();
 	}
 
 /**
@@ -138,7 +135,7 @@ public class Mechanic extends Employee
  */
 	public Integer getTruckFailureRepairTime()
 	{
-		return truckFailureRepairTime.nextInt();
+		return truckFailureRepairTime.nextIntOnProp();
 	}
 /**
  *

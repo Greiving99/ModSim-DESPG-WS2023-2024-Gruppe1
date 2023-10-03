@@ -103,7 +103,7 @@ public final class WeighingStation extends SimulationObject
 				GravelShipping.setGravelToShip(GravelShipping.getGravelToShip() + truckToWeighLoad);
 				GravelShipping.increaseUnsuccessfulLoadingSizes(truckToWeighLoad);
 				GravelShipping.increaseUnsuccessfulLoadings();
-				driveToLoadingStation = truckInWeighingStation.addTimeStepDelta(TrackerType.Utilization, drivingToLoadingDock.nextInt());
+				driveToLoadingStation = truckInWeighingStation.addTimeStepDelta(TrackerType.Utilization, drivingToLoadingDock.nextIntOnProp());
 			}
 			else
 			{

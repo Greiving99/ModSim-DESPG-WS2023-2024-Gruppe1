@@ -78,6 +78,7 @@ public abstract class SimulationObject
 			trackerValue = 0L;
 
 		trackers.put(counterType, trackerValue + timeStepDelta);
-		return trackerValue + timeStepDelta;
+		// ToDO: trackerValue+ (removed)
+		return timeStepDelta;
 	}
 }

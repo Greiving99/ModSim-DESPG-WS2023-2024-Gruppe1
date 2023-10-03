@@ -117,10 +117,10 @@ public class LoadingDock extends SimulationObject
 				eventQueue.remove(event);
 
 				truckCurrentlyLoaded = (Truck) event.objectAttached();
-				truckCurrentlyLoaded.load(Math.min(loadingWeight.nextInt(), GravelShipping.getGravelToShip()));
+				truckCurrentlyLoaded.load(Math.min(loadingWeight.nextIntOnProp(), GravelShipping.getGravelToShip()));
 				GravelShipping.setGravelToShip(GravelShipping.getGravelToShip() - truckCurrentlyLoaded.getLoad());
 
-				eventQueue.add(new Event(timeStep + truckCurrentlyLoaded.addTimeStepDelta(TrackerType.Utilization, loadingTime.nextInt()),
+				eventQueue.add(new Event(timeStep + truckCurrentlyLoaded.addTimeStepDelta(TrackerType.Utilization, loadingTime.nextIntOnProp()),
 						GravelLoadingEventTypes.LoadingDone, truckCurrentlyLoaded, null, this));
 
 				trackerStart(TrackerType.Utilization, timeStep);
@@ -136,14 +136,14 @@ public class LoadingDock extends SimulationObject
 				eventQueue.remove(event);
 				eventQueue.add(new Event(
 						timeStep + event.objectAttached().addTimeStepDelta(TrackerType.Utilization,
-						drivingToWeighingStation.nextInt()), GravelLoadingEventTypes.Weighing,
+						drivingToWeighingStation.nextIntOnProp()), GravelLoadingEventTypes.Weighing,
 						truckCurrentlyLoaded, WeighingStation.class, null));
 
 				truckCurrentlyLoaded = null;
 				trackerStop(TrackerType.Utilization, timeStep);
 
 				// failure
-				int failureInMinutes = dockFailureRepairTime.nextInt();
+				int failureInMinutes = dockFailureRepairTime.nextIntOnProp();
 				if (failureInMinutes > 0)
 				{
 					eventQueue.add(new Event(timeStep + failureInMinutes, GravelLoadingEventTypes.DockRepaired, null, null, this));

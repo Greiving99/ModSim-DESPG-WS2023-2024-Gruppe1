@@ -1,5 +1,6 @@
 package dev.despg.examples.purchase_storage_sale;
 
+import dev.despg.core.Randomizer;
 import dev.despg.core.SimulationObject;
 import dev.despg.core.SimulationObjects;
 import dev.despg.examples.util.Database;
@@ -132,8 +133,7 @@ public class Purchase extends SimulationObject
 
     protected static double generateRandomPurchaseQuantity(double min, double max)
     {
-        Random random = new Random();
-        double randomPurchaseQuantity = min + (max - min) * random.nextDouble();
+        double randomPurchaseQuantity = min + (max - min) * Randomizer.nextDouble();
         return Math.round(randomPurchaseQuantity * 100.0) / 100.0;
     }
 

@@ -51,7 +51,7 @@ public class Customer extends SimulationObject
 		orderedGravelPrice.addProbInt(0.7, profitMultiplier2Int);
 		orderedGravelPrice.addProbInt(1.0, profitMultiplier3Int);
 		//Assigns a random number of gravel to the customer object.
-		Customer.gravelCustomer = orderedGravel.nextInt();
+		Customer.gravelCustomer = orderedGravel.nextIntOnProp();
 		setCustomerOrder(getGravelCustomer());
 		SimulationObjects.getInstance().add(this);
 
@@ -109,12 +109,12 @@ public class Customer extends SimulationObject
 					loadInTruck -= gravelLeft;
 					GravelShipping.increaseGravelShipped(gravelLeft);
 					GravelShipping.increaseSuccessfulLoadingSizes(gravelLeft);
-					double geld = getCustomerOrder() * (orderedGravelPrice.nextInt() * Administration.totalCost());
+					double geld = getCustomerOrder() * (orderedGravelPrice.nextIntOnProp() * Administration.totalCost());
 					Administration.setRevenue(Administration.getRevenue() + geld);
 					Businessaccount.setBankBalance(Businessaccount.getBankBalance() + geld);
 
 					//Here, the new order is created.
-					this.setGravelCustomer(orderedGravel.nextInt());
+					this.setGravelCustomer(orderedGravel.nextIntOnProp());
 					setCustomerOrder(getGravelCustomer());
 
 					GravelShipping.setGravelToShip(GravelShipping.getGravelToShip() + loadInTruck);
@@ -184,7 +184,7 @@ public class Customer extends SimulationObject
 	}
 	public static Integer getOrderedGravelPrice()
 	{
-		return orderedGravelPrice.nextInt();
+		return orderedGravelPrice.nextIntOnProp();
 	}
 
 }

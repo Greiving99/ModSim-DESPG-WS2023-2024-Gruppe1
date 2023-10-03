@@ -17,7 +17,7 @@ public final class Randomizer
 {
 	private static final double MIN_PROBABILITY = 0.0;
 	private static final double MAX_PROBABILITY = 1.0;
-	private static final Random RANDOM = new Random();
+	private static final Random RANDOM = new Random(10L);
 
 	public static double getMinProbability()
 	{
@@ -67,7 +67,7 @@ public final class Randomizer
 	 * @return This returns the Integer value that had been assigned to the occurred
 	 *         probability
 	 */
-	public int nextInt() throws SimulationException
+	public int nextIntOnProp() throws SimulationException
 	{
 		if (prob2Int.isEmpty())
 			throw new SimulationException("No probabilities in ArrayList");
@@ -84,6 +84,25 @@ public final class Randomizer
 		}
 
 		throw new SimulationException("Probability not covered");
+	}
+
+	/**
+	 *
+	 * @param bound
+	 * @return the random int Number
+	 */
+	public static int nextInt(int bound) throws IllegalArgumentException
+	{
+		return RANDOM.nextInt(bound);
+	}
+
+	/**
+	 *
+	 * @return the random double Number
+	 */
+	public static double nextDouble()
+	{
+		return RANDOM.nextDouble();
 	}
 
 	/**

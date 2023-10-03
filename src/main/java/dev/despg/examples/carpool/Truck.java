@@ -36,7 +36,6 @@ public final class Truck extends SimulationObject
 	private static Randomizer initalMaintanceCounter;
 	private static Randomizer crash;
 	private static EventQueue eventQueue;
-	private Random random = new Random();
 	private int allDrivingTime;
 	private Truck currentTruck;
 	private int driveTimeToLoading = 20;
@@ -80,12 +79,12 @@ public final class Truck extends SimulationObject
 		crash.addProbInt(0.999, 0);
 		crash.addProbInt(1.0, 1);
 
-		int randomIndex = random.nextInt(GravelShipping.getTruckModelsSize());
+		int randomIndex = Randomizer.nextInt(GravelShipping.getTruckModelsSize());
 		model = GravelShipping.getTruckModel(randomIndex);
 		this.setName(name + " " + model.getTruckBrand() + " " + model.getModelName());
 		this.setFuelConsomption(model);
 
-		setKmCounterToMaintaince(initalMaintanceCounter.nextInt());
+		setKmCounterToMaintaince(initalMaintanceCounter.nextIntOnProp());
 		SimulationObjects.getInstance().add(this);
 
 	}
@@ -113,13 +112,13 @@ public final class Truck extends SimulationObject
 		{
 			eventQueue.remove(event);
 			currentTruck = (Truck) event.objectAttached();
-			int travelTime = drivingDistance.nextInt();
+			int travelTime = drivingDistance.nextIntOnProp();
 			long arrivalTime = timeStep + travelTime;
 			currentTruck.currentTravelTime = travelTime;
 
 			if (currentTruck.drivingTimeSinceLastPause + travelTime <= GravelShipping.getMaxDrivingTime())
 			{
-				if (currentTruck.probToFail > GravelShipping.getProbtoFail() || crash.nextInt() == 1)
+				if (currentTruck.probToFail > GravelShipping.getProbtoFail() || crash.nextIntOnProp() == 1)
 				{
 					int travelTimeToFail = (int) (travelTime * (MIN_ROUTE_PERCENT_UNTIL_FAIL
 							+ Math.random() * MAX_ROUTE_PERCENT_UNTIL_FAIL));
@@ -242,7 +241,7 @@ public final class Truck extends SimulationObject
 				}
 				else
 				{
-					currentTruck.probToFail += random.nextInt((6));
+					currentTruck.probToFail += Randomizer.nextInt((6));
 					eventQueue.add(new Event(timeStep + driveTimeToLoading, GravelLoadingEventTypes.Loading,
 							currentTruck, LoadingDock.class, null));
 					return true;
