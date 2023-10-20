@@ -7,8 +7,6 @@ import dev.despg.examples.util.Database;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import dev.despg.examples.util.ConfigManager;
-import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Level;
@@ -47,8 +45,6 @@ public class Purchase extends SimulationObject
  */
     public void performPurchase(double purchaseQuantity)
     {
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream("config.properties"))
-        {
             double minPurchaseQuantity = Double.parseDouble(ConfigManager.getInstance().getProperty("purchaseQuantityMin"));
             double maxPurchaseQuantity = Double.parseDouble(ConfigManager.getInstance().getProperty("purchaseQuantityMax"));
             double criticalCapacity = Double.parseDouble(ConfigManager.getInstance().getProperty("criticalCapacity"));
@@ -116,11 +112,7 @@ public class Purchase extends SimulationObject
                 LOGGER.log(Level.SEVERE, "Error performing the purchase: ", e);
             }
 
-        } catch (IOException e)
-        {
-            LOGGER.log(Level.SEVERE, "Error reading config file: ", e);
         }
-    }
 
     protected static double generateRandomPurchaseQuantity(double min, double max)
     {
