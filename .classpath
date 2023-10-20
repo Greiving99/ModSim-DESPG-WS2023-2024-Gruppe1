@@ -7,16 +7,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="C:/Program Files/Java/javafx-sdk-20/lib/javafx.base.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Program Files/Java/javafx-sdk-20/lib/javafx.controls.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Program Files/Java/javafx-sdk-20/lib/javafx.fxml.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Program Files/Java/javafx-sdk-20/lib/javafx.graphics.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Program Files/Java/javafx-sdk-20/lib/javafx.media.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Program Files/Java/javafx-sdk-20/lib/javafx.swing.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Program Files/Java/javafx-sdk-20/lib/javafx.web.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Program Files/Java/javafx-sdk-20/lib/javafx-swt.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Program Files/Java/Maria DB Connecter Java/mariadb-java-client-3.1.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Program Files/Java/Jsoup/jsoup-1.15.4.jar"/>
 	<classpathentry kind="src" output="target/classes" path="src/main/java">
 		<attributes>
 			<attribute name="optional" value="true"/>
@@ -38,16 +28,6 @@
 	<classpathentry exported="true" kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="C:/Users/Marco/.m2/repository/net/bytebuddy/byte-buddy/1.14.5/byte-buddy-1.14.5.jar" sourcepath="C:/Users/Marco/.m2/repository/net/bytebuddy/byte-buddy/1.14.5/byte-buddy-1.14.5-sources.jar">
-		<attributes>
-			<attribute name="test" value="true"/>
-			<attribute name="maven.pomderived" value="true"/>
-			<attribute name="maven.groupId" value="net.bytebuddy"/>
-			<attribute name="maven.artifactId" value="byte-buddy"/>
-			<attribute name="maven.version" value="1.14.5"/>
-			<attribute name="maven.scope" value="test"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>

@@ -122,8 +122,7 @@ public final class Sale extends SimulationObject
 
 
 
-    @SuppressWarnings("unused")
-	private double calculateAveragePriceFromPurchases()
+    private double calculateAveragePriceFromPurchases()
     {
         try (Session session = database.getSession())
         {
