@@ -43,7 +43,6 @@ public void administraion()
 		//Saves an employee from the job market.
 		int employee = LabourMarket.getRandomEmployee();
 		//Obtains a random quality for the applicant.
-		@SuppressWarnings("static-access")
 		double qualityEmployee = LabourMarket.getDriver().randomQuality();
 		worstQuality = 0.0;
 
