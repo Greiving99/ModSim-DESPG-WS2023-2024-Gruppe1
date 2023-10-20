@@ -1,6 +1,7 @@
 package dev.despg.examples.purchase_storage_sale;
 
 
+import dev.despg.examples.util.ConfigManager;
 import dev.despg.examples.util.Database;
 import dev.despg.core.Randomizer;
 import dev.despg.core.SimulationObject;
@@ -8,12 +9,10 @@ import dev.despg.core.SimulationObjects;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.io.InputStream;
-import java.io.IOException;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,17 +33,10 @@ public class Supplier extends SimulationObject
     @SuppressWarnings("deprecation")
 	public void updatePricesPerTon()
     {
-        Properties supplierProbs = new Properties();
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream("config.properties"))
+    	try
         {
-            if (is == null)
-            {
-                throw new IOException("config.properties not found in the classpath");
-            }
-            supplierProbs.load(is);
-
-            double minPrice = Double.parseDouble(supplierProbs.getProperty("minPrice"));
-            double maxPrice = Double.parseDouble(supplierProbs.getProperty("maxPrice"));
+        	double minPrice = Double.parseDouble(ConfigManager.getInstance().getProperty("minPrice"));
+            double maxPrice = Double.parseDouble(ConfigManager.getInstance().getProperty("maxPrice"));
 
             try (Session session = database.getSession())
             {
@@ -66,9 +58,6 @@ public class Supplier extends SimulationObject
         } catch (NumberFormatException e)
         {
             LOGGER.log(Level.SEVERE, "Error parsing price values from the properties file.", e);
-        } catch (IOException e)
-        {
-            LOGGER.log(Level.SEVERE, "Error reading the properties file.", e);
         }
     }
 

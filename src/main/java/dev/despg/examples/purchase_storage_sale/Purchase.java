@@ -6,12 +6,11 @@ import dev.despg.core.SimulationObjects;
 import dev.despg.examples.util.Database;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
+import dev.despg.examples.util.ConfigManager;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,18 +47,11 @@ public class Purchase extends SimulationObject
  */
     public void performPurchase(double purchaseQuantity)
     {
-        Properties purchaseProbs = new Properties();
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("config.properties"))
         {
-            if (is == null)
-            {
-                throw new IOException("config.properties not found in the classpath");
-            }
-            purchaseProbs.load(is);
-
-            double minPurchaseQuantity = Double.parseDouble(purchaseProbs.getProperty("purchaseQuantityMin"));
-            double maxPurchaseQuantity = Double.parseDouble(purchaseProbs.getProperty("purchaseQuantityMax"));
-            double criticalCapacity = Double.parseDouble(purchaseProbs.getProperty("criticalCapacity"));
+            double minPurchaseQuantity = Double.parseDouble(ConfigManager.getInstance().getProperty("purchaseQuantityMin"));
+            double maxPurchaseQuantity = Double.parseDouble(ConfigManager.getInstance().getProperty("purchaseQuantityMax"));
+            double criticalCapacity = Double.parseDouble(ConfigManager.getInstance().getProperty("criticalCapacity"));
 
             purchaseQuantity = generateRandomPurchaseQuantity(minPurchaseQuantity, maxPurchaseQuantity);
 
