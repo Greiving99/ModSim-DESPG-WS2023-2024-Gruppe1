@@ -60,8 +60,10 @@ public class LoadingDock extends SimulationObject
 		drivingToWeighingStation.addProbInt(1.0, 60);
 
 		dockFailureRepairTime = new Randomizer();
-		dockFailureRepairTime.addProbInt(0.80, 0);
-		dockFailureRepairTime.addProbInt(0.98, 1440);	// one day
+		dockFailureRepairTime.addProbInt(0.7, 0);
+		dockFailureRepairTime.addProbInt(0.8, 360);		// quarter day
+		dockFailureRepairTime.addProbInt(0.9, 720);		// half day
+		dockFailureRepairTime.addProbInt(0.95, 1440);	// one day
 		dockFailureRepairTime.addProbInt(1.0, 2880);	// two days
 	}
 
