@@ -115,7 +115,8 @@ public final class Time
 	private static Calendar setCalendar(long steps)
 	{
 		Calendar calendar = new GregorianCalendar();
-		calendar.setTimeInMillis(convertStepsToMilliseconds(steps));
+		calendar.setTimeInMillis(startDateOfSimulation.getTime() + convertStepsToMilliseconds(steps));
+
 		return calendar;
 	}
 

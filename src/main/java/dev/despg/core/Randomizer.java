@@ -17,7 +17,7 @@ public final class Randomizer
 {
 	private static final double MIN_PROBABILITY = 0.0;
 	private static final double MAX_PROBABILITY = 1.0;
-	private static final Random RANDOM = new Random(10L);
+	private static final Random RANDOM = new Random();
 
 	public static double getMinProbability()
 	{
