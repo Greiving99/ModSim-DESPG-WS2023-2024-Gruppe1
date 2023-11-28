@@ -26,9 +26,7 @@ class TimeTest
     @Test
     void returnsCorrectTime()
     {
-        String expectedString = "02-01-2023 13:50:00"; // 1790 min
-
-        assertThat(Time.stepsToDateString(1790)).isEqualTo(expectedString);
+        assertThat(Time.stepsToDateString(1790)).isEqualTo("02-01-2023 13:50:00");
     }
 
     @Test
@@ -55,46 +53,26 @@ class TimeTest
                 + (hourOfDay - 8) * 60L + (minute - 0);
 
         // The expected result is the date of the next Sunday after the given date
-        String expectedString = "03-01-2023 08:00:00";
-        assertThat(Time.stepsToDateString(Time.stepsToDay(steps, DayOfWeek.SUNDAY))).isEqualTo(expectedString);
+        assertThat(Time.stepsToDateString(Time.stepsToDay(steps, DayOfWeek.SUNDAY))).isEqualTo("03-01-2023 08:00:00");
     }
 
     @Test
     void getHourOfDayReturnsCorrectHour()
     {
-        // Define a specific date and time for testing
-        int year = 2023;
-        int month = 1; // January
-        int dayOfMonth = 2;
-        int hourOfDay = 23;
-        int minute = 30;
-      // int second = 0;
+        // 03-01-2023 07:30:00 => 2850 minutes = steps
 
-        // Convert the date and time to steps manually without using the monthsToSteps method
-        long steps = ((year - 2023) * 365L + (month - 1) * 30L + (dayOfMonth - 1)) * 24L * 60L
-                + hourOfDay * 60L + minute;
-
-        assertThat(Time.getHourOfDay(steps)).isEqualTo(hourOfDay);
+        assertThat(Time.getHourOfDay(2850)).isEqualTo(7);
     }
 
     @Test
     void getDayOfWeekReturnsCorrectDayOfWeek()
     {
-        // Define a specific date and time for testing
-        int year = 2023;
-        int month = 1; // January
-        int dayOfMonth = 2;
-        int hourOfDay = 15;
-        int minute = 30;
-       // int second = 0;
-
-        // Convert the date to steps manually without using the monthsToSteps method
-        long steps = ((year - 2023) * 365L + (month - 1) * 30L + (dayOfMonth - 1)) * 24L * 60L
-                + (hourOfDay - 8) * 60L + (minute - 0);
+    	// 01-01-2023 = Sunday
+    	// +1890 steps (minutes)
+    	// day = 1440 steps = next day is a monday, precisely the 02-01-2023 at 15:30:00
 
         // The expected result is the day of the week of the given date (1 = Sunday, 2 = Monday, etc.)
-        int expectedDayOfWeek = 6; // Monday
-        assertThat(Time.getDayOfWeek(steps)).isEqualTo(expectedDayOfWeek);
+        assertThat(Time.getDayOfWeek(1890)).isEqualTo(2);
     }
 
     // Add similar test cases for other methods in the Time class
