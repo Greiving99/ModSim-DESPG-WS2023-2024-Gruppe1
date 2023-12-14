@@ -29,10 +29,9 @@ public final class Sale extends SimulationObject
         SimulationObjects.getInstance().add(this);
     }
 
-    public boolean simulate(long timeStep)
+    public void simulate(long timeStep)
     {
         performSales(generateRandomSalesQuantity(1000, 10000));
-        return false;
     }
 
     @SuppressWarnings("deprecation")

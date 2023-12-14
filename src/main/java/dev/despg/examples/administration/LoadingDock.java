@@ -113,7 +113,7 @@ public class LoadingDock extends SimulationObject
 	 *         could get assigned
 	 */
 	@Override
-	public boolean simulate(long timeStep)
+	public void simulate(long timeStep)
 	{
 		if (newTruckMechanic)
 			//When a new truck mechanic is hired, it is created here.
@@ -139,7 +139,7 @@ public class LoadingDock extends SimulationObject
 			{
 				eventQueue.remove(event);
 				truckFailed = false;
-				return true;
+				return;
 			}
 		}
 		if (dockFailed)
@@ -150,7 +150,7 @@ public class LoadingDock extends SimulationObject
 			{
 				eventQueue.remove(event);
 				dockFailed = false;
-				return true;
+				return;
 			}
 		}
 		if (employeeFailed)
@@ -164,7 +164,7 @@ public class LoadingDock extends SimulationObject
 			{
 				eventQueue.remove(event);
 				employeeFailed = false;
-				return true;
+				return;
 			}
 		}
 		else if (truckCurrentlyLoaded == null && GravelShipping.getGravelToShip() > 0)
@@ -195,7 +195,7 @@ public class LoadingDock extends SimulationObject
 						GravelLoadingEventTypes.LoadingDone, truckCurrentlyLoaded, null, this));
 				setFixedCost(getFixedCost() + LOADINGFIXCOST * timeToLoad);
 				trackerStart(TrackerType.Utilization, timeStep);
-				return true;
+				return;
 			}
 		}
 		else
@@ -256,12 +256,8 @@ public class LoadingDock extends SimulationObject
 					eventQueue.add(new Event(timeStep + timeEmployeeFailure, GravelLoadingEventTypes.DockRepaired, null, null, this));
 					setFixedCost(getFixedCost() + (timeEmployeeFailure * EMPLOYEEFAILURECOST));
 				}
-
-				return true;
 			}
 		}
-
-		return false;
 	}
 
 

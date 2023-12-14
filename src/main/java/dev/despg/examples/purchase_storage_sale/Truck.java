@@ -45,8 +45,7 @@ public final class Truck extends SimulationObject
 	}
 
 	@Override
-	public boolean simulate(long timeStep)
+	public void simulate(long timeStep)
 	{
-		return false;
 	}
 }

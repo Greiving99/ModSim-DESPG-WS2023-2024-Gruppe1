@@ -71,9 +71,8 @@ public class Supplier extends SimulationObject
  *
  */
     @Override
-    public boolean simulate(long timeStep)
+    public void simulate(long timeStep)
     {
         updatePricesPerTon();
-        return false;
     }
 }

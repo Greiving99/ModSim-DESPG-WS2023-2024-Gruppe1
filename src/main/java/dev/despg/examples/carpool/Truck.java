@@ -104,7 +104,7 @@ public final class Truck extends SimulationObject
 	}
 
 	@Override
-	public boolean simulate(long timeStep)
+	public void simulate(long timeStep)
 	{
 		Event event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.TruckStart, this.getClass(), null);
 		if (event != null)
@@ -127,19 +127,19 @@ public final class Truck extends SimulationObject
 					eventQueue.add(new Event(timeStep + travelTimeToFail + 60, GravelLoadingEventTypes.TruckWillFail,
 							currentTruck, Truck.class, null));
 					truckWillFailDrivingMessage(timeStep, travelTime);
-					return true;
+					return;
 				}
 				else
 				eventQueue.add(new Event(arrivalTime, GravelLoadingEventTypes.TruckEnRoute, currentTruck, Truck.class, this));
 				truckTravelingMessage(timeStep, travelTime);
-				return true;
+				return;
 			}
 			else if (currentTruck.drivingTimeSinceLastPause == GravelShipping.getMaxDrivingTime())
 			{
 				currentTruck.remainingTravelTime = travelTime;
 				eventQueue.add(new Event(timeStep + GravelShipping.getPause(), GravelLoadingEventTypes.TruckDriverPause,
 						currentTruck, Truck.class, this));
-				return true;
+				return;
 			}
 			else
 			{
@@ -148,7 +148,7 @@ public final class Truck extends SimulationObject
 				eventQueue.add(new Event(timeStep + (GravelShipping.getMaxDrivingTime() - currentTruck.drivingTimeSinceLastPause),
 						GravelLoadingEventTypes.TruckStartPartRoute, currentTruck, Truck.class, this));
 				truckIsDrivingMessage(timeStep);
-				return true;
+				return;
 			}
 		}
 		event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.TruckStartPartRoute, this.getClass(), null);
@@ -159,7 +159,7 @@ public final class Truck extends SimulationObject
 			eventQueue.add(new Event(timeStep + GravelShipping.getPause(), GravelLoadingEventTypes.TruckDriverPause,
 					currentTruck, Truck.class, this));
 			truckPauseMessage(timeStep);
-			return true;
+			return;
 		}
 		event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.TruckDriverPause, this.getClass(), null);
 		if (event != null)
@@ -174,7 +174,7 @@ public final class Truck extends SimulationObject
 				currentTruck.drivingTimeSinceLastPause += remainingTravelTime;
 				eventQueue.add(new Event(timeStep + currentTruck.remainingTravelTime, GravelLoadingEventTypes.TruckEnRoute,
 						currentTruck, Truck.class, this));
-				return true;
+				return;
 			}
 			else
 			{
@@ -183,7 +183,7 @@ public final class Truck extends SimulationObject
 
 				eventQueue.add(new Event(timeStep + (GravelShipping.getMaxDrivingTime() - currentTruck.drivingTimeSinceLastPause),
 						GravelLoadingEventTypes.TruckStartPartRoute, currentTruck, Truck.class, this));
-				return true;
+				return;
 			}
 		}
 		event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.TruckWillFail, this.getClass(), null);
@@ -203,7 +203,7 @@ public final class Truck extends SimulationObject
 				currentTruck.setAccident(true);
 			}
 			eventQueue.add(new Event(timeStep + 60, GravelLoadingEventTypes.TruckFailed, currentTruck, TruckRepairShop.class, null));
-			return true;
+			return;
 
 		}
 
@@ -222,7 +222,7 @@ public final class Truck extends SimulationObject
 				logger.log(Level.INFO, Time.stepsToTimeString(timeStep) + " " + GravelLoadingEventTypes.TruckBack.get()
 				+ " -> " + currentTruck.getName());
 			}
-			return true;
+			return;
 		}
 		event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.TruckBack, this.getClass(), null);
 		if (event != null)
@@ -236,19 +236,17 @@ public final class Truck extends SimulationObject
 					truckNeedInspectionMessage(timeStep);
 					eventQueue.add(new Event(timeStep + 60, GravelLoadingEventTypes.TruckInspection,
 							currentTruck, TruckRepairShop.class, null));
-					return true;
+					return;
 				}
 				else
 				{
 					currentTruck.probToFail += Randomizer.nextInt((6));
 					eventQueue.add(new Event(timeStep + driveTimeToLoading, GravelLoadingEventTypes.Loading,
 							currentTruck, LoadingDock.class, null));
-					return true;
+					return;
 				}
 			}
-			return false;
 		}
-		return false;
 	}
 
 	private void truckNeedInspectionMessage(long timeStep)

@@ -38,18 +38,16 @@ class SimulationTest
 	class TestSimulationObject extends SimulationObject
 	{
 	    @Override
-	    public boolean simulate(long timeStep)
+	    public void simulate(long timeStep)
 	    {
-	        return true;
 	    }
 	}
 
 	public class AnotherTestSimulationObject extends SimulationObject
 	{
 	    @Override
-	    public boolean simulate(long timeStep)
+	    public void simulate(long timeStep)
 	    {
-	        return false;
 	    }
 	}
 
@@ -107,22 +105,6 @@ class SimulationTest
 	{
 		toAdd.add(new Event(1L, null, null, null, null));
 		e.addAll(toAdd);
-		when(simObject.simulate(1)).thenAnswer(invocation ->
-		{
-			if (!answered)
-			{
-				e.clear();
-				answered = true;
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-
-
-		});
-
 
 		long expected = 1;
 		long actual = sim.simulate();
@@ -137,9 +119,8 @@ class SimulationTest
 	        SimulationObject simulationObject = new SimulationObject()
 	        {
 	            @Override
-	            public boolean simulate(long timeStep)
+	            public void simulate(long timeStep)
 	            {
-	                return false; // Not relevant for this test
 	            }
 	        };
 
@@ -173,9 +154,8 @@ class SimulationTest
 	    SimulationObject simObject = new SimulationObject()
 	    {
 	        @Override
-	        public boolean simulate(long timeStep)
+	        public void simulate(long timeStep)
 	        {
-	            return false;
 	        }
 	    };
 
@@ -192,9 +172,9 @@ class SimulationTest
 	    SimulationObject simObject = new SimulationObject()
 	    {
 	        @Override
-	        public boolean simulate(long timeStep)
+	        public void simulate(long timeStep)
 	        {
-	            return false; 	       }
+	        }
 	    };
 
 	    TrackerType trackerType = TrackerType.Utilization;

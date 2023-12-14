@@ -60,7 +60,7 @@ public final class PurchasingDepartment extends SimulationObject
 	}
 
 	@Override
-	public boolean simulate(long timeStep)
+	public void simulate(long timeStep)
 	{
 
 		Event event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.GetBestOfferForNewTruck, this.getClass(), null);
@@ -74,7 +74,7 @@ public final class PurchasingDepartment extends SimulationObject
 			if (truckOffers.size() == 0)
 			{
 				logger.log(Level.INFO, Time.stepsToTimeString(timeStep) + " No new offers available ");
-				return false;
+				return;
 			}
 			int deliveryTime = truckOffers.get(bestOfferIndex).getDeliveryTime();
 
@@ -92,7 +92,7 @@ public final class PurchasingDepartment extends SimulationObject
 			currentTruck, PurchasingDepartment.class, this));
 
 			truckOffers.remove(bestOfferIndex);
-			return true;
+			return;
 		}
 		event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.NewTruckDelivered, this.getClass(), null);
 
@@ -106,10 +106,7 @@ public final class PurchasingDepartment extends SimulationObject
 			// Message
 			logger.log(Level.INFO, Time.stepsToTimeString(timeStep) + " "
 					+ GravelLoadingEventTypes.NewTruckDelivered.get() + " " + Truck.getName(currentTruck));
-			return true;
 		}
-
-		return false;
 	}
 
 	private int bestOffer()

@@ -88,7 +88,7 @@ public final class WeighingStation extends SimulationObject
 	 */
 	@SuppressWarnings("static-access")
 	@Override
-	public boolean simulate(long timeStep)
+	public void simulate(long timeStep)
 	{
 
 		//When we hire a new mechanic for the weighing station, it is created here.
@@ -111,7 +111,7 @@ public final class WeighingStation extends SimulationObject
 			{
 				eventQueue.remove(event);
 				truckFailed = false;
-				return true;
+				return;
 			}
 		}
 
@@ -124,7 +124,7 @@ public final class WeighingStation extends SimulationObject
 			{
 				eventQueue.remove(event);
 				stationFailed = false;
-				return true;
+				return;
 			}
 		}
 
@@ -143,7 +143,7 @@ public final class WeighingStation extends SimulationObject
 
 			trackerStart(TrackerType.Utilization, timeStep);
 			setFixCost(getFixCost() + TIMETOWEIGHCOST * TIME_TO_WEIGH_TRUCK);
-			return true;
+			return;
 		}
 
 		/* Here, the 'WeighingDone' event is dequeued from the queue. Then, it is checked whether the cargo in the truck exceeds the allowed value.
@@ -199,11 +199,7 @@ public final class WeighingStation extends SimulationObject
 				truckFailed = true;
 				eventQueue.add(new Event(timeStep + repairTimeTruck, GravelLoadingEventTypes.TruckRepaired, null, null, this));
 			}
-
-			return true;
-
 		}
-		return false;
 	}
 
 	public static Mechanic getMechanic()

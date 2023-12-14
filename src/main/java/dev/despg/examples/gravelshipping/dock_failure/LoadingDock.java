@@ -97,7 +97,7 @@ public class LoadingDock extends SimulationObject
 	 *         could get assigned
 	 */
 	@Override
-	public boolean simulate(long timeStep)
+	public void simulate(long timeStep)
 	{
 		if (dockFailed)
 		{
@@ -108,7 +108,6 @@ public class LoadingDock extends SimulationObject
 				dockFailed = false;
 				trackerStop(TrackerType.Failure, timeStep);
 			}
-			return false;
 		}
 		else if (truckCurrentlyLoaded == null && GravelShipping.getGravelToShip() > 0)
 		{
@@ -126,7 +125,6 @@ public class LoadingDock extends SimulationObject
 						GravelLoadingEventTypes.LoadingDone, truckCurrentlyLoaded, null, this));
 
 				trackerStart(TrackerType.Utilization, timeStep);
-				return true;
 			}
 		}
 		else
@@ -152,10 +150,7 @@ public class LoadingDock extends SimulationObject
 					dockFailed = true;
 					trackerStart(TrackerType.Failure, timeStep);
 				}
-				return true;
 			}
 		}
-
-		return false;
 	}
 }

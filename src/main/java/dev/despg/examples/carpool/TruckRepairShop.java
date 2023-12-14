@@ -58,7 +58,7 @@ public final class TruckRepairShop extends SimulationObject
 		return toString;
 	}
 	@Override
-	public boolean simulate(long timeStep)
+	public void simulate(long timeStep)
 	{
 		Event event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.TruckFailed, this.getClass(), null);
 		// failed trucks aus queue
@@ -70,7 +70,7 @@ public final class TruckRepairShop extends SimulationObject
 			eventQueue.add(new Event(timeStep + DIAGNOSE_TIME, GravelLoadingEventTypes.TruckDiagnosis,
 					currentTruck, TruckRepairShop.class, this));
 			// start diagnose
-			return true;
+			return;
 		}
 		event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.TruckDiagnosis, this.getClass(), null);
 
@@ -91,7 +91,7 @@ public final class TruckRepairShop extends SimulationObject
 					shutDownTrucks(currentTruck, timeStep);
 					eventQueue.add(new Event(timeStep, GravelLoadingEventTypes.GetBestOfferForNewTruck,
 							currentTruck, PurchasingDepartment.class, null));
-					return true;
+					return;
 				}
 				else
 				{
@@ -116,7 +116,7 @@ public final class TruckRepairShop extends SimulationObject
 				shutDownTrucks(currentTruck, timeStep);
 				eventQueue.add(new Event(timeStep, GravelLoadingEventTypes.GetBestOfferForNewTruck,
 						currentTruck, PurchasingDepartment.class, null));
-				return true;
+				return;
 			}
 			else
 				if (GravelShipping.isTruckFailedRepairMessage())
@@ -129,7 +129,7 @@ public final class TruckRepairShop extends SimulationObject
 					currentTruck, TruckRepairShop.class, this)); // Set the repair time
 			GravelShipping.setNumberOfFailure(); // Increase the downtime for MTBF (Mean Time Between Failures
 			currentTruck.setAccident(false);
-			return true;
+			return;
 		}
 		event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.TruckInRepair, this.getClass(), null);
 
@@ -139,7 +139,7 @@ public final class TruckRepairShop extends SimulationObject
 			currentTruck = (Truck) event.objectAttached();
 			eventQueue.add(new Event(timeStep + 30, GravelLoadingEventTypes.TruckRepaired,
 					currentTruck, TruckRepairShop.class, this)); // repair ready
-			return true;
+			return;
 		}
 
 		event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.TruckRepaired, this.getClass(), null);
@@ -157,7 +157,7 @@ public final class TruckRepairShop extends SimulationObject
 			}
 			eventQueue.add(new Event(timeStep + 30, GravelLoadingEventTypes.Loading,
 					currentTruck, LoadingDock.class, null)); //The repaired truck is being loaded
-			return true;
+			return;
 		}
 		event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.TruckInspection, this.getClass(), null);
 
@@ -169,7 +169,7 @@ public final class TruckRepairShop extends SimulationObject
 			currentTruck.setDrivingTimeSinceLastPause(0);
 			eventQueue.add(new Event(timeStep + INSPECTION_TIME, GravelLoadingEventTypes.TruckInspectionDone,
 					currentTruck, TruckRepairShop.class, this)); // inspection ready
-			return true;
+			return;
 		}
 		event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.TruckInspectionDone, this.getClass(), null);
 
@@ -185,10 +185,7 @@ public final class TruckRepairShop extends SimulationObject
 					+ Truck.getName(currentTruck));
 			}
 			eventQueue.add(new Event(timeStep + 30, GravelLoadingEventTypes.Loading, currentTruck, LoadingDock.class, null));
-			return true;
 		}
-		return false;
-
 	}
 
 	public static void performedRepair(Truck t, int tempRepairTime)

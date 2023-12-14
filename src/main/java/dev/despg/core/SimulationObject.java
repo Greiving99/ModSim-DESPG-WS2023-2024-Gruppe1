@@ -22,7 +22,7 @@ public abstract class SimulationObject
 	private final Map<TrackerType, Long> trackers = new HashMap<>();
 	private final Map<TrackerType, Long> trackersStart = new HashMap<>();
 
-	public abstract boolean simulate(long timeStep);
+	public abstract void simulate(long timeStep);
 
 	/**
 	 * setTracker.

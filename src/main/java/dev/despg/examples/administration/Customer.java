@@ -66,7 +66,7 @@ public class Customer extends SimulationObject
 	/**
 	 *
 	 */
-	public boolean simulate(long timeStep)
+	public void simulate(long timeStep)
 	{
 
 		/* The truck arrives at the customer, and if there is no truck at the customer, the 'Deloading' event is retrieved from the EventQueue.
@@ -87,7 +87,6 @@ public class Customer extends SimulationObject
 						 GravelLoadingEventTypes.DeloadingDone, truckatCustomer, null, this));
 				trackerStart(TrackerType.Utilization, timeStep);
 				fixCost += DELOADINGCOST * deloadingTime;
-				return true;
 			}
 		}
 		else
@@ -153,11 +152,9 @@ public class Customer extends SimulationObject
 				truckatCustomer.unload();
 				truckatCustomer = null;
 				trackerStop(TrackerType.Utilization, timeStep);
-				return true;
 			}
 
 		}
-		return false;
 	}
 	/**
 	 *

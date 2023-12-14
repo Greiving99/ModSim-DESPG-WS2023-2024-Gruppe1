@@ -78,7 +78,7 @@ public final class WeighingStation extends SimulationObject
 	 *         could get assigned
 	 */
 	@Override
-	public boolean simulate(long timeStep)
+	public void simulate(long timeStep)
 	{
 		Event event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.Weighing, this.getClass(), null);
 		if (truckInWeighingStation == null && event != null && event.objectAttached() != null
@@ -89,7 +89,6 @@ public final class WeighingStation extends SimulationObject
 			eventQueue.add(new Event(timeStep + truckInWeighingStation.addTimeStepDelta(TrackerType.Utilization, TIME_TO_WEIGH_TRUCK),
 					GravelLoadingEventTypes.WeighingDone, truckInWeighingStation, null, this));
 			trackerStart(TrackerType.Utilization, timeStep);
-			return true;
 		}
 
 		event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.WeighingDone, null, this);
@@ -119,9 +118,6 @@ public final class WeighingStation extends SimulationObject
 			truckInWeighingStation.unload();
 			truckInWeighingStation = null;
 			trackerStop(TrackerType.Utilization, timeStep);
-			return true;
 		}
-
-		return false;
 	}
 }

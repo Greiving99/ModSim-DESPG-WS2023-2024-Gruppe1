@@ -32,10 +32,9 @@ public class Storage extends SimulationObject
  *
  */
     @Override
-    public boolean simulate(long timeStep)
+    public void simulate(long timeStep)
     {
         generateRandomData();
-        return false;
     }
 /**
  *

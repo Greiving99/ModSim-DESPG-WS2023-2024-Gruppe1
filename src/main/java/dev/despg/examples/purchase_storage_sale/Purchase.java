@@ -26,10 +26,9 @@ public class Purchase extends SimulationObject
         SimulationObjects.getInstance().add(this);
     }
 
-    public final boolean simulate(long timeStep)
+    public final void simulate(long timeStep)
     {
         performPurchase(purchaseQuantity);
-        return false;
     }
 
     @SuppressWarnings("deprecation")

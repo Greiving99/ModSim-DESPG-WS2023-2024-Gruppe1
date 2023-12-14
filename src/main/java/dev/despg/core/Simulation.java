@@ -85,7 +85,10 @@ public abstract class Simulation
 
 				for (SimulationObject so : simulationObjects)
 				{
-					if (so.simulate(timeStep))
+					long eventQueueState = eventqueue.hashCode();
+					so.simulate(timeStep);
+
+					if (eventQueueState != eventqueue.hashCode())
 					{
 						oneSwitched = true;
 						LOG.log(Level.FINEST, timeStep + " switched" + so);
