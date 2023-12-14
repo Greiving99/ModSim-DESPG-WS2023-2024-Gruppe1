@@ -78,10 +78,10 @@ public abstract class Simulation
 
 			numberOfSteps++;
 
-			boolean oneSwitched;
+			boolean eventQueueStateChanged;
 			do
 			{
-				oneSwitched = false;
+				eventQueueStateChanged = false;
 
 				for (SimulationObject so : simulationObjects)
 				{
@@ -90,11 +90,11 @@ public abstract class Simulation
 
 					if (eventQueueState != eventqueue.hashCode())
 					{
-						oneSwitched = true;
+						eventQueueStateChanged = true;
 						LOG.log(Level.FINEST, timeStep + " switched" + so);
 					}
 				}
-			} while (oneSwitched);
+			} while (eventQueueStateChanged);
 
 			// progressing in time (step is 'done')
 			timeStep++;
