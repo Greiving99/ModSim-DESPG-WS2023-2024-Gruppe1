@@ -22,13 +22,12 @@ public class LoadingDock extends SimulationObject
 	private static final double LOADINGFIXCOST = 50.43;
 	private static final int EMPLOYEEFAILURECOST = 5;
 	private static final double DOCHREPAIRCOST = 0.25;
-	private static final int REPAIRTIMECOST = 100;
+	//private static final int REPAIRTIMECOST = 100;
 	@SuppressWarnings("unused")
 	private String nameEmployee;
 	private String name;
 	private Truck truckCurrentlyLoaded;
 	private boolean dockFailed;
-	private boolean truckFailed;
 
 	private static LoadingDockWorker loadingDockWorker;
 	private static Mechanic mechanic;
@@ -72,7 +71,6 @@ public class LoadingDock extends SimulationObject
 		loadingDockWorker = new LoadingDockWorker(nameEmployee, quality);
 		this.setLoadingDockWorker(loadingDockWorker);
 		dockFailed = false;
-		truckFailed = false;
 		newTruckMechanic = false;
 		newMechanic = false;
 		employeeFailed = false;
@@ -108,9 +106,6 @@ public class LoadingDock extends SimulationObject
 	 * queue and handles it by removing it from the queue, setting
 	 * {@link truckCurrentlyLoaded} to null and adding a new event to the event
 	 * queue assigned to the {@link WeighingStation} class.
-	 *
-	 * @return true if an assignable event got found and handled, false if no event
-	 *         could get assigned
 	 */
 	@Override
 	public void simulate(long timeStep)
@@ -131,40 +126,33 @@ public class LoadingDock extends SimulationObject
 			numMechanic++;
 			newMechanic = false;
 		}
-		if (truckFailed)
-			//Here, it is checked if a truck has broken down, and then the 'TruckRepaired' event is thrown from the EventQueue.
+		if (dockFailed || employeeFailed)
 		{
-			Event event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.TruckRepaired, null, null);
-			if (event != null)
+
+			if (dockFailed)
+				//Here, it is checked if a loading dock has broken down, and then the 'DockRepaired' event is thrown from the EventQueue.
 			{
-				eventQueue.remove(event);
-				truckFailed = false;
-				return;
+				Event event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.DockRepaired, null, this);
+				if (event != null)
+				{
+					eventQueue.remove(event);
+					dockFailed = false;
+					return;
+				}
 			}
-		}
-		if (dockFailed)
-			//Here, it is checked if a loading dock has broken down, and then the 'DockRepaired' event is thrown from the EventQueue.
-		{
-			Event event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.DockRepaired, null, this);
-			if (event != null)
+			else
+				/*Here, it is checked if an employee from the loading dock is unavailable,
+				 * and then the 'DockRepaired' event is thrown from the EventQueue.
+				 * The loading dock cannot function without the employee,
+				 * and 'DockRepaired' serves the same purpose as indicating a loading dock outage.*/
 			{
-				eventQueue.remove(event);
-				dockFailed = false;
-				return;
-			}
-		}
-		if (employeeFailed)
-			/*Here, it is checked if an employee from the loading dock is unavailable,
-			 * and then the 'DockRepaired' event is thrown from the EventQueue.
-			 * The loading dock cannot function without the employee,
-			 * and 'DockRepaired' serves the same purpose as indicating a loading dock outage.*/
-		{
-			Event event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.DockRepaired, null, this);
-			if (event != null)
-			{
-				eventQueue.remove(event);
-				employeeFailed = false;
-				return;
+				Event event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.DockRepaired, null, this);
+				if (event != null)
+				{
+					eventQueue.remove(event);
+					employeeFailed = false;
+					return;
+				}
 			}
 		}
 		else if (truckCurrentlyLoaded == null && GravelShipping.getGravelToShip() > 0)
@@ -211,12 +199,11 @@ public class LoadingDock extends SimulationObject
 				int timeToWeighingStation = truckCurrentlyLoaded.getDriver().getDrivingToWeighingStation();
 				eventQueue.remove(event);
 				eventQueue.add(new Event(
-					timeStep + event.objectAttached().addTimeStepDelta(TrackerType.Utilization, timeToWeighingStation),
+						timeStep + event.objectAttached().addTimeStepDelta(TrackerType.Utilization, timeToWeighingStation),
 						GravelLoadingEventTypes.Weighing, truckCurrentlyLoaded, WeighingStation.class, null));
 
 				setFixedCost(getFixedCost() + (Truck.getFuelCost() * timeToWeighingStation));
 
-				truckCurrentlyLoaded = null;
 				trackerStop(TrackerType.Utilization, timeStep);
 
 				/*Here, it is checked if the loading dock has broken down. The time required for repairs
@@ -230,21 +217,15 @@ public class LoadingDock extends SimulationObject
 					counterFailureDock++;
 					repairTime += mechanic.failureTime();
 					dockFailed = true;
+					this.addTimeStepDelta(TrackerType.Failure, repairTime);
 					eventQueue.add(new Event(timeStep + repairTime, GravelLoadingEventTypes.DockRepaired, null, null, this));
 					Administration.setRepairCost(Administration.getRepairCost() + DOCHREPAIRCOST * repairTime); // für 15 Euro die Stunde
 				}
 
 				//It follows the same principle as before, but now it checks whether a truck and/or a mechanic has broken down.
 
-				int	repairTimeTruck = LoadingDock.getTruckMechanic().getTruckFailureRepairTime();
-				if (repairTimeTruck > 0)
-				{
-					counterFailureLKW++;
-					truckFailed = true;
-					repairTimeTruck += getTruckMechanic().failureTime();
-					Administration.setRepairCost(Administration.getRepairCost() + REPAIRTIMECOST * repairTime);
-					eventQueue.add(new Event(timeStep + repairTimeTruck, GravelLoadingEventTypes.TruckRepaired, this, null, null));
-				}
+				truckCurrentlyLoaded.truckFailed(timeStep);
+				truckCurrentlyLoaded = null;
 
 				/*Here, it is checked if a warehouse worker responsible for the loading dock is unavailable.
 				 * The downtime cost is calculated at 5 euros per minute.*/
@@ -253,6 +234,7 @@ public class LoadingDock extends SimulationObject
 				if (timeEmployeeFailure > 0)
 				{
 					employeeFailed = true;
+					this.addTimeStepDelta(TrackerType.Failure, timeEmployeeFailure);
 					eventQueue.add(new Event(timeStep + timeEmployeeFailure, GravelLoadingEventTypes.DockRepaired, null, null, this));
 					setFixedCost(getFixedCost() + (timeEmployeeFailure * EMPLOYEEFAILURECOST));
 				}
@@ -333,10 +315,10 @@ public class LoadingDock extends SimulationObject
 	{
 		return loadingDockWorker;
 	}
-/**
- *
- * @param lagerarbeiter
- */
+	/**
+	 *
+	 * @param lagerarbeiter
+	 */
 	public void setLoadingDockWorker(LoadingDockWorker lagerarbeiter)
 	{
 		LoadingDock.loadingDockWorker = lagerarbeiter;

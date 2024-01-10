@@ -18,7 +18,7 @@ import dev.despg.core.TrackerType;
 
 public final class WeighingStation extends SimulationObject
 {
-	private static final int TRUCKREPAIRCOST = 100;
+	//private static final int TRUCKREPAIRCOST = 100;
 	private static final int STATIONREPAIRCOST = 125;
 	private static final double TIMETOWEIGHCOST = 0.34;
 	private static final int TIME_TO_WEIGH_TRUCK = 1000;
@@ -27,14 +27,13 @@ public final class WeighingStation extends SimulationObject
 	private String name;
 	private Truck truckInWeighingStation;
 	private Boolean stationFailed;
-	private Boolean truckFailed;
 	private static Mechanic mechanic;
 	private static boolean newMechanic;
 	private static int numMechanic;
 
 
 	private static double fixKosten;
-	private static int counterFailureTruck;
+	//private static int counterFailureTruck;
 	private static int counterFailureStation;
 
 
@@ -50,8 +49,6 @@ public final class WeighingStation extends SimulationObject
 	{
 		this.name = name;
 		stationFailed = false;
-		truckFailed = false;
-
 		eventQueue = EventQueue.getInstance();
 		SimulationObjects.getInstance().add(this);
 	}
@@ -102,22 +99,9 @@ public final class WeighingStation extends SimulationObject
 
 		}
 
-		//When a truck breaks down, the 'TruckRepaired' event is removed from the EventQueue here.
-
-		if (truckFailed)
-		{
-			Event event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.TruckRepaired, null, this);
-			if (event != null)
-			{
-				eventQueue.remove(event);
-				truckFailed = false;
-				return;
-			}
-		}
-
 		//When a station is out of order, the 'StationRepaired' event is removed from the EventQueue.
 
-		else if (stationFailed)
+		if (stationFailed)
 		{
 			Event event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.StationRepaired, null, this);
 			if (event != null)
@@ -127,80 +111,119 @@ public final class WeighingStation extends SimulationObject
 				return;
 			}
 		}
-
-		/*HHere, the 'Weighing' event is removed from the EventQueue.
-		 * The truck is weighed and added to the queue with the 'WeighingDone' event.
-		 * Then, the costs for weighing are calculated at 0.34 euros per minute.*/
-
-		Event event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.Weighing, this.getClass(), null);
-		if (truckInWeighingStation == null && event != null && event.objectAttached() != null
-				&& event.objectAttached().getClass() == Truck.class)
+		else
 		{
-			eventQueue.remove(event);
-			truckInWeighingStation = (Truck) event.objectAttached();
-			eventQueue.add(new Event(timeStep + truckInWeighingStation.addTimeStepDelta(TrackerType.Utilization, TIME_TO_WEIGH_TRUCK),
-					GravelLoadingEventTypes.WeighingDone, truckInWeighingStation, null, this));
 
-			trackerStart(TrackerType.Utilization, timeStep);
-			setFixCost(getFixCost() + TIMETOWEIGHCOST * TIME_TO_WEIGH_TRUCK);
-			return;
-		}
+			/* Here, the 'Weighing' event is removed from the EventQueue.
+			 * The truck is weighed and added to the queue with the 'WeighingDone' event.
+			 * Then, the costs for weighing are calculated at 0.34 euros per minute.*/
 
-		/* Here, the 'WeighingDone' event is dequeued from the queue. Then, it is checked whether the cargo in the truck exceeds the allowed value.
-		 * If yes, the truck is sent back to the loading dock;
-		 * if not, the truck is added to the EventQueue with the 'Deloading' event, which means the truck is sent to the customer to unload the cargo.*/
-		event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.WeighingDone, null, this);
-		if (event != null && event.objectAttached() != null && event.objectAttached().getClass() == Truck.class)
-		{
-			eventQueue.remove(event);
-			final Integer truckToWeighLoad = truckInWeighingStation.getLoad();
-			long driveToCustomer;
-			long driveToLoadingStation;
-
-			if (truckToWeighLoad != null && truckToWeighLoad > MAXLOAD)
+			//Event event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.Weighing, this.getClass(), null);
+			Event event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.Weighing, this.getClass(), null);
+			if (truckInWeighingStation == null && event != null && event.objectAttached() != null)
 			{
-				GravelShipping.setGravelToShip(GravelShipping.getGravelToShip() + truckToWeighLoad);
-				GravelShipping.increaseUnsuccessfulLoadingSizes(truckToWeighLoad);
-				GravelShipping.increaseUnsuccessfulLoadings();
-				driveToLoadingStation = truckInWeighingStation.addTimeStepDelta(TrackerType.Utilization,
-						truckInWeighingStation.getDriver().getDrivingToLoadingDock());
-				truckInWeighingStation.unload();
-				eventQueue.add(new Event(timeStep + driveToLoadingStation, GravelLoadingEventTypes.Loading,
-						truckInWeighingStation, LoadingDock.class, null));
-			}
-			else if (truckToWeighLoad != null && truckToWeighLoad < MAXLOAD)
-			{
+				eventQueue.remove(event);
+				truckInWeighingStation = (Truck) event.objectAttached();
 
-				driveToCustomer = truckInWeighingStation.addTimeStepDelta(TrackerType.Utilization,
-						truckInWeighingStation.getDriver().getDrivingToCustomer());
-				eventQueue.add(new Event(timeStep + driveToCustomer, GravelLoadingEventTypes.Deloading,
-						truckInWeighingStation, Customer.class, null));
+				eventQueue.add(new Event(timeStep + truckInWeighingStation.addTimeStepDelta(TrackerType.Utilization, TIME_TO_WEIGH_TRUCK),
+						GravelLoadingEventTypes.WeighingDone, truckInWeighingStation, null, this));
+
+				trackerStart(TrackerType.Utilization, timeStep);
+				setFixCost(getFixCost() + TIMETOWEIGHCOST * TIME_TO_WEIGH_TRUCK);
+				return;
 			}
 
-			truckInWeighingStation = null;
-			trackerStop(TrackerType.Utilization, timeStep);
-
-			//Here, the breakdown of the weighing station and/or the mechanic is simulated, and the repair costs are calculated.
-
-			int	repairTime = getMechanic().getStationFailureRepairTime();
-			if (repairTime > 0)
+			/* Here, the 'WeighingDone' event is dequeued from the queue. Then, it is checked whether the cargo in the truck exceeds the allowed
+			 * value.
+			 * If yes, the truck is sent back to the loading dock;
+			 * if not, the truck is added to the EventQueue with the 'Deloading' event, which means the truck is sent to the customer to unload
+			 * the cargo.*/
+			event = eventQueue.getNextEvent(timeStep, true, GravelLoadingEventTypes.WeighingDone, null, this);
+			if (event != null && event.objectAttached() != null && event.objectAttached().getClass() == Truck.class)
 			{
-				counterFailureStation++;
-				repairTime += getMechanic().failureTime();
-				Administration.setRepairCost(Administration.getRepairCost() + STATIONREPAIRCOST * repairTime);
-				stationFailed = true;
-				eventQueue.add(new Event(timeStep + repairTime, GravelLoadingEventTypes.StationRepaired, null, null, this));
-			}
-			int	repairTimeTruck = LoadingDock.getTruckMechanic().getTruckFailureRepairTime();
-			if (repairTimeTruck > 0)
-			{
-				counterFailureTruck++;
-				Administration.setRepairCost(Administration.getRepairCost() + TRUCKREPAIRCOST * repairTime);
-				truckFailed = true;
-				eventQueue.add(new Event(timeStep + repairTimeTruck, GravelLoadingEventTypes.TruckRepaired, null, null, this));
+				eventQueue.remove(event);
+				final Integer truckToWeighLoad = truckInWeighingStation.getLoad();
+				long driveToCustomer;
+				long driveToLoadingStation;
+
+				if (truckToWeighLoad != null && truckToWeighLoad > MAXLOAD)
+				{
+					GravelShipping.setGravelToShip(GravelShipping.getGravelToShip() + truckToWeighLoad);
+					GravelShipping.increaseUnsuccessfulLoadingSizes(truckToWeighLoad);
+					GravelShipping.increaseUnsuccessfulLoadings();
+					driveToLoadingStation = truckInWeighingStation.addTimeStepDelta(TrackerType.Utilization,
+							truckInWeighingStation.getDriver().getDrivingToLoadingDock());
+					truckInWeighingStation.unload();
+					eventQueue.add(new Event(timeStep + driveToLoadingStation, GravelLoadingEventTypes.Loading,
+							truckInWeighingStation, LoadingDock.class, null));
+				}
+				else if (truckToWeighLoad != null && truckToWeighLoad < MAXLOAD)
+				{
+
+					driveToCustomer = truckInWeighingStation.addTimeStepDelta(TrackerType.Utilization,
+							truckInWeighingStation.getDriver().getDrivingToCustomer());
+					eventQueue.add(new Event(timeStep + driveToCustomer, GravelLoadingEventTypes.Deloading,
+							truckInWeighingStation, Customer.class, null));
+				}
+
+				trackerStop(TrackerType.Utilization, timeStep);
+
+				//Here, the breakdown of the weighing station and/or the mechanic is simulated, and the repair costs are calculated.
+
+				int	repairTime = getMechanic().getStationFailureRepairTime();
+				if (repairTime > 0)
+				{
+					counterFailureStation++;
+					repairTime += getMechanic().failureTime();
+					Administration.setRepairCost(Administration.getRepairCost() + STATIONREPAIRCOST * repairTime);
+					stationFailed = true;
+					this.addTimeStepDelta(TrackerType.Failure, repairTime);
+					eventQueue.add(new Event(timeStep + repairTime, GravelLoadingEventTypes.StationRepaired, null, null, this));
+				}
+
+				truckInWeighingStation.truckFailed(timeStep);
+				truckInWeighingStation = null;
+
 			}
 		}
 	}
+	/**
+	 * This method recursively filters for events that have Truck Objects attacked to filter out events with trucks that need to be repaired.
+	 * @param timeStep        Gets events from this timeStep forwards
+	 * @param past            Include events from the past
+	 * @param eventTypeNumber Filter for specific event type
+	 * @param receiverClass   Filter for specific receiving class
+	 * @param receiverObject  Filter for specific receiving object
+	 * @return returns the Event in the EventQueue with the lowest timeStep which
+	 *         matches the defined filters or null of no Event could be filtered
+	 */
+	/*
+	private Event findNonFailedTruckEvent(long timeStep, boolean past,
+			UniqueEventDescription eventDescription, Class<? extends SimulationObject> receiverClass, SimulationObject receiver)
+	{
+		Event event = eventQueue.getNextEvent(timeStep, past, eventDescription, receiverClass, receiver);
+		Truck truck = null;
+		if (event != null)
+			truck = (Truck) event.objectAttached();
+		LinkedList<Event> events = new LinkedList<Event>();
+		while (event != null && truck != null && truck.getTruckFailed())
+		{
+			eventQueue.remove(event);
+			events.add(event);
+
+			event = eventQueue.getNextEvent(timeStep, past, eventDescription, receiverClass, receiver);
+			if (event != null)
+				truck = (Truck) event.objectAttached();
+		}
+
+		for (Event e : events)
+		{
+			eventQueue.add(e);
+		}
+
+		return event;
+	}
+	*/
 
 	public static Mechanic getMechanic()
 	{
@@ -222,12 +245,7 @@ public final class WeighingStation extends SimulationObject
 	}
 	public static int getCounterFailureTruck()
 	{
-		return counterFailureTruck;
-	}
-
-	public static void setCounterFailureTruck(int counterFailureTruck)
-	{
-		WeighingStation.counterFailureTruck = counterFailureTruck;
+		return Truck.getCounterFailureTruck();
 	}
 
 

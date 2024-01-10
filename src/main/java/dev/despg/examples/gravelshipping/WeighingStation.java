@@ -75,7 +75,7 @@ public final class WeighingStation extends SimulationObject
 	 * difference in parameters.
 	 *
 	 * @return true if an assignable event got found and handled, false if no event
-	 *         could get assigned
+	 *         could get assigned???
 	 */
 	@Override
 	public void simulate(long timeStep)

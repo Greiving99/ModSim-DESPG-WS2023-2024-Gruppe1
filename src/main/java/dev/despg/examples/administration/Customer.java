@@ -64,7 +64,27 @@ public class Customer extends SimulationObject
 		return toString;
 	}
 	/**
+	 * Checks events from the event queue that either are assigned to this class or
+	 * to an object of this class. If it is assigned to this class, the object of
+	 * which the simulate function got called, checks if it is currently occupied
+	 * and if the attached object is indeed a truck. In that case, the event gets
+	 * removed from the queue, gets executed and a new event gets added to the queue
+	 * which gets triggered when the Deloading is done. Deloading costs will be calculated
+	 * based on the time the Driver needs to unload and a factor of 1.27 euros per minute.
 	 *
+	 * A "Deloading is done" event gets pulled from the queue if the receiving
+	 * object is the object on which the simulate function got called on. In that
+	 * case the event gets removed from the queue and handled by checking if trucks
+	 * load is above the ordered amount of Gravel of the customer object of which this
+	 * method is called.
+	 * If it is above, it will unload the amount ordered and add the difference back to
+	 * to GravelToShip. Additionally, a customer order is completed, requiring a new customer
+	 * order to transport gravel again.
+	 * Otherwise it will unload the entire amount loaded.
+	 * In either case there will be a new event added to the event queue with no
+	 * difference in parameters. Costs and revenues will be calculated and processed.
+	 * Finally, the trucks are added to the EventQueue with the 'Loading' event, so they
+	 * return to the LoadingDock.
 	 */
 	public void simulate(long timeStep)
 	{
@@ -120,7 +140,7 @@ public class Customer extends SimulationObject
 
 					GravelShipping.setGravelToShip(GravelShipping.getGravelToShip() + loadInTruck);
 					GravelShipping.increaseSuccessfulLoadings();
-					truckatCustomer.addTimeStepDelta(TrackerType.Utilization, timeStep);
+					truckatCustomer.addTimeStepDelta(TrackerType.Utilization, truckatCustomer.getDriver().getDrivingToLoadingDock());
 
 					GravelShipping.setsuccessfulOrder(GravelShipping.getsuccessfulOrder() + 1);
 					LoadingDock.setFixedCost(LoadingDock.getFixedCost()
@@ -137,7 +157,7 @@ public class Customer extends SimulationObject
 				{
 					gravelLeft -= loadInTruck;
 					this.setGravelCustomer(gravelLeft);
-					truckatCustomer.addTimeStepDelta(TrackerType.Utilization, timeStep);
+					truckatCustomer.addTimeStepDelta(TrackerType.Utilization, truckatCustomer.getDriver().getDrivingToLoadingDock());
 					GravelShipping.increaseGravelShipped(loadInTruck);
 					GravelShipping.increaseSuccessfulLoadingSizes(loadInTruck);
 					GravelShipping.increaseSuccessfulLoadings();
@@ -150,6 +170,8 @@ public class Customer extends SimulationObject
 						truckatCustomer, LoadingDock.class, null));
 
 				truckatCustomer.unload();
+				// Should the chance for a truck Failing also be simulated after Truck unloads at the customer?
+				// truckatCustomer.truckFailed(timeStep);
 				truckatCustomer = null;
 				trackerStop(TrackerType.Utilization, timeStep);
 			}

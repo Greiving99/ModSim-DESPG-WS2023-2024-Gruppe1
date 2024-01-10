@@ -20,6 +20,7 @@ public abstract class Employee
 	private static Randomizer applyForHoliday;
 
 	//Here, a quality multiplier is created that outputs a value ranging from 0.5 to 1.5.
+	//TODO the value ranges from 0.5 to 2 in Code. Which is right: Comment or Code?
 	public static double randomQuality()
 	{
 		double quality = Randomizer.nextDouble() * 1.5 + 0.5;
